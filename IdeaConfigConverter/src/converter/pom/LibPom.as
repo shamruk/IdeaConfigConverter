@@ -33,11 +33,7 @@ package converter.pom {
 					<version>1.0-SNAPSHOT</version>
 					<type>swc</type>
 				</dependency>;
-				if (result.dependencies.length()) {
-					result.dependencies[0].appendChild(dependencyXML);
-				} else {
-					result.dependencies.dependency += dependencyXML;
-				}
+				result.*::dependencies.dependency += dependencyXML;
 			}
 		}
 	}

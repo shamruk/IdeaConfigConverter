@@ -87,7 +87,13 @@ package converter {
 		}
 
 		private function get dependedLibs() : Vector.<String> {
-			return _dependedLibs ||= xmlListToVector(content.component.orderEntry.(@type == "library").attribute("name"));
+			return _dependedLibs ||= getDependedLibs();
+		}
+
+		private function getDependedLibs() : Vector.<String> {
+			var names : Vector.<String> = xmlListToVector(content.component.orderEntry.(@type == "library").attribute("name"));
+			names = names.concat(xmlListToVector(content.component.orderEntry.(@type == "module-library").library.attribute("name")));
+			return names;
 		}
 
 		public function get type() : String {

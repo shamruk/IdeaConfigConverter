@@ -24,7 +24,7 @@ package converter.pom {
 			var result : XML = XML(template);
 			for each(var poms : * in _pomPacks) {
 				for each(var pom : IPom in poms) {
-					result.modules.module += <module>{pom.iml.relativeDirectoryPath}</module>;
+					result.*::modules.module += <module>{pom.iml.relativeDirectoryPath}</module>;
 				}
 			}
 			return result;
