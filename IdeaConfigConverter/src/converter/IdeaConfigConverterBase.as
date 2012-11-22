@@ -1,4 +1,7 @@
 package converter {
+	import converter.dom.Module;
+	import converter.dom.Project;
+
 	import flash.desktop.ClipboardFormats;
 	import flash.events.Event;
 	import flash.events.NativeDragEvent;
@@ -16,18 +19,12 @@ package converter {
 		public var imlsArrayCollection : ArrayCollection;
 
 		[Bindable]
-		public var selectedIml : Iml;
+		public var selectedIml : Module;
 
 		[Bindable]
 		public var lastOpened : File;
 
-		protected function getImls() : Vector.<Iml> {
-			var imls : Vector.<Iml> = new Vector.<Iml>();
-			for each(var oneIml : Iml in imlsArrayCollection) {
-				imls.push(oneIml);
-			}
-			return imls;
-		}
+		protected var project : Project;
 
 		protected function onDragIn(e : NativeDragEvent) : void {
 			if (e.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
@@ -47,10 +44,10 @@ package converter {
 		}
 
 		protected function openProject(directory : File) : void {
-			var files : Vector.<File> = FileFindHelper.findFiles(directory, /(.*).iml/i);
+			project = new Project(directory);
 			var ac : ArrayCollection = new ArrayCollection();
-			for each(var file : File in files) {
-				ac.addItem(new Iml(directory, file));
+			for each(var module : Module in project.modules) {
+				ac.addItem(module);
 			}
 			imlsArrayCollection = ac;
 			setLastOpened(directory);

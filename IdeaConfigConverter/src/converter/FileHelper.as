@@ -1,7 +1,9 @@
 package converter {
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 
-	public class FileFindHelper {
+	public class FileHelper {
 
 		public static function findFiles(baseDirectory : File, namePattern : *, includeSudirectories : Boolean = true) : Vector.<File> {
 			var files : Vector.<File> = new Vector.<File>();
@@ -18,6 +20,14 @@ package converter {
 				}
 			}
 			return files;
+		}
+
+		public static function readFile(file : File) : String {
+			var stream : FileStream = new FileStream();
+			stream.open(file, FileMode.READ);
+			var string : String = stream.readUTFBytes(file.size);
+			stream.close();
+			return string;
 		}
 	}
 }

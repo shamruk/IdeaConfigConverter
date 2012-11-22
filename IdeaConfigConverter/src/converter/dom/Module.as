@@ -1,9 +1,9 @@
-package converter {
+package converter.dom {
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 
-	public class Iml {
+	public class Module {
 
 		public static const OUTPUT_TYPE_APPLICATION : String = "Application";
 		public static const OUTPUT_TYPE_LIBRARY : String = "Library";
@@ -15,7 +15,7 @@ package converter {
 		private var _info : String;
 		private var _type : String;
 		private var _configurationXML : XML;
-		private var _dependedLibs : Vector.<String>;
+		private var _dependedLibs : Vector.<Lib>;
 		private var _outputType : String;
 		private var _name : String;
 		private var _flashPlayerVersion : String;
@@ -23,19 +23,19 @@ package converter {
 		private var _sdkVersion : String;
 		private var _moduleType : String;
 		private var _relativeDirectoryPath : String;
+		private var _project : Project;
 
-		public function Iml(baseDirectory : File, file : File) {
+		public function Module(project : Project, file : File) {
+			_project = project;
 			_file = file;
-			_relativePath = baseDirectory.getRelativePath(file);
-			_relativeDirectoryPath = baseDirectory.getRelativePath(file.parent);
 		}
 
 		public function get relativePath() : String {
-			return _relativePath;
+			return _relativePath ||= _project.directory.getRelativePath(_file);
 		}
 
 		public function get relativeDirectoryPath() : String {
-			return _relativeDirectoryPath;
+			return _relativeDirectoryPath ||= _project.directory.getRelativePath(_file.parent);
 		}
 
 		public function get directory() : File {
@@ -44,7 +44,7 @@ package converter {
 
 		public function get dependedModules() : Vector.<String> {
 			var moduleNames : XMLList = content.component.orderEntry.(@type == "module").attribute("module-name");
-			return Iml.xmlListToVector(moduleNames);
+			return Module.xmlListToVector(moduleNames);
 		}
 
 		public function get content() : XML {
@@ -86,14 +86,19 @@ package converter {
 			return _name ||= _file.name.substring(0, _file.name.indexOf(".iml"));
 		}
 
-		private function get dependedLibs() : Vector.<String> {
+		private function get dependedLibs() : Vector.<Lib> {
 			return _dependedLibs ||= getDependedLibs();
 		}
 
-		private function getDependedLibs() : Vector.<String> {
-			var names : Vector.<String> = xmlListToVector(content.component.orderEntry.(@type == "library").attribute("name"));
-			names = names.concat(xmlListToVector(content.component.orderEntry.(@type == "module-library").library.attribute("name")));
-			return names;
+		private function getDependedLibs() : Vector.<Lib> {
+			var libs : Vector.<Lib> = new Vector.<Lib>();
+			for each(var extLibXML : XML in content.component.orderEntry.(@type == "library")) {
+				libs = libs.concat(_project.getLibByName(extLibXML.@name));
+			}
+			for each(var intLibXML : XML in content.component.orderEntry.(@type == "module-library")) {
+				libs.push(new Lib(intLibXML.library.@name, Lib.resolveFileFromInternalDependably(intLibXML.library.CLASSES.root.@url, directory)));
+			}
+			return libs;
 		}
 
 		public function get type() : String {

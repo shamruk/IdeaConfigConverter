@@ -1,14 +1,14 @@
 package converter.pom {
-	import converter.Iml;
+	import converter.dom.Module;
 
 	import flash.errors.IllegalOperationError;
 
 	public class BasePom {
 
-		private var _iml : Iml;
+		private var _iml : Module;
 		private var _data : String;
 
-		public function BasePom(iml : Iml) {
+		public function BasePom(iml : Module) {
 			_iml = iml;
 		}
 
@@ -20,7 +20,7 @@ package converter.pom {
 			throw new IllegalOperationError();
 		}
 
-		public function get iml() : Iml {
+		public function get iml() : Module {
 			return _iml;
 		}
 

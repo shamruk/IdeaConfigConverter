@@ -6,13 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 package converter.pom {
-	import converter.Iml;
+	import converter.dom.Module;
 
 	public interface IPom {
 		function get data() : String;
 
 		function getFilePath() : String;
 
-		function get iml() : Iml;
+		function get iml() : Module;
 	}
 }

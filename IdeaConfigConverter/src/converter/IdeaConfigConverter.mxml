@@ -38,8 +38,8 @@
 		import spark.components.List;
 
 		private function convert() : void {
-			converter["convert"](getImls());
-//			converter.convert(getImlsVector())
+			converter["convert"](project);
+//			converter.convert(project)
 		}
 		]]></fx:Script>
 </converter:IdeaConfigConverterBase>

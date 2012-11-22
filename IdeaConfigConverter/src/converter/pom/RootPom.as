@@ -1,5 +1,5 @@
 package converter.pom {
-	import converter.Iml;
+	import converter.dom.Project;
 
 	import flash.utils.Dictionary;
 
@@ -10,9 +10,11 @@ package converter.pom {
 		private static const POM_LIB_XML : XML = XML(new POM_LIB_DATA);
 
 		private var _pomPacks : Vector.<Dictionary>;
+		private var _project : Project;
 
-		public function RootPom(iml : Iml, pomPacks : Vector.<Dictionary>) {
-			super(iml);
+		public function RootPom(project : Project, pomPacks : Vector.<Dictionary>) {
+			super(null);
+			_project = project;
 			_pomPacks = pomPacks;
 		}
 
@@ -28,7 +30,10 @@ package converter.pom {
 				}
 			}
 			return result;
+		}
 
+		override public function getFilePath() : String {
+			return _project.directory.url + "/pom.xml";
 		}
 	}
 }

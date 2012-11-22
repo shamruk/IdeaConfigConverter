@@ -1,5 +1,5 @@
 package converter.pom {
-	import converter.Iml;
+	import converter.dom.Module;
 
 	public class LibPom extends BasePom implements IPom {
 
@@ -7,7 +7,7 @@ package converter.pom {
 		private static const POM_LIB_DATA : Class;
 		private static const POM_LIB_XML : XML = XML(new POM_LIB_DATA);
 
-		public function LibPom(iml : Iml) {
+		public function LibPom(iml : Module) {
 			super(iml);
 		}
 

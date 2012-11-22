@@ -1,5 +1,6 @@
 package converter.pom {
-	import converter.*;
+	import converter.dom.Module;
+	import converter.dom.Project;
 
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -8,17 +9,16 @@ package converter.pom {
 
 	public class PomConverter {
 
-		public function convert(imls : Vector.<Iml>) : void {
+		public function convert(project : Project) : void {
 			var libs : Dictionary = new Dictionary();
-			var rootIml : Iml;
-			for each(var iml : Iml in imls) {
-				if (iml.moduleType != "Flex") {
-					rootIml = iml;
-				} else if (iml.outputType == Iml.OUTPUT_TYPE_LIBRARY) {
-					libs[iml] = new LibPom(iml);
+			for each(var iml : Module in project.modules) {
+				if (iml.moduleType == "Flex") {
+					if (iml.outputType == Module.OUTPUT_TYPE_LIBRARY) {
+						libs[iml] = new LibPom(iml);
+					}
 				}
 			}
-			savePoms([new RootPom(rootIml, new <Dictionary>[libs])]);
+			savePoms([new RootPom(project, new <Dictionary>[libs])]);
 			savePoms(libs);
 		}
 
