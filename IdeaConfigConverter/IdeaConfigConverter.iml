@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="IdeaConfigConverter">
     <configurations>
-      <configuration name="IdeaConfigConverter" target-platform="Desktop" main-class="IdeaConfigConverter" output-file="IdeaConfigConverter.swf" output-folder="$MODULE_DIR$/../out/production/IdeaConfigConverter">
+      <configuration name="IdeaConfigConverter" target-platform="Desktop" main-class="converter.IdeaConfigConverter" output-file="IdeaConfigConverter.swf" output-folder="$MODULE_DIR$/../out/production/IdeaConfigConverter">
         <dependencies>
           <sdk name="4.5.1" />
         </dependencies>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<converter:IdeaConfigConverterBase xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+								   xmlns:converter="converter.*" xmlns:pom="converter.pom.*"
+								   nativeDragDrop="onDragDrop(event)"
+								   width="1000" height="800"
+								   lastOpened="{getLastOpened()}"
+		>
+	<converter:layout>
+		<s:VerticalLayout/>
+	</converter:layout>
+	<s:HGroup width="100%" height="30">
+		<s:Label width="100%" height="100%"
+				 text="Drag Project here" textAlign="center" verticalAlign="middle" backgroundColor="0xcccccc"
+				 nativeDragEnter="onDragIn(event)"/>
+		<s:Button width="100%" height="100%"
+				  label="{lastOpened ? 'Open last: \'' + lastOpened.name+'\'' : 'Browse'}"
+				  click="lastOpened ? openProject(lastOpened) : browseProjectFolder()"
+				/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="100%">
+		<s:List width="200" height="100%" dataProvider="{imlsArrayCollection}" labelField="name"
+				change="selectedIml = List(event.target).selectedItem"
+				/>
+		<s:TextArea text="{selectedIml.info}"
+					width="100%" height="100%"
+				/>
+	</s:HGroup>
+	<s:HGroup width="100%">
+		<s:Button label="Export POMs" width="100%" click="convert()"/>
+		<s:Button width="100%"/>
+	</s:HGroup>
+
+	<fx:Declarations>
+		<pom:PomConverter id="converter"/>
+	</fx:Declarations>
+
+	<fx:Script><![CDATA[
+		import spark.components.List;
+
+		private function convert() : void {
+			converter["convert"](getImls());
+//			converter.convert(getImlsVector())
+		}
+		]]></fx:Script>
+</converter:IdeaConfigConverterBase>

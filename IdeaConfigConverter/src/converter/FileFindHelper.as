@@ -1,4 +1,4 @@
-package {
+package converter {
 	import flash.filesystem.File;
 
 	public class FileFindHelper {

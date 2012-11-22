@@ -1,9 +1,13 @@
-package {
+package converter {
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 
 	public class Iml {
+
+		public static const OUTPUT_TYPE_APPLICATION : String = "Application";
+		public static const OUTPUT_TYPE_LIBRARY : String = "Library";
+		public static const OUTPUT_TYPE_RUNTIME : String = "...";
 
 		private var _file : File;
 		private var _relativePath : String;
@@ -14,15 +18,28 @@ package {
 		private var _dependedLibs : Vector.<String>;
 		private var _outputType : String;
 		private var _name : String;
+		private var _flashPlayerVersion : String;
+		private var _dependenciesXML : XML;
+		private var _sdkVersion : String;
+		private var _moduleType : String;
+		private var _relativeDirectoryPath : String;
 
 		public function Iml(baseDirectory : File, file : File) {
 			_file = file;
-//			_relativePath = file.getRelativePath(baseDirectory);
 			_relativePath = baseDirectory.getRelativePath(file);
+			_relativeDirectoryPath = baseDirectory.getRelativePath(file.parent);
 		}
 
 		public function get relativePath() : String {
 			return _relativePath;
+		}
+
+		public function get relativeDirectoryPath() : String {
+			return _relativeDirectoryPath;
+		}
+
+		public function get directory() : File {
+			return _file.parent;
 		}
 
 		public function get dependedModules() : Vector.<String> {
@@ -60,6 +77,8 @@ package {
 			result.push(dependedModules.join('\n'));
 			result.push("\tDepends on libs:");
 			result.push(dependedLibs.join('\n'));
+			result.push("\tFlash player:");
+			result.push(flashPlayerVersion);
 			return result.join("\n");
 		}
 
@@ -79,12 +98,28 @@ package {
 			return _configurationXML ||= content.component.configurations.configuration[0];
 		}
 
+		public function get dependenciesXML() : XML {
+			return _dependenciesXML ||= configurationXML.dependencies[0];
+		}
+
 		public function get outputType() : String {
 			return _outputType ||= configurationXML.attribute("output-type");
 		}
 
 		public function getOptionValue(key : String) : String {
 			return content.component.option.(@name == key).@value;
+		}
+
+		public function get flashPlayerVersion() : String {
+			return _flashPlayerVersion ||= dependenciesXML.attribute("target-player");
+		}
+
+		public function get sdkVersion() : String {
+			return _sdkVersion ||= dependenciesXML.sdk.@name;
+		}
+
+		public function get moduleType() : String {
+			return _moduleType ||= content.@type;
 		}
 
 		public static function xmlListToVector(xmlList : XMLList) : Vector.<String> {
