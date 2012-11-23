@@ -8,7 +8,5 @@
 	<artifactId>${artifactId}</artifactId>
 	<version>${version}</version>
 	<packaging>swc</packaging>
-	<description>mvn install:install-file -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version}
-		-Dpackaging=swc -Dfile=${artifactId}-${version}.swc
-	</description>
+	<description>${description}</description>
 </project>

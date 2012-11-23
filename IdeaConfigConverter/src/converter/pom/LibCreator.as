@@ -19,6 +19,8 @@ package converter.pom {
 
 		public static const VERSION : String = "1.0";
 
+		private static const MANUAL_INSTALL_COMMAND : String = "mvn install:install-file -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=swc -Dfile=${artifactId}-${version}.swc";
+
 		public static function createLibrary(project : Project) : void {
 			var libsDirectory1 : File = new File(project.getDirectoryForLibrariesURL());
 			if (!libsDirectory1.exists) {
@@ -35,6 +37,7 @@ package converter.pom {
 					libs[moduleLib.id] = moduleLib;
 				}
 			}
+			var manualInstalls : Vector.<String> = new Vector.<String>();
 			for each(var lib : Lib in libs) {
 				var libDirectory2 : File = libsDirectory2.resolvePath(lib.artifactID);
 				libDirectory2.createDirectory();
@@ -49,13 +52,22 @@ package converter.pom {
 
 				var filesName : String = lib.artifactID + "-" + VERSION;
 
+				var manualInstall : String = addGroupAndArtifactID(MANUAL_INSTALL_COMMAND, lib);
 				var libPomString : String = POM_LIB_XML.toXMLString();
 				libPomString = addGroupAndArtifactID(libPomString, lib);
+				libPomString = StringUtil.replace(libPomString, "${description}", manualInstall);
 				var pomFile : File = libFilesDirectory.resolvePath(filesName + ".pom");
 				FileHelper.writeFile(pomFile, libPomString);
 
-				lib.file.copyTo(libFilesDirectory.resolvePath(filesName + ".swc"));
+				var swc : File = libFilesDirectory.resolvePath(filesName + ".swc");
+				lib.file.copyTo(swc);
+
+				manualInstalls.push("cd " + libsDirectory1.getRelativePath(libFilesDirectory));
+				manualInstalls.push(manualInstall);
+				manualInstalls.push("cd ../../../");
 			}
+			FileHelper.writeFile(libsDirectory1.resolvePath("icc-generated-manual-install.sh"), (new <String>["#!/bin/sh"]).concat(manualInstalls).join("\n"));
+			FileHelper.writeFile(libsDirectory1.resolvePath("icc-generated-manual-install.bat"), manualInstalls.join("\r"));
 		}
 
 		private static function addGroupAndArtifactID(libPomString : String, lib : Lib) : String {

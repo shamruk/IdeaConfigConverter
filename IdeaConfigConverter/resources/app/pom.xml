@@ -6,7 +6,7 @@
 
 	<groupId>${groupId}</groupId>
 	<artifactId>${artifactId}</artifactId>
-	<packaging>swc</packaging>
+	<packaging>swf</packaging>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<properties>
@@ -19,14 +19,13 @@
 			<id>release</id>
 			<properties>
 				<debug>false</debug>
-				<optimize>true</optimize>
 			</properties>
 		</profile>
+
 		<profile>
 			<id>debug</id>
 			<properties>
 				<debug>true</debug>
-				<optimize>false</optimize>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -49,6 +48,7 @@
 					<skipTests>true</skipTests>
 					<debug>${debug}</debug>
 					<optimize>${optimize}</optimize>
+					<sourceFile>${source.file}</sourceFile>
 
 					<keepAs3Metadatas>
 						<name>Event</name>
@@ -59,13 +59,6 @@
 					<compilerWarnings>
 						<show-binding-warnings>false</show-binding-warnings>
 					</compilerWarnings>
-
-					<!--<defines>-->
-					<!--<property>-->
-					<!--<name>CONFIG::Debug</name>-->
-					<!--<value>${debug}</value>-->
-					<!--</property>-->
-					<!--</defines>-->
 				</configuration>
 				<dependencies>
 					<dependency>
