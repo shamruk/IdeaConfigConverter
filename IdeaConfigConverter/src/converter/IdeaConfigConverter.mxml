@@ -26,20 +26,11 @@
 				/>
 	</s:HGroup>
 	<s:HGroup width="100%">
-		<s:Button label="Generate ext libs and Export POMs" width="100%" click="convert()"/>
+		<s:Button label="Generate ext libs and Export POMs" width="100%" click="convertAndSave()"/>
 		<s:Button width="100%"/>
 	</s:HGroup>
 
-	<fx:Declarations>
-		<pom:PomConverter id="converter"/>
-	</fx:Declarations>
-
 	<fx:Script><![CDATA[
 		import spark.components.List;
-
-		private function convert() : void {
-			converter["convert"](project);
-//			converter.convert(project)
-		}
 		]]></fx:Script>
 </converter:IdeaConfigConverterBase>

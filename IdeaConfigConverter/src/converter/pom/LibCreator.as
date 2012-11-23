@@ -24,7 +24,7 @@ package converter.pom {
 			if (!libsDirectory1.exists) {
 				libsDirectory1.createDirectory();
 			}
-			var libsDirectory2 : File = new File(libsDirectory1.url + "/" + Lib.GROUP_ID);
+			var libsDirectory2 : File = libsDirectory1.resolvePath(Lib.GROUP_ID);
 			if (libsDirectory2.exists) {
 				libsDirectory2.deleteDirectory(true);
 			}
@@ -36,25 +36,25 @@ package converter.pom {
 				}
 			}
 			for each(var lib : Lib in libs) {
-				var libDirectory2 : File = new File(libsDirectory2.url + "/" + lib.artifactID);
+				var libDirectory2 : File = libsDirectory2.resolvePath(lib.artifactID);
 				libDirectory2.createDirectory();
 
 				var metadataString : String = METADATA_LIB_XML.toXMLString();
 				metadataString = addGroupAndArtifactID(metadataString, lib);
-				var metadataFile : File = new File(libDirectory2.url + "/maven-metadata-local.xml");
+				var metadataFile : File = libDirectory2.resolvePath("maven-metadata-local.xml");
 				FileHelper.writeFile(metadataFile, metadataString);
 
-				var libFilesDirectory : File = new File(libDirectory2.url + "/" + VERSION);
+				var libFilesDirectory : File = libDirectory2.resolvePath(VERSION);
 				libFilesDirectory.createDirectory();
 
 				var filesName : String = lib.artifactID + "-" + VERSION;
 
 				var libPomString : String = POM_LIB_XML.toXMLString();
 				libPomString = addGroupAndArtifactID(libPomString, lib);
-				var pomFile : File = new File(libFilesDirectory.url + "/" + filesName + ".pom");
+				var pomFile : File = libFilesDirectory.resolvePath(filesName + ".pom");
 				FileHelper.writeFile(pomFile, libPomString);
 
-				lib.file.copyTo(new File(libFilesDirectory.url + "/" + filesName + ".swc"));
+				lib.file.copyTo(libFilesDirectory.resolvePath(filesName + ".swc"));
 			}
 		}
 

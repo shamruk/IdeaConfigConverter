@@ -8,7 +8,7 @@ package converter.pom {
 
 	public class PomConverter {
 
-		public function convert(project : Project) : void {
+		public function convertAndSave(project : Project) : void {
 			LibCreator.createLibrary(project);
 			saveProjectPoms(project);
 		}

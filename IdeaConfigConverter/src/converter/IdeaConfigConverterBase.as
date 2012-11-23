@@ -1,6 +1,7 @@
 package converter {
 	import converter.dom.Module;
 	import converter.dom.Project;
+	import converter.pom.PomConverter;
 
 	import flash.desktop.ClipboardFormats;
 	import flash.events.Event;
@@ -9,6 +10,7 @@ package converter {
 	import flash.net.SharedObject;
 
 	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
 	import mx.managers.DragManager;
 
 	import spark.components.WindowedApplication;
@@ -26,6 +28,8 @@ package converter {
 
 		protected var project : Project;
 
+		private const _converter : PomConverter = new PomConverter();
+
 		protected function onDragIn(e : NativeDragEvent) : void {
 			if (e.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files : Array = e.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
@@ -38,12 +42,20 @@ package converter {
 //			}
 		}
 
+		protected function convertAndSave() : void {
+			_converter.convertAndSave(project)
+		}
+
 		protected function onDragDrop(e : NativeDragEvent) : void {
 			var arr : Array = e.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
 			openProject(arr[0]);
 		}
 
 		protected function openProject(directory : File) : void {
+			if (!directory.resolvePath(".idea").exists) {
+				Alert.show("not an idea root directory");
+				return;
+			}
 			project = new Project(directory);
 			var ac : ArrayCollection = new ArrayCollection();
 			for each(var module : Module in project.modules) {

@@ -26,8 +26,7 @@ package converter.dom {
 		}
 
 		public function get artifactID() : String {
-			var delimiter : String = "-";
-			return _artifactID ||= id.split(".").join(delimiter).split("_").join(delimiter).split(" ").join(delimiter).split("/").join(delimiter).split(":").join(delimiter).toLowerCase();
+			return _artifactID ||= StringUtil.replaceFromMany(id, new <String>[".", "_", " ", "/", ":"], "-").toLowerCase();
 		}
 
 		public function get id() : String {
