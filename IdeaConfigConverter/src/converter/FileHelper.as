@@ -29,5 +29,15 @@ package converter {
 			stream.close();
 			return string;
 		}
+
+		public static function writeFile(file : File, data : String, deleteBefore : Boolean = true) : void {
+			if (deleteBefore && file.exists) {
+				file.deleteFile();
+			}
+			var stream : FileStream = new FileStream();
+			stream.open(file, FileMode.WRITE);
+			stream.writeUTFBytes(data);
+			stream.close();
+		}
 	}
 }

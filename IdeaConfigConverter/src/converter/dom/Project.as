@@ -57,5 +57,9 @@ package converter.dom {
 				return name == lib.name;
 			});
 		}
+
+		public function getDirectoryForLibrariesURL() : String {
+			return directory.url + "/MavenExternalLibs";
+		}
 	}
 }

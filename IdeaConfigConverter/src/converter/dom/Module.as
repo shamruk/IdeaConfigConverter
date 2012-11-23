@@ -86,7 +86,7 @@ package converter.dom {
 			return _name ||= _file.name.substring(0, _file.name.indexOf(".iml"));
 		}
 
-		private function get dependedLibs() : Vector.<Lib> {
+		public function get dependedLibs() : Vector.<Lib> {
 			return _dependedLibs ||= getDependedLibs();
 		}
 
@@ -96,7 +96,7 @@ package converter.dom {
 				libs = libs.concat(_project.getLibByName(extLibXML.@name));
 			}
 			for each(var intLibXML : XML in content.component.orderEntry.(@type == "module-library")) {
-				libs.push(new Lib(intLibXML.library.@name, Lib.resolveFileFromInternalDependably(intLibXML.library.CLASSES.root.@url, directory)));
+				libs = libs.concat(Lib.resolveFileFromInternalDependably(intLibXML.library.CLASSES.root.@url, directory, intLibXML));
 			}
 			return libs;
 		}
