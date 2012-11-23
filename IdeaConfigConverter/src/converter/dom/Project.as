@@ -1,5 +1,6 @@
 package converter.dom {
 	import converter.FileHelper;
+	import converter.StringUtil;
 
 	import flash.filesystem.File;
 
@@ -27,7 +28,7 @@ package converter.dom {
 			_modules = new Vector.<Module>();
 			var modulesXML : XML = getIdeaConfigXML("modules");
 			for each(var modulePath : String in modulesXML.component.modules.module.@filepath) {
-				var moduleURL : String = modulePath.replace("$PROJECT_DIR$", directory.url);
+				var moduleURL : String = StringUtil.replace(modulePath, "$PROJECT_DIR$", directory.url);
 				var file : File = new File(moduleURL);
 				_modules.push(new Module(this, file));
 			}

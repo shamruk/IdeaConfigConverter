@@ -1,5 +1,6 @@
 package converter.dom {
 	import converter.FileHelper;
+	import converter.StringUtil;
 
 	import flash.filesystem.File;
 
@@ -47,15 +48,12 @@ package converter.dom {
 		}
 
 		private static function cleanPath(url : String) : String {
-			url = url.replace("file://", "");
-			url = url.replace("jar://", "");
-			url = url.replace("!/", "");
-			return url;
+			return StringUtil.replaceFromMany(url, new <String>["file://", "jar://", "!/"], "");
 		}
 
 		public static function resolveFileFromInternalDependably(url : String, directory : File, intLibXML : XML) : Vector.<Lib> {
 			url = cleanPath(url);
-			url = url.replace("$MODULE_DIR$", directory.url);
+			url = StringUtil.replace(url, "$MODULE_DIR$", directory.url);
 			return getFiles(url, intLibXML.library.@name);
 		}
 
@@ -63,7 +61,7 @@ package converter.dom {
 			var xml : XML = XML(FileHelper.readFile(file));
 			var url : String = xml.library.CLASSES.root.@url;
 			url = cleanPath(url);
-			url = url.replace("$PROJECT_DIR$", project.directory.url);
+			url = StringUtil.replace(url, "$PROJECT_DIR$", project.directory.url);
 			return getFiles(url, xml.library.@name);
 		}
 
@@ -79,12 +77,6 @@ package converter.dom {
 				libs.push(new Lib(name, fileLib));
 			}
 			return libs;
-		}
-
-		public function addGroupAndArtifactID(libPomString : String) : String {
-			libPomString = libPomString.replace("${groupId}", groupID);
-			libPomString = libPomString.replace("${artifactId}", artifactID);
-			return libPomString;
 		}
 	}
 }

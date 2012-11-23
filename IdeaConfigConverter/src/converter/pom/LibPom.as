@@ -1,4 +1,5 @@
 package converter.pom {
+	import converter.StringUtil;
 	import converter.dom.Lib;
 	import converter.dom.Module;
 	import converter.dom.Project;
@@ -14,17 +15,16 @@ package converter.pom {
 		}
 
 		override public function getXML() : XML {
-			var template : String = POM_LIB_XML.toXMLString();
 			var fullSDKVersion : String = getFullSDKVersion(iml.sdkVersion);
-			template = template.split("${flex.framework.version}").join(fullSDKVersion);
-			template = template.replace("${flash.player.version}", iml.flashPlayerVersion);
-			template = template.replace("${artifactId}", iml.name);
-			template = template.replace("${repository.local.generated.url}", project.getDirectoryForLibrariesURL());
-
+			var template : String = POM_LIB_XML.toXMLString();
+			template = StringUtil.replaceByMap(template, {
+				"${flex.framework.version}":fullSDKVersion,
+				"${flash.player.version}":iml.flashPlayerVersion,
+				"${artifactId}":iml.name,
+				"${repository.local.generated.url}":project.getDirectoryForLibrariesURL()
+			});
 			var result : XML = XML(template);
-
 			addDependencies(result);
-
 			return result;
 		}
 

@@ -2,10 +2,10 @@
 <metadata>
 	<groupId>${groupId}</groupId>
 	<artifactId>${artifactId}</artifactId>
-	<version>current</version>
+	<version>${version}</version>
 	<versioning>
 		<versions>
-			<version>current</version>
+			<version>${version}</version>
 		</versions>
 		<lastUpdated>20100313092511</lastUpdated>
 	</versioning>

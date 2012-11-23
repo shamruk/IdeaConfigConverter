@@ -26,7 +26,7 @@
 				/>
 	</s:HGroup>
 	<s:HGroup width="100%">
-		<s:Button label="Export POMs" width="100%" click="convert()"/>
+		<s:Button label="Generate ext libs and Export POMs" width="100%" click="convert()"/>
 		<s:Button width="100%"/>
 	</s:HGroup>
 

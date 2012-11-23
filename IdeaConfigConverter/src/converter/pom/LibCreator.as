@@ -1,5 +1,6 @@
 package converter.pom {
 	import converter.FileHelper;
+	import converter.StringUtil;
 	import converter.dom.Lib;
 	import converter.dom.Module;
 	import converter.dom.Project;
@@ -16,7 +17,7 @@ package converter.pom {
 		private static const METADATA_LIB_DATA : Class;
 		private static const METADATA_LIB_XML : XML = XML(new METADATA_LIB_DATA);
 
-		public static const VERSION : String = "current";
+		public static const VERSION : String = "1.0";
 
 		public static function createLibrary(project : Project) : void {
 			var libsDirectory1 : File = new File(project.getDirectoryForLibrariesURL());
@@ -39,7 +40,7 @@ package converter.pom {
 				libDirectory2.createDirectory();
 
 				var metadataString : String = METADATA_LIB_XML.toXMLString();
-				metadataString = lib.addGroupAndArtifactID(metadataString);
+				metadataString = addGroupAndArtifactID(metadataString, lib);
 				var metadataFile : File = new File(libDirectory2.url + "/maven-metadata-local.xml");
 				FileHelper.writeFile(metadataFile, metadataString);
 
@@ -49,12 +50,16 @@ package converter.pom {
 				var filesName : String = lib.artifactID + "-" + VERSION;
 
 				var libPomString : String = POM_LIB_XML.toXMLString();
-				libPomString = lib.addGroupAndArtifactID(libPomString);
+				libPomString = addGroupAndArtifactID(libPomString, lib);
 				var pomFile : File = new File(libFilesDirectory.url + "/" + filesName + ".pom");
 				FileHelper.writeFile(pomFile, libPomString);
 
 				lib.file.copyTo(new File(libFilesDirectory.url + "/" + filesName + ".swc"));
 			}
+		}
+
+		private static function addGroupAndArtifactID(libPomString : String, lib : Lib) : String {
+			return StringUtil.replaceByMap(libPomString, {"${groupId}":lib.groupID, "${artifactId}":lib.artifactID, "${version}":VERSION});
 		}
 	}
 }
