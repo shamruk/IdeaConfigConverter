@@ -8,14 +8,12 @@ package converter.dom {
 		private var _name : String;
 		private var _file : File;
 		private var _id : String;
-		private var _groupID : String;
+		private var _artifactID : String;
+		public static const GROUP_ID : String = "icc-generated";
 
 		public function Lib(name : String, file : File) {
 			_name = name;
 			_file = file;
-			if (groupID.indexOf("imported from flash") >= 0) {
-				trace(this, "error")
-			}
 		}
 
 		public function toString() : String {
@@ -23,7 +21,12 @@ package converter.dom {
 		}
 
 		public function get groupID() : String {
-			return _groupID ||= id.split(".").join("_").split("-").join("_").split(" ").join("_").split("/").join("_").split(":").join("_").toLowerCase();
+			return GROUP_ID;
+		}
+
+		public function get artifactID() : String {
+			var delimiter : String = "-";
+			return _artifactID ||= id.split(".").join(delimiter).split("_").join(delimiter).split(" ").join(delimiter).split("/").join(delimiter).split(":").join(delimiter).toLowerCase();
 		}
 
 		public function get id() : String {
@@ -82,10 +85,6 @@ package converter.dom {
 			libPomString = libPomString.replace("${groupId}", groupID);
 			libPomString = libPomString.replace("${artifactId}", artifactID);
 			return libPomString;
-		}
-
-		public function get artifactID() : String {
-			return groupID;
 		}
 	}
 }

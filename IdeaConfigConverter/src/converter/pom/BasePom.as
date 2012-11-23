@@ -1,5 +1,6 @@
 package converter.pom {
 	import converter.dom.Module;
+	import converter.dom.Project;
 
 	import flash.errors.IllegalOperationError;
 
@@ -7,9 +8,15 @@ package converter.pom {
 
 		private var _iml : Module;
 		private var _data : String;
+		private var _project : Project;
 
-		public function BasePom(iml : Module) {
+		public function BasePom(project : Project, iml : Module) {
+			_project = project;
 			_iml = iml;
+		}
+
+		public function get project() : Project {
+			return _project;
 		}
 
 		public function get data() : String {

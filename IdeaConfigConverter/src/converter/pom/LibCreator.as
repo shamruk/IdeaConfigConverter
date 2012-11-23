@@ -16,13 +16,18 @@ package converter.pom {
 		private static const METADATA_LIB_DATA : Class;
 		private static const METADATA_LIB_XML : XML = XML(new METADATA_LIB_DATA);
 
-		private static const VERSION : String = "current";
+		public static const VERSION : String = "current";
 
 		public static function createLibrary(project : Project) : void {
-			var libsDirectory : File = new File(project.getDirectoryForLibrariesURL());
-			if (!libsDirectory.exists) {
-				libsDirectory.createDirectory();
+			var libsDirectory1 : File = new File(project.getDirectoryForLibrariesURL());
+			if (!libsDirectory1.exists) {
+				libsDirectory1.createDirectory();
 			}
+			var libsDirectory2 : File = new File(libsDirectory1.url + "/" + Lib.GROUP_ID);
+			if (libsDirectory2.exists) {
+				libsDirectory2.deleteDirectory(true);
+			}
+			libsDirectory2.createDirectory();
 			var libs : Object = {};
 			for each(var module : Module in project.modules) {
 				for each(var moduleLib : Lib in module.dependedLibs) {
@@ -30,25 +35,22 @@ package converter.pom {
 				}
 			}
 			for each(var lib : Lib in libs) {
-				var libDirectory : File = new File(libsDirectory.url + "/" + lib.groupID);
-				if (libDirectory.exists) {
-					libDirectory.deleteDirectory(true);
-				}
-				libDirectory.createDirectory();
+				var libDirectory2 : File = new File(libsDirectory2.url + "/" + lib.artifactID);
+				libDirectory2.createDirectory();
 
 				var metadataString : String = METADATA_LIB_XML.toXMLString();
 				metadataString = lib.addGroupAndArtifactID(metadataString);
-				var metadataFile : File = new File(libDirectory.url + "/maven-metadata-local.xml");
+				var metadataFile : File = new File(libDirectory2.url + "/maven-metadata-local.xml");
 				FileHelper.writeFile(metadataFile, metadataString);
 
-				var libFilesDirectory : File = new File(libDirectory.url + "/" + VERSION);
+				var libFilesDirectory : File = new File(libDirectory2.url + "/" + VERSION);
 				libFilesDirectory.createDirectory();
 
 				var filesName : String = lib.artifactID + "-" + VERSION;
 
 				var libPomString : String = POM_LIB_XML.toXMLString();
 				libPomString = lib.addGroupAndArtifactID(libPomString);
-				var pomFile : File = new File(libFilesDirectory.url + "/" + filesName + ".xml");
+				var pomFile : File = new File(libFilesDirectory.url + "/" + filesName + ".pom");
 				FileHelper.writeFile(pomFile, libPomString);
 
 				lib.file.copyTo(new File(libFilesDirectory.url + "/" + filesName + ".swc"));

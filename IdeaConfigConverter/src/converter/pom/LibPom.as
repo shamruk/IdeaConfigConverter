@@ -1,5 +1,7 @@
 package converter.pom {
+	import converter.dom.Lib;
 	import converter.dom.Module;
+	import converter.dom.Project;
 
 	public class LibPom extends BasePom implements IPom {
 
@@ -7,8 +9,8 @@ package converter.pom {
 		private static const POM_LIB_DATA : Class;
 		private static const POM_LIB_XML : XML = XML(new POM_LIB_DATA);
 
-		public function LibPom(iml : Module) {
-			super(iml);
+		public function LibPom(project : Project, iml : Module) {
+			super(project, iml);
 		}
 
 		override public function getXML() : XML {
@@ -17,6 +19,7 @@ package converter.pom {
 			template = template.split("${flex.framework.version}").join(fullSDKVersion);
 			template = template.replace("${flash.player.version}", iml.flashPlayerVersion);
 			template = template.replace("${artifactId}", iml.name);
+			template = template.replace("${repository.local.generated.url}", project.getDirectoryForLibrariesURL());
 
 			var result : XML = XML(template);
 
@@ -34,6 +37,15 @@ package converter.pom {
 					<type>swc</type>
 				</dependency>;
 				result.*::dependencies.dependency += dependencyXML;
+			}
+			for each(var decadencyLib : Lib in iml.dependedLibs) {
+				var dependencyLibXML : XML = <dependency>
+					<groupId>{decadencyLib.groupID}</groupId>
+					<artifactId>{decadencyLib.artifactID}</artifactId>
+					<version>{LibCreator.VERSION}</version>
+					<type>swc</type>
+				</dependency>;
+				result.*::dependencies.dependency += dependencyLibXML;
 			}
 		}
 	}

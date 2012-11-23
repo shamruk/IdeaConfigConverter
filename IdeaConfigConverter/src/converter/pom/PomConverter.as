@@ -18,7 +18,7 @@ package converter.pom {
 			for each(var module : Module in project.modules) {
 				if (module.moduleType == "Flex") {
 					if (module.outputType == Module.OUTPUT_TYPE_LIBRARY) {
-						swcs[module] = new LibPom(module);
+						swcs[module] = new LibPom(project, module);
 					}
 				}
 			}
