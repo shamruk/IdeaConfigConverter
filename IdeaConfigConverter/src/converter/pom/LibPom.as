@@ -11,6 +11,7 @@ package converter.pom {
 		private static const POM_LIB_XML : XML = XML(new POM_LIB_DATA);
 
 		private static const GROUP_ID : String = "icc-module-gen";
+		private static const MODULE_VERSION : String = "current";
 
 		public function LibPom(project : Project, iml : Module) {
 			super(project, iml);
@@ -24,6 +25,7 @@ package converter.pom {
 				"${flash.player.version}":iml.flashPlayerVersion,
 				"${artifactId}":iml.name,
 				"${groupId}":GROUP_ID,
+				"${version}":MODULE_VERSION,
 				"${repository.local.generated.url}":project.getDirectoryForLibrariesURL()
 			});
 			var result : XML = XML(template);
@@ -36,7 +38,7 @@ package converter.pom {
 				var dependencyXML : XML = <dependency>
 					<groupId>{GROUP_ID}</groupId>
 					<artifactId>{decadencyString}</artifactId>
-					<version>1.0-SNAPSHOT</version>
+					<version>{MODULE_VERSION}</version>
 					<type>swc</type>
 				</dependency>;
 				result.*::dependencies.dependency += dependencyXML;

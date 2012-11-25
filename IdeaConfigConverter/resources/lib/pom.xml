@@ -7,7 +7,7 @@
 	<groupId>${groupId}</groupId>
 	<artifactId>${artifactId}</artifactId>
 	<packaging>swc</packaging>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>${version}</version>
 
 	<properties>
 		<flexmojos.version>4.2-beta</flexmojos.version>
@@ -52,7 +52,6 @@
 
 					<keepAs3Metadatas>
 						<name>Event</name>
-						<name>SkinPart</name>
 					</keepAs3Metadatas>
 					<storepass/>
 
@@ -60,12 +59,26 @@
 						<show-binding-warnings>false</show-binding-warnings>
 					</compilerWarnings>
 
+					<themes>
+						<theme>${project.build.directory}/themes/halo-theme.swc</theme>
+					</themes>
+
 					<!--<defines>-->
 					<!--<property>-->
 					<!--<name>CONFIG::Debug</name>-->
 					<!--<value>${debug}</value>-->
 					<!--</property>-->
 					<!--</defines>-->
+
+					<!--<configuration>-->
+					<!--<policyFileUrls>-->
+					<!--<url>http://fpdownload.adobe.com/pub/swz/crossdomain.xml</url>-->
+					<!--</policyFileUrls>-->
+					<!--<rslUrls>-->
+					<!--<url>{artifactId}_${flex.sdk.version}.{extension}</url>-->
+					<!--<url>http://fpdownload.adobe.com/pub/{extension}/flex/${flex.sdk.version}/{artifactId}_${flex.sdk.version}.{extension}</url>-->
+					<!--</rslUrls>-->
+					<!--</configuration>-->
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -94,6 +107,15 @@
 		<!--<type>swc</type>-->
 		<!--<scope>external</scope>-->
 		<!--</dependency>-->
+
+		<!--> > > <dependency>-->
+		<!--> > >    <groupId>com.adobe.flex.framework</groupId>-->
+		<!--> > >    <artifactId>halo</artifactId>-->
+		<!--> > >    <version>${flex.sdk.version}</version>-->
+		<!--> > >    <classifier>theme</classifier>-->
+		<!--> > >    <type>swc</type>-->
+		<!--> > >    <scope>theme</scope>-->
+		<!--> > > </dependency>-->
 
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
