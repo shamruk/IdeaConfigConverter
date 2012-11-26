@@ -1,4 +1,6 @@
 package converter.dom {
+	import converter.StringUtil;
+
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -8,6 +10,8 @@ package converter.dom {
 		public static const OUTPUT_TYPE_APPLICATION : String = "Application";
 		public static const OUTPUT_TYPE_LIBRARY : String = "Library";
 		public static const OUTPUT_TYPE_RUNTIME : String = "...";
+
+		public static const DEFAULT_SOURCE_DIRECTORY : String = "src";
 
 		private var _file : File;
 		private var _relativePath : String;
@@ -24,6 +28,7 @@ package converter.dom {
 		private var _moduleType : String;
 		private var _relativeDirectoryPath : String;
 		private var _project : Project;
+		private var _sourceDirectoryURLs : Vector.<String>;
 
 		public function Module(project : Project, file : File) {
 			_project = project;
@@ -131,6 +136,18 @@ package converter.dom {
 
 		public function get moduleType() : String {
 			return _moduleType ||= content.@type;
+		}
+
+		public function get sourceDirectoryURLs() : Vector.<String> {
+			return _sourceDirectoryURLs ||= getS();
+		}
+
+		private function getS() : Vector.<String> {
+			var sources : Vector.<String> = new Vector.<String>();
+			for each(var source : String in content.component.content.sourceFolder.@url) {
+				sources.push(StringUtil.replace(source, "file://$MODULE_DIR$/", ""));
+			}
+			return sources;
 		}
 
 		public static function xmlListToVector(xmlList : XMLList) : Vector.<String> {

@@ -1,0 +1,18 @@
+<plugin>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>build-helper-maven-plugin</artifactId>
+	<executions>
+		<execution>
+			<id>add-sources</id>
+			<phase>generate-sources</phase>
+			<goals>
+				<goal>add-source</goal>
+			</goals>
+			<configuration>
+				<sources>
+
+				</sources>
+			</configuration>
+		</execution>
+	</executions>
+</plugin>

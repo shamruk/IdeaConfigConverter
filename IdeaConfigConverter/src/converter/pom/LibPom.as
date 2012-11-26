@@ -13,6 +13,10 @@ package converter.pom {
 		private static const POM_LIB_DATA : Class;
 		private static const POM_LIB_XML : XML = XML(new POM_LIB_DATA);
 
+		[Embed(source="/../resources/addExtraSource.pom", mimeType="application/octet-stream")]
+		private static const ADD_EXTRA_SOURCE_DATA : Class;
+		private static const ADD_EXTRA_SOURCE_XML : XML = XML(new ADD_EXTRA_SOURCE_DATA);
+
 		private static const GROUP_ID : String = "icc-module-gen";
 		private static const MODULE_VERSION : String = "current";
 
@@ -34,7 +38,26 @@ package converter.pom {
 			var result : XML = XML(template);
 			addDependencies(result);
 			addExtraConfig(result);
+			addExtraSource(result);
 			return result;
+		}
+
+		private function addExtraSource(result : XML) : void {
+			if (!iml.sourceDirectoryURLs.length) {
+				trace("warn");
+				return;
+			}
+			if (iml.sourceDirectoryURLs.length == 1 && iml.sourceDirectoryURLs[0] == Module.DEFAULT_SOURCE_DIRECTORY) {
+				return;
+			}
+			const pre : String = "${basedir}/";
+			var xml : XML = ADD_EXTRA_SOURCE_XML.copy();
+			for each(var source : String in iml.sourceDirectoryURLs) {
+				if (source != Module.DEFAULT_SOURCE_DIRECTORY) {
+					xml.executions.execution.configuration.sources.appendChild(<source>{pre + source}</source>);
+				}
+			}
+			result.*::build.*::plugins.appendChild(xml);
 		}
 
 		private function addExtraConfig(result : XML) : void {
