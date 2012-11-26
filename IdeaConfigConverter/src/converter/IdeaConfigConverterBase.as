@@ -26,6 +26,9 @@ package converter {
 		[Bindable]
 		public var lastOpened : File;
 
+		[Bindable]
+		public var log : String;
+
 		protected var project : Project;
 
 		private const _converter : PomConverter = new PomConverter();
@@ -97,6 +100,16 @@ package converter {
 				so.flush();
 			} catch (e : *) {
 			}
+		}
+
+		private static var instance : IdeaConfigConverterBase;
+
+		public function IdeaConfigConverterBase() {
+			instance = this;
+		}
+
+		public static function addLog(text : String) : void {
+			instance.log += text + "\n";
 		}
 	}
 }

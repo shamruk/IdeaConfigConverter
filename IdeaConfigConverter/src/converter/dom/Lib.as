@@ -68,7 +68,7 @@ package converter.dom {
 			var libFile : File = new File(url);
 			var libs : Vector.<Lib> = new Vector.<Lib>();
 			if (!libFile.exists) {
-				trace("error");
+				log(Lib, "error");
 				return libs;
 			}
 			var files : Array = libFile.isDirectory ? libFile.getDirectoryListing() : [libFile];

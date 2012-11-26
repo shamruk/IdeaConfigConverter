@@ -16,14 +16,28 @@ package converter.pom {
 		private function saveProjectPoms(project : Project) : void {
 			var swcs : Dictionary = new Dictionary();
 			for each(var module : Module in project.modules) {
-				if (module.moduleType == "Flex") {
+				if (isSupported(module)) {
 					if (module.outputType == Module.OUTPUT_TYPE_LIBRARY) {
 						swcs[module] = new LibPom(project, module);
+					} else {
+						log(this, "unknown output type: " + module.outputType);
 					}
 				}
 			}
 			savePoms([new RootPom(project, new <Dictionary>[swcs])]);
 			savePoms(swcs);
+		}
+
+		private function isSupported(module : Module) : Boolean {
+			if (module.moduleType != "Flex") {
+				log(this, "not flex module: " + module.name);
+				return false;
+			}
+			if (module.flashPlayerVersion == "11.5") {
+				log(this, "not flex FP in module: " + module.name);
+				return false;
+			}
+			return true;
 		}
 
 		private function savePoms(poms : *) : void {

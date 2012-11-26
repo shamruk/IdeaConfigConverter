@@ -24,6 +24,9 @@
 		<s:TextArea text="{selectedIml.info}"
 					width="100%" height="100%"
 				/>
+		<s:TextArea text="{log}"
+					width="100%" height="100%"
+				/>
 	</s:HGroup>
 	<s:HGroup width="100%">
 		<s:Button label="Generate ext libs and Export POMs" width="100%" click="convertAndSave()"/>

@@ -44,7 +44,7 @@ package converter.pom {
 
 		private function addExtraSource(result : XML) : void {
 			if (!iml.sourceDirectoryURLs.length) {
-				trace("warn");
+				log(this, "warn");
 				return;
 			}
 			if (iml.sourceDirectoryURLs.length == 1 && iml.sourceDirectoryURLs[0] == Module.DEFAULT_SOURCE_DIRECTORY) {
