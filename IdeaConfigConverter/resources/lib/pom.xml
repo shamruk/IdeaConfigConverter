@@ -59,9 +59,9 @@
 						<show-binding-warnings>false</show-binding-warnings>
 					</compilerWarnings>
 
-					<themes>
-						<theme>${project.build.directory}/themes/halo-theme.swc</theme>
-					</themes>
+					<!--<themes>-->
+					<!--<theme>${project.build.directory}/themes/halo-theme.swc</theme>-->
+					<!--</themes>-->
 
 					<!--<defines>-->
 					<!--<property>-->
@@ -122,7 +122,14 @@
 			<artifactId>flex-framework</artifactId>
 			<version>${flex.framework.version}</version>
 			<type>pom</type>
-			<scope>provided</scope>
+			<!--<scope>provided</scope>-->
+		</dependency>
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>mx</artifactId>
+			<version>${flex.framework.version}</version>
+			<type>pom</type>
+			<!--<scope>provided</scope>-->
 		</dependency>
 
 		<dependency>

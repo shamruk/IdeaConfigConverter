@@ -1,8 +1,11 @@
 package converter.pom {
+	import converter.FileHelper;
 	import converter.StringUtil;
 	import converter.dom.Lib;
 	import converter.dom.Module;
 	import converter.dom.Project;
+
+	import flash.filesystem.File;
 
 	public class LibPom extends BasePom implements IPom {
 
@@ -30,7 +33,19 @@ package converter.pom {
 			});
 			var result : XML = XML(template);
 			addDependencies(result);
+			addExtraConfig(result);
 			return result;
+		}
+
+		private function addExtraConfig(result : XML) : void {
+			var file : File = iml.directory.resolvePath("extraPomConfig.xml");
+			if (!file.exists) {
+				return;
+			}
+			var xml : XML = XML(FileHelper.readFile(file));
+			for each(var xmlNode : XML in xml.children()) {
+				result.*::build.*::plugins.*::plugin.*::configuration.appendChild(xmlNode);
+			}
 		}
 
 		private function addDependencies(result : XML) : void {
