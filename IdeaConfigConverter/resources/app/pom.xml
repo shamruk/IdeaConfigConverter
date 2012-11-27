@@ -19,13 +19,14 @@
 			<id>release</id>
 			<properties>
 				<debug>false</debug>
+				<optimize>true</optimize>
 			</properties>
 		</profile>
-
 		<profile>
 			<id>debug</id>
 			<properties>
 				<debug>true</debug>
+				<optimize>false</optimize>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -34,10 +35,43 @@
 	</profiles>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>${source.directory.main}</sourceDirectory>
 		<outputDirectory>../out/maven-temp/renderer</outputDirectory>
 		<directory>../out/maven-out</directory>
 		<plugins>
+			<plugin>
+				<groupId>com.github.goldin</groupId>
+				<artifactId>find-maven-plugin</artifactId>
+				<version>0.2.5</version>
+				<executions>
+					<execution>
+						<id>find-as-main-file</id>
+						<goals>
+							<goal>find</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<propertyName>source.file</propertyName>
+							<file>${source.file.name}.as</file>
+							<startDir>${project.basedir}/${source.directory.main}/${source.file.directory}</startDir>
+							<failIfNotFound>false</failIfNotFound>
+						</configuration>
+					</execution>
+					<execution>
+						<id>find-mxml-main-file</id>
+						<goals>
+							<goal>find</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<propertyName>source.file</propertyName>
+							<file>${source.file.name}.mxml</file>
+							<startDir>${project.basedir}/${source.directory.main}/${source.file.directory}</startDir>
+							<failIfNotFound>false</failIfNotFound>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.sonatype.flexmojos</groupId>
 				<artifactId>flexmojos-maven-plugin</artifactId>
@@ -52,7 +86,6 @@
 
 					<keepAs3Metadatas>
 						<name>Event</name>
-						<name>SkinPart</name>
 					</keepAs3Metadatas>
 					<storepass/>
 
@@ -93,7 +126,14 @@
 			<artifactId>flex-framework</artifactId>
 			<version>${flex.framework.version}</version>
 			<type>pom</type>
-			<scope>provided</scope>
+			<!--<scope>provided</scope>-->
+		</dependency>
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>mx</artifactId>
+			<version>${flex.framework.version}</version>
+			<type>pom</type>
+			<!--<scope>provided</scope>-->
 		</dependency>
 
 		<dependency>

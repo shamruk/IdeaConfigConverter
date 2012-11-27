@@ -15,17 +15,20 @@ package converter.pom {
 
 		private function saveProjectPoms(project : Project) : void {
 			var swcs : Dictionary = new Dictionary();
+			var swfs : Dictionary = new Dictionary();
 			for each(var module : Module in project.modules) {
 				if (isSupported(module)) {
 					if (module.outputType == Module.OUTPUT_TYPE_LIBRARY) {
 						swcs[module] = new LibPom(project, module);
 					} else {
-						log(this, "unknown output type: " + module.outputType);
+						swfs[module] = new AppPom(project, module);
+						//log(this, "unknown output type: " + module.outputType);
 					}
 				}
 			}
-			savePoms([new RootPom(project, new <Dictionary>[swcs])]);
+			savePoms([new RootPom(project, new <Dictionary>[swcs, swfs])]);
 			savePoms(swcs);
+			savePoms(swfs);
 		}
 
 		private function isSupported(module : Module) : Boolean {

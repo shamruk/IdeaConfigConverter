@@ -29,6 +29,7 @@ package converter.dom {
 		private var _relativeDirectoryPath : String;
 		private var _project : Project;
 		private var _sourceDirectoryURLs : Vector.<String>;
+		private var _mainClass : String;
 
 		public function Module(project : Project, file : File) {
 			_project = project;
@@ -138,11 +139,15 @@ package converter.dom {
 			return _moduleType ||= content.@type;
 		}
 
-		public function get sourceDirectoryURLs() : Vector.<String> {
-			return _sourceDirectoryURLs ||= getS();
+		public function get mainClass() : String {
+			return _mainClass ||= configurationXML.attribute("main-class");
 		}
 
-		private function getS() : Vector.<String> {
+		public function get sourceDirectoryURLs() : Vector.<String> {
+			return _sourceDirectoryURLs ||= getSourceDirectoryURLs();
+		}
+
+		private function getSourceDirectoryURLs() : Vector.<String> {
 			var sources : Vector.<String> = new Vector.<String>();
 			for each(var source : String in content.component.content.sourceFolder.@url) {
 				sources.push(StringUtil.replace(source, "file://$MODULE_DIR$/", ""));

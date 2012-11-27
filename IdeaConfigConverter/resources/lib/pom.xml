@@ -35,7 +35,7 @@
 	</profiles>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>${source.directory.main}</sourceDirectory>
 		<outputDirectory>../out/maven-temp/renderer</outputDirectory>
 		<directory>../out/maven-out</directory>
 		<plugins>
