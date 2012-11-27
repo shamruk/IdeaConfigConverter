@@ -71,7 +71,11 @@ package converter.pom {
 		}
 
 		private function addExtraConfig(result : XML) : void {
-			var file : File = iml.directory.resolvePath("extraPomConfig.xml");
+			addExtraConfigFrom(project.directory.resolvePath("extraPomConfig.xml"), result);
+			addExtraConfigFrom(iml.directory.resolvePath("extraPomConfig.xml"), result);
+		}
+
+		private function addExtraConfigFrom(file : File, result : XML) : void {
 			if (!file.exists) {
 				return;
 			}

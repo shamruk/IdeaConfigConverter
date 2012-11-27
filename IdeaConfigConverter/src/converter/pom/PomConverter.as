@@ -33,11 +33,11 @@ package converter.pom {
 
 		private function isSupported(module : Module) : Boolean {
 			if (module.moduleType != "Flex") {
-				log(this, "not flex module: " + module.name);
+				log(this, "not a flex module: " + module.name);
 				return false;
 			}
 			if (module.flashPlayerVersion == "11.5") {
-				log(this, "not flex FP in module: " + module.name);
+				log(this, "no supported FP in module: " + module.name);
 				return false;
 			}
 			return true;

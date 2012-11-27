@@ -84,9 +84,6 @@
 					<optimize>${optimize}</optimize>
 					<sourceFile>${source.file}</sourceFile>
 
-					<keepAs3Metadatas>
-						<name>Event</name>
-					</keepAs3Metadatas>
 					<storepass/>
 
 					<compilerWarnings>

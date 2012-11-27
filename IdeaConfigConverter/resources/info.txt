@@ -1,0 +1,30 @@
+You can add extra pom configuration by adding extraPomConfig.xml file to the module directory or to the root directory (to be the default one)
+Example:
+<configuration>
+	<keepAs3Metadatas>
+		<name>Inject</name>
+		<name>Dispatcher</name>
+		<name>PostConstruct</name>
+		<name>PreDestroy</name>
+		<name>EventHandler</name>
+		<name>ViewAdded</name>
+		<name>ViewRemoved</name>
+	</keepAs3Metadatas>
+
+	<fonts>
+	  <advancedAntiAliasing>true</advancedAntiAliasing>
+	  <managers>
+		<manager>flash.fonts.AFEFontManager</manager>
+	  </managers>
+	</fonts>
+
+  <includeClasses>
+    <scan>
+      <excludes>
+        <exclude>mx.core.IDisplayObjectInterface</exclude>
+      </excludes>
+    </scan>
+  </includeClasses>
+</configuration>
+
+If "Java heap space" -- export MAVEN_OPTS=-Xmx1024M

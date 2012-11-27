@@ -17,6 +17,10 @@ package converter {
 
 	public class IdeaConfigConverterBase extends WindowedApplication {
 
+		[Embed(source="/../resources/info.txt", mimeType="application/octet-stream")]
+		private static const INFO_DATA : Class;
+		private static const INFO : String = String(new INFO_DATA);
+
 		[Bindable]
 		public var imlsArrayCollection : ArrayCollection;
 
@@ -27,7 +31,9 @@ package converter {
 		public var lastOpened : File;
 
 		[Bindable]
-		public var log : String;
+		public var log : String = "";
+
+		public const info : String = INFO;
 
 		protected var project : Project;
 

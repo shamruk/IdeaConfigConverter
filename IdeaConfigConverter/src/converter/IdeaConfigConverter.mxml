@@ -21,7 +21,7 @@
 		<s:List width="200" height="100%" dataProvider="{imlsArrayCollection}" labelField="name"
 				change="selectedIml = List(event.target).selectedItem"
 				/>
-		<s:TextArea text="{selectedIml.info}"
+		<s:TextArea text="{selectedIml ? selectedIml.info : info}"
 					width="100%" height="100%"
 				/>
 		<s:TextArea text="{log}"

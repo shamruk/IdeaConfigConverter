@@ -50,9 +50,6 @@
 					<debug>${debug}</debug>
 					<optimize>${optimize}</optimize>
 
-					<keepAs3Metadatas>
-						<name>Event</name>
-					</keepAs3Metadatas>
 					<storepass/>
 
 					<compilerWarnings>
