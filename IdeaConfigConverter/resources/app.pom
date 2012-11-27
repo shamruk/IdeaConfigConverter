@@ -6,7 +6,7 @@
 
 	<groupId>${groupId}</groupId>
 	<artifactId>${artifactId}</artifactId>
-	<packaging>swc</packaging>
+	<packaging>swf</packaging>
 	<version>${version}</version>
 
 	<properties>
@@ -40,6 +40,39 @@
 		<directory>../out/maven-out</directory>
 		<plugins>
 			<plugin>
+				<groupId>com.github.goldin</groupId>
+				<artifactId>find-maven-plugin</artifactId>
+				<version>0.2.5</version>
+				<executions>
+					<execution>
+						<id>find-as-main-file</id>
+						<goals>
+							<goal>find</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<propertyName>source.file</propertyName>
+							<file>${source.file.name}.as</file>
+							<startDir>${project.basedir}/${source.directory.main}/${source.file.directory}</startDir>
+							<failIfNotFound>false</failIfNotFound>
+						</configuration>
+					</execution>
+					<execution>
+						<id>find-mxml-main-file</id>
+						<goals>
+							<goal>find</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<propertyName>source.file</propertyName>
+							<file>${source.file.name}.mxml</file>
+							<startDir>${project.basedir}/${source.directory.main}/${source.file.directory}</startDir>
+							<failIfNotFound>false</failIfNotFound>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.sonatype.flexmojos</groupId>
 				<artifactId>flexmojos-maven-plugin</artifactId>
 				<version>${flexmojos.version}</version>
@@ -49,33 +82,13 @@
 					<skipTests>true</skipTests>
 					<debug>${debug}</debug>
 					<optimize>${optimize}</optimize>
+					<sourceFile>${source.file}</sourceFile>
 
 					<storepass/>
 
 					<compilerWarnings>
 						<show-binding-warnings>false</show-binding-warnings>
 					</compilerWarnings>
-
-					<!--<themes>-->
-					<!--<theme>${project.build.directory}/themes/halo-theme.swc</theme>-->
-					<!--</themes>-->
-
-					<!--<defines>-->
-					<!--<property>-->
-					<!--<name>CONFIG::Debug</name>-->
-					<!--<value>${debug}</value>-->
-					<!--</property>-->
-					<!--</defines>-->
-
-					<!--<configuration>-->
-					<!--<policyFileUrls>-->
-					<!--<url>http://fpdownload.adobe.com/pub/swz/crossdomain.xml</url>-->
-					<!--</policyFileUrls>-->
-					<!--<rslUrls>-->
-					<!--<url>{artifactId}_${flex.sdk.version}.{extension}</url>-->
-					<!--<url>http://fpdownload.adobe.com/pub/{extension}/flex/${flex.sdk.version}/{artifactId}_${flex.sdk.version}.{extension}</url>-->
-					<!--</rslUrls>-->
-					<!--</configuration>-->
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -105,30 +118,12 @@
 		<!--<scope>external</scope>-->
 		<!--</dependency>-->
 
-		<!--> > > <dependency>-->
-		<!--> > >    <groupId>com.adobe.flex.framework</groupId>-->
-		<!--> > >    <artifactId>halo</artifactId>-->
-		<!--> > >    <version>${flex.sdk.version}</version>-->
-		<!--> > >    <classifier>theme</classifier>-->
-		<!--> > >    <type>swc</type>-->
-		<!--> > >    <scope>theme</scope>-->
-		<!--> > > </dependency>-->
-
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
 			<artifactId>flex-framework</artifactId>
 			<version>${flex.framework.version}</version>
 			<type>pom</type>
-			<!--<scope>provided</scope>-->
 		</dependency>
-		<dependency>
-			<groupId>com.adobe.flex.framework</groupId>
-			<artifactId>mx</artifactId>
-			<version>${flex.framework.version}</version>
-			<type>pom</type>
-			<!--<scope>provided</scope>-->
-		</dependency>
-
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
 			<artifactId>playerglobal</artifactId>

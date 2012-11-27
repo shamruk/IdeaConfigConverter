@@ -10,18 +10,21 @@ package converter.pom {
 
 	public class BasePom {
 
-		private var _iml : Module;
-		private var _data : String;
-		private var _project : Project;
-
-
 		[Embed(source="/../resources/addExtraSource.pom", mimeType="application/octet-stream")]
 		private static const ADD_EXTRA_SOURCE_DATA : Class;
 		private static const ADD_EXTRA_SOURCE_XML : XML = XML(new ADD_EXTRA_SOURCE_DATA);
 
+		[Embed(source="/../resources/flexDependency.pom", mimeType="application/octet-stream")]
+		private static const FLEX_DEPENDENCE_DATA : Class;
+		private static const FLEX_DEPENDENCE_XML : XML = XML(new FLEX_DEPENDENCE_DATA);
+
 		private static const GROUP_ID : String = "icc-module-gen";
 
 		private static const MODULE_VERSION : String = "current";
+
+		private var _iml : Module;
+		private var _data : String;
+		private var _project : Project;
 
 		public function BasePom(project : Project, iml : Module) {
 			_project = project;
@@ -103,6 +106,10 @@ package converter.pom {
 					<type>swc</type>
 				</dependency>;
 				result.*::dependencies.dependency += dependencyLibXML;
+			}
+			if (iml.type == Module.TYPE_FLEX) {
+				var dep : String = replaceBasicVars(FLEX_DEPENDENCE_XML.toXMLString());
+				result.*::dependencies.dependency += XML(dep).children();
 			}
 		}
 

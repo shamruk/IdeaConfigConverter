@@ -5,7 +5,7 @@ package converter.pom {
 
 	public class AppPom extends BasePom implements IPom {
 
-		[Embed(source="/../resources/app/pom.xml", mimeType="application/octet-stream")]
+		[Embed(source="/../resources/app.pom", mimeType="application/octet-stream")]
 		private static const POM_DATA : Class;
 		private static const POM_XML : XML = XML(new POM_DATA);
 

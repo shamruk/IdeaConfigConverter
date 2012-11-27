@@ -1,0 +1,16 @@
+<dependencies>
+	<!--<dependency>-->
+	<!--<groupId>com.adobe.flex.framework</groupId>-->
+	<!--<artifactId>framework</artifactId>-->
+	<!--<version>${flex.framework.version}</version>-->
+	<!--<type>pom</type>-->
+	<!--<scope>cached</scope>-->
+	<!--</dependency>-->
+	<!--<dependency>-->
+	<!--<groupId>com.adobe.flex.framework</groupId>-->
+	<!--<artifactId>mx</artifactId>-->
+	<!--<version>${flex.framework.version}</version>-->
+	<!--<type>pom</type>-->
+	<!--<scope>cached</scope>-->
+	<!--</dependency>-->
+</dependencies>

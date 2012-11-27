@@ -7,9 +7,15 @@ package converter.dom {
 
 	public class Module {
 
+		public static const TYPE_AS : String = "AS";
+		public static const TYPE_FLEX : String = "Flex";
+
 		public static const OUTPUT_TYPE_APPLICATION : String = "Application";
 		public static const OUTPUT_TYPE_LIBRARY : String = "Library";
 		public static const OUTPUT_TYPE_RUNTIME : String = "...";
+
+		public static const TARGET_PLATFORM_DESKTOP : String = "Desktop";
+		public static const TARGET_PLATFORM_MOBILE : String = "Mobile";
 
 		public static const DEFAULT_SOURCE_DIRECTORY : String = "src";
 
@@ -30,6 +36,7 @@ package converter.dom {
 		private var _project : Project;
 		private var _sourceDirectoryURLs : Vector.<String>;
 		private var _mainClass : String;
+		private var _targetPlatform : String;
 
 		public function Module(project : Project, file : File) {
 			_project = project;
@@ -108,7 +115,7 @@ package converter.dom {
 		}
 
 		public function get type() : String {
-			return _type ||= configurationXML.attribute("pure-as") == "true" ? "AS" : "Flex";
+			return _type ||= configurationXML.attribute("pure-as") == "true" ? TYPE_AS : TYPE_FLEX;
 		}
 
 		public function get configurationXML() : XML {
@@ -141,6 +148,10 @@ package converter.dom {
 
 		public function get mainClass() : String {
 			return _mainClass ||= configurationXML.attribute("main-class");
+		}
+
+		public function get targetPlatform() : String {
+			return _targetPlatform ||= configurationXML.attribute("target-platform") || TARGET_PLATFORM_DESKTOP;
 		}
 
 		public function get sourceDirectoryURLs() : Vector.<String> {

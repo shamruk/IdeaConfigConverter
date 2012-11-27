@@ -37,7 +37,11 @@ package converter.pom {
 				return false;
 			}
 			if (module.flashPlayerVersion == "11.5") {
-				log(this, "no supported FP in module: " + module.name);
+				log(this, "unsupported FP(" + module.flashPlayerVersion + ") in: " + module.name);
+				return false;
+			}
+			if (module.targetPlatform != Module.TARGET_PLATFORM_DESKTOP) {
+				log(this, "unsupported TargetPlatform(" + module.targetPlatform + ") in: " + module.name);
 				return false;
 			}
 			return true;
