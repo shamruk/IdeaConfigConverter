@@ -130,6 +130,7 @@ package converter.pom {
 
 		protected function replaceBasicVars(template : String) : String {
 			var fullSDKVersion : String = getFullSDKVersion(iml.sdkVersion);
+			var fileName : String = iml.outputFile.substr(0, iml.outputFile.lastIndexOf("."));
 			return StringUtil.replaceByMap(template, {
 				"${flex.framework.version}":fullSDKVersion,
 				"${flash.player.version}":iml.flashPlayerVersion,
@@ -140,7 +141,7 @@ package converter.pom {
 				"${repository.local.generated.url}":project.getDirectoryForLibrariesURL(iml.directory),
 				"${out.output.directory}":project.getTempOutput(iml.directory),
 				"${out.directory}":iml.outputDirectory,
-				"${out.file}":iml.outputFile
+				"${out.file}":fileName
 			});
 		}
 

@@ -78,7 +78,7 @@
 				<version>${flexmojos.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<outputFile>${out.file}</outputFile>
+					<finalName>${out.file}</finalName>
 
 					<skipTest>true</skipTest>
 					<skipTests>true</skipTests>
