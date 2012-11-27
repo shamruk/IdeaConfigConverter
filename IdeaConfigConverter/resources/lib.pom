@@ -54,6 +54,10 @@
 
 					<compilerWarnings>
 						<show-binding-warnings>false</show-binding-warnings>
+						<!--<show-actionscript-warnings>false</show-actionscript-warnings>-->
+						<!--<show-shadowed-device-font-warnings>false</show-shadowed-device-font-warnings>-->
+						<!--<show-show-unused-type-selector-warnings>false</show-show-unused-type-selector-warnings>-->
+						<!--<warn-bad-nan-comparison>false</warn-bad-nan-comparison>-->
 					</compilerWarnings>
 
 					<!--<themes>-->
