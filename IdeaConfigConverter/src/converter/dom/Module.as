@@ -39,6 +39,7 @@ package converter.dom {
 		private var _targetPlatform : String;
 		private var _outputDirectory : String;
 		private var _outputFile : String;
+		private var _dependedModules : Vector.<ModuleDependency>;
 
 		public function Module(project : Project, file : File) {
 			_project = project;
@@ -57,9 +58,17 @@ package converter.dom {
 			return _file.parent;
 		}
 
-		public function get dependedModules() : Vector.<String> {
-			var moduleNames : XMLList = content.component.orderEntry.(@type == "module").attribute("module-name");
-			return Module.xmlListToVector(moduleNames);
+		public function get dependedModules() : Vector.<ModuleDependency> {
+			return _dependedModules ||= getDependedModules();
+//			return Module.xmlListToVector(content.component.orderEntry.(@type == "module").attribute("module-name"));
+		}
+
+		public function getDependedModules() : Vector.<ModuleDependency> {
+			var moduleDependencies : Vector.<ModuleDependency> = new Vector.<ModuleDependency>();
+			for each(var entry : XML in configurationXML.dependencies.entries.entry.(attribute("module-name").length())) {
+				moduleDependencies.push(new ModuleDependency(entry.attribute("module-name"), entry.dependency.@linkage));
+			}
+			return moduleDependencies;
 		}
 
 		public function get content() : XML {

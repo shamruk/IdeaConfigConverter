@@ -3,6 +3,7 @@ package converter.pom {
 	import converter.StringUtil;
 	import converter.dom.Lib;
 	import converter.dom.Module;
+	import converter.dom.ModuleDependency;
 	import converter.dom.Project;
 
 	import flash.errors.IllegalOperationError;
@@ -88,14 +89,28 @@ package converter.pom {
 			}
 		}
 
+		private static const DEPENDENCY_TYPE_TO_SCOPE : Object = {};
+		{
+//			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_MERGED] = "merged";
+//			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_INCLUDE] = "internal";
+			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_EXTERNAL] = "external";
+		}
+
 		private function addDependencies(result : XML) : void {
-			for each(var decadencyString : String in iml.dependedModules) {
+			for each(var moduleDependency : ModuleDependency in iml.dependedModules) {
+				if (moduleDependency.type == ModuleDependency.TYPE_LOADED) {
+					continue;
+				}
+				var scope : String = DEPENDENCY_TYPE_TO_SCOPE[moduleDependency.type];
 				var dependencyXML : XML = <dependency>
 					<groupId>{GROUP_ID}</groupId>
-					<artifactId>{decadencyString}</artifactId>
+					<artifactId>{moduleDependency.moduleID}</artifactId>
 					<version>{MODULE_VERSION}</version>
 					<type>swc</type>
 				</dependency>;
+				if (scope) {
+					dependencyXML.appendChild(<scope>{scope}</scope>)
+				}
 				result.*::dependencies.dependency += dependencyXML;
 			}
 			for each(var decadencyLib : Lib in iml.dependedLibs) {
