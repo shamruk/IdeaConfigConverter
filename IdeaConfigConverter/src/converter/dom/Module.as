@@ -37,6 +37,8 @@ package converter.dom {
 		private var _sourceDirectoryURLs : Vector.<String>;
 		private var _mainClass : String;
 		private var _targetPlatform : String;
+		private var _outputDirectory : String;
+		private var _outputFile : String;
 
 		public function Module(project : Project, file : File) {
 			_project = project;
@@ -152,6 +154,14 @@ package converter.dom {
 
 		public function get targetPlatform() : String {
 			return _targetPlatform ||= configurationXML.attribute("target-platform") || TARGET_PLATFORM_DESKTOP;
+		}
+
+		public function get outputDirectory() : String {
+			return _outputDirectory ||= StringUtil.replace(configurationXML.attribute("output-folder"), "$MODULE_DIR$/", "");
+		}
+
+		public function get outputFile() : String {
+			return _outputFile ||= configurationXML.attribute("output-file");
 		}
 
 		public function get sourceDirectoryURLs() : Vector.<String> {

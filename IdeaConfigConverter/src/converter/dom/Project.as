@@ -59,8 +59,12 @@ package converter.dom {
 			});
 		}
 
-		public function getDirectoryForLibrariesURL() : String {
-			return directory.url + "/MavenExternalLibs";
+		public function getDirectoryForLibrariesURL(file : File = null) : String {
+			return (file ? file.getRelativePath(directory, true) : directory.url) + "/MavenExternalLibs";
+		}
+
+		public function getTempOutput(file : File) : String {
+			return file.getRelativePath(directory, true) + "/out/maven-temp";
 		}
 	}
 }

@@ -122,7 +122,10 @@ package converter.pom {
 				"${groupId}":GROUP_ID,
 				"${version}":MODULE_VERSION,
 				"${source.directory.main}":Module.DEFAULT_SOURCE_DIRECTORY,
-				"${repository.local.generated.url}":project.getDirectoryForLibrariesURL()
+				"${repository.local.generated.url}":project.getDirectoryForLibrariesURL(iml.directory),
+				"${out.output.directory}":project.getTempOutput(iml.directory),
+				"${out.directory}":iml.outputDirectory,
+				"${out.file}":iml.outputFile
 			});
 		}
 

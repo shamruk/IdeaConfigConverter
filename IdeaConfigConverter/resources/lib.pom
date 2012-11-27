@@ -36,8 +36,8 @@
 
 	<build>
 		<sourceDirectory>${source.directory.main}</sourceDirectory>
-		<outputDirectory>../out/maven-temp/renderer</outputDirectory>
-		<directory>../out/maven-out</directory>
+		<outputDirectory>${out.output.directory}</outputDirectory>
+		<directory>${out.directory}</directory>
 		<plugins>
 			<plugin>
 				<groupId>org.sonatype.flexmojos</groupId>
