@@ -35,7 +35,8 @@ package converter {
 
 		public const info : String = INFO;
 
-		protected var project : Project;
+		[Bindable]
+		public var project : Project;
 
 		private const _converter : PomConverter = new PomConverter();
 

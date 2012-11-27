@@ -1,6 +1,10 @@
 package converter.pom {
+	import converter.FileHelper;
+	import converter.StringUtil;
 	import converter.dom.Module;
 	import converter.dom.Project;
+
+	import flash.filesystem.File;
 
 	public class LibPom extends BasePom implements IPom {
 
@@ -17,7 +21,24 @@ package converter.pom {
 			template = replaceBasicVars(template);
 			var result : XML = XML(template);
 			addStuffToResultXML(result);
+			addIncludeAsToIgnore(result);
 			return result;
+		}
+
+		private function addIncludeAsToIgnore(result : XML) : void {
+			var sourceDirectory : File = iml.directory.resolvePath(Module.DEFAULT_SOURCE_DIRECTORY);
+			var files : Vector.<File> = FileHelper.findFiles(sourceDirectory, /(.*)\.as$/i);
+			//var nonValidAS : Vector.<String> = new Vector.<String>();
+			for each(var file : File in files) {
+				var string : String = FileHelper.readFile(file);
+				if (string.indexOf("package") < 0) {
+					var path : String = sourceDirectory.getRelativePath(file);
+					var name : String = StringUtil.replace(path, "/", ".").substr(0, -3);
+					//nonValidAS.push(path);
+					result.*::build.*::plugins.*::plugin.*::configuration.*::includeClasses.*::scan.*::excludes.aaa += (<exclude>{name}</exclude>);
+					log(this, "skipping: " + name);
+				}
+			}
 		}
 	}
 }

@@ -29,7 +29,7 @@
 				/>
 	</s:HGroup>
 	<s:HGroup width="100%">
-		<s:Button label="Generate ext libs and Export POMs" width="100%" click="convertAndSave()"/>
+		<s:Button label="Generate ext libs and Export POMs" width="100%" click="convertAndSave()" enabled="{project}"/>
 		<s:Button width="100%"/>
 	</s:HGroup>
 
