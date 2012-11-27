@@ -21,6 +21,9 @@
 				<debug>false</debug>
 				<optimize>true</optimize>
 			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 		<profile>
 			<id>debug</id>
@@ -28,9 +31,6 @@
 				<debug>true</debug>
 				<optimize>false</optimize>
 			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 		</profile>
 	</profiles>
 
