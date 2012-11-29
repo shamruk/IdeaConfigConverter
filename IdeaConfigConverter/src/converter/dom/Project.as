@@ -10,6 +10,7 @@ package converter.dom {
 		private var _modules : Vector.<Module>;
 		public var projectLibs : Vector.<Lib>;
 		private var _moduleRoots : ModuleRoots;
+		private var _moduleRoot : ModuleRoot;
 
 		public function Project(directory : File) {
 			_directory = directory;
@@ -78,6 +79,10 @@ package converter.dom {
 				}
 			}
 			return null;
+		}
+
+		public function get moduleRoot() : ModuleRoot {
+			return _moduleRoot ||= _moduleRoots.findRoot(directory);
 		}
 	}
 }

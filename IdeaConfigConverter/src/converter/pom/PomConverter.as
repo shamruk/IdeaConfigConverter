@@ -4,7 +4,6 @@ package converter.pom {
 	import converter.dom.Project;
 
 	import flash.filesystem.File;
-	import flash.utils.Dictionary;
 
 	public class PomConverter {
 
@@ -14,19 +13,19 @@ package converter.pom {
 		}
 
 		private function saveProjectPoms(project : Project) : void {
-			var swcs : Dictionary = new Dictionary();
-			var swfs : Dictionary = new Dictionary();
+			var swcs : Vector.<IPom> = new Vector.<IPom>();
+			var swfs : Vector.<IPom> = new Vector.<IPom>();
 			for each(var module : Module in project.modules) {
 				if (isSupported(module)) {
 					if (module.outputType == Module.OUTPUT_TYPE_LIBRARY) {
-						swcs[module] = new LibPom(project, module);
+						swcs.push(new LibPom(project, module));
 					} else {
-						swfs[module] = new AppPom(project, module);
+						swfs.push(new AppPom(project, module));
 						//log(this, "unknown output type: " + module.outputType);
 					}
 				}
 			}
-			savePoms([new RootPom(project, new <Dictionary>[swcs, swfs])]);
+			savePoms(new <IPom>[new RootPom(project, swcs.concat(swfs))]);
 			savePoms(swcs);
 			savePoms(swfs);
 		}
@@ -47,7 +46,7 @@ package converter.pom {
 			return true;
 		}
 
-		private function savePoms(poms : *) : void {
+		private function savePoms(poms : Vector.<IPom>) : void {
 			for each(var pom : IPom in poms) {
 				var file : File = new File(pom.getFilePath());
 				FileHelper.writeFile(file, pom.data);

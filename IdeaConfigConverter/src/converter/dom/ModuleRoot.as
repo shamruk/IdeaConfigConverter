@@ -37,5 +37,17 @@ package converter.dom {
 		public function get artifactID() : String {
 			return _xml.artifactId || "icc-root";
 		}
+
+		public function get overrideOutput() : File {
+			return getOutputDirectory(_xml.overrideOutput);
+		}
+
+		public function get overrideOutputForAllRoots() : File {
+			return getOutputDirectory(_xml.overrideOutputForAllRoots);
+		}
+
+		private function getOutputDirectory(overrideOutputPath : String) : File {
+			return overrideOutputPath ? directory.resolvePath(overrideOutputPath) : null;
+		}
 	}
 }

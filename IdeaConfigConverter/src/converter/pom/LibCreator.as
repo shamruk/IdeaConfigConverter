@@ -31,10 +31,15 @@ package converter.pom {
 				libsDirectory2.deleteDirectory(true);
 			}
 			libsDirectory2.createDirectory();
-			var libs : Object = {};
+			var libs : Vector.<Lib> = new Vector.<Lib>();
 			for each(var module : Module in project.modules) {
 				for each(var moduleLib : Lib in module.dependedLibs) {
-					libs[moduleLib.id] = moduleLib;
+					var has : Boolean = libs.some(function (l : Lib, ...args) : Boolean {
+						return l.id == moduleLib.id;
+					});
+					if (!has) {
+						libs.push(moduleLib);
+					}
 				}
 			}
 			var manualInstalls : Vector.<String> = new Vector.<String>();
@@ -66,6 +71,7 @@ package converter.pom {
 				manualInstalls.push(manualInstall);
 				manualInstalls.push("cd ../../../");
 			}
+
 			FileHelper.writeFile(libsDirectory1.resolvePath("icc-generated-manual-install.sh"), (new <String>["#!/bin/sh"]).concat(manualInstalls).join("\n"));
 			FileHelper.writeFile(libsDirectory1.resolvePath("icc-generated-manual-install.bat"), manualInstalls.join("\r"));
 		}
