@@ -57,6 +57,10 @@ package converter.dom {
 			return _directory;
 		}
 
+		public function get moduleRoots() : ModuleRoots {
+			return _moduleRoots;
+		}
+
 		public function getLibByName(name : String) : Vector.<Lib> {
 			return projectLibs.filter(function (lib : Lib, ...args) : Boolean {
 				return name == lib.name;

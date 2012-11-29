@@ -1,4 +1,6 @@
 package converter.pom {
+	import converter.StringUtil;
+	import converter.dom.ModuleRoot;
 	import converter.dom.Project;
 
 	import flash.utils.Dictionary;
@@ -17,7 +19,13 @@ package converter.pom {
 		}
 
 		override public function getXML() : XML {
+			var moduleRoot : ModuleRoot = project.moduleRoots.findRoot(project.directory);
 			var template : String = POM_LIB_XML.toXMLString();
+			template = StringUtil.replaceByMap(template, {
+				"${artifactId}":moduleRoot.artifactID,
+				"${groupId}":moduleRoot.groupID,
+				"${version}":moduleRoot.version
+			});
 //			template=template.replace("${flex.framework.version}", getFullSDKVersion(iml.sdkVersion));
 //			template=template.replace("${flash.player.version}", iml.flashPlayerVersion);
 //			template=template.replace("${artifactId}", iml.name);

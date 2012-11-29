@@ -17,7 +17,7 @@ package converter.dom {
 			roots = new Vector.<ModuleRoot>();
 			for each(var file : File in files) {
 				var folder : File = file.parent;
-				if (folder == projectMainRoot) {
+				if (folder.url == projectMainRoot.url) {
 					projectMainRoot = null;
 				}
 				var xml : XML = XML(FileHelper.readFile(file));
@@ -33,8 +33,9 @@ package converter.dom {
 			var bestRoot : ModuleRoot;
 			for each(var root : ModuleRoot in roots) {
 				var relativePath : String = root.directory.getRelativePath(folder);
-				if (relativePath) {
-					var rank : uint = relativePath.split("/").length;
+				var same : Boolean = root.directory.url == folder.url;
+				if (relativePath || same) {
+					var rank : uint = same ? 0 : relativePath.split("/").length + 1;
 					if (rank < minRank) {
 						minRank = rank;
 						bestRoot = root;
