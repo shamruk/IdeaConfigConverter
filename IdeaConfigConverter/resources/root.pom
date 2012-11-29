@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>icc-module-gen</groupId>
 	<artifactId>icc-root</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>current</version>
 	<packaging>pom</packaging>
 	<name>Auto</name>
 

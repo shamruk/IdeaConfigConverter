@@ -9,9 +9,11 @@ package converter.dom {
 		private var _directory : File;
 		private var _modules : Vector.<Module>;
 		public var projectLibs : Vector.<Lib>;
+		private var _moduleRoots : ModuleRoots;
 
 		public function Project(directory : File) {
 			_directory = directory;
+			_moduleRoots = new ModuleRoots(directory);
 			loadProjectLibs();
 			loadModulesFromIdeaConfig();
 		}
@@ -30,7 +32,8 @@ package converter.dom {
 			for each(var modulePath : String in modulesXML.component.modules.module.@filepath) {
 				var moduleURL : String = StringUtil.replace(modulePath, "$PROJECT_DIR$", directory.url);
 				var file : File = new File(moduleURL);
-				_modules.push(new Module(this, file));
+				var moduleRoot : ModuleRoot = _moduleRoots.findRoot(file.parent);
+				_modules.push(new Module(this, file, moduleRoot));
 			}
 		}
 
@@ -39,9 +42,10 @@ package converter.dom {
 		}
 
 		private function loadModulesFromDirectory() : void {
-			var files : Vector.<File> = FileHelper.findFiles(directory, /(.*).iml/i);
+			var files : Vector.<File> = FileHelper.findFiles(directory, /(.*)\.iml$/i);
 			for each(var file : File in files) {
-				modules.push(new Module(this, file));
+				var moduleRoot : ModuleRoot = _moduleRoots.findRoot(file.parent);
+				modules.push(new Module(this, file, moduleRoot));
 			}
 		}
 
@@ -63,8 +67,13 @@ package converter.dom {
 			return (file ? file.getRelativePath(directory, true) : directory.url) + "/MavenExternalLibs";
 		}
 
-		public function getTempOutput(file : File) : String {
-			return file.getRelativePath(directory, true) + "/out/maven-temp";
+		public function findModuleByName(moduleID : String) : Module {
+			for each(var module : Module in _modules) {
+				if (module.name == moduleID) {
+					return module;
+				}
+			}
+			return null;
 		}
 	}
 }

@@ -19,9 +19,8 @@ package converter.pom {
 		private static const FLEX_DEPENDENCE_DATA : Class;
 		private static const FLEX_DEPENDENCE_XML : XML = XML(new FLEX_DEPENDENCE_DATA);
 
-		private static const GROUP_ID : String = "icc-module-gen";
-
-		private static const MODULE_VERSION : String = "current";
+		//private static const GROUP_ID : String = "icc-module-gen";
+		//private static const MODULE_VERSION : String = "current";
 
 		private var _iml : Module;
 		private var _data : String;
@@ -102,10 +101,11 @@ package converter.pom {
 					continue;
 				}
 				var scope : String = DEPENDENCY_TYPE_TO_SCOPE[moduleDependency.type];
+				var module : Module = project.findModuleByName(moduleDependency.moduleID);
 				var dependencyXML : XML = <dependency>
-					<groupId>{GROUP_ID}</groupId>
+					<groupId>{module.groupID}</groupId>
 					<artifactId>{moduleDependency.moduleID}</artifactId>
-					<version>{MODULE_VERSION}</version>
+					<version>{module.version}</version>
 					<type>swc</type>
 				</dependency>;
 				if (scope) {
@@ -135,14 +135,18 @@ package converter.pom {
 				"${flex.framework.version}":fullSDKVersion,
 				"${flash.player.version}":iml.flashPlayerVersion,
 				"${artifactId}":iml.name,
-				"${groupId}":GROUP_ID,
-				"${version}":MODULE_VERSION,
+				"${groupId}":iml.groupID,
+				"${version}":iml.version,
 				"${source.directory.main}":Module.DEFAULT_SOURCE_DIRECTORY,
 				"${repository.local.generated.url}":project.getDirectoryForLibrariesURL(iml.directory),
-				"${out.output.directory}":project.getTempOutput(iml.directory),
+				"${out.output.directory}":getTempOutput(iml),
 				"${out.directory}":iml.outputDirectory,
 				"${out.file}":fileName
 			});
+		}
+
+		private function getTempOutput(module : Module) : String {
+			return module.directory.getRelativePath(module.moduleRoot.directory, true) + "/out/maven-temp";
 		}
 
 		protected function addStuffToResultXML(result : XML) : void {

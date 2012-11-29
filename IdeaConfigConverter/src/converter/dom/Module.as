@@ -40,10 +40,12 @@ package converter.dom {
 		private var _outputDirectory : String;
 		private var _outputFile : String;
 		private var _dependedModules : Vector.<ModuleDependency>;
+		public var moduleRoot : ModuleRoot;
 
-		public function Module(project : Project, file : File) {
+		public function Module(project : Project, file : File, moduleRoot : ModuleRoot) {
 			_project = project;
 			_file = file;
+			this.moduleRoot = moduleRoot;
 		}
 
 		public function get relativePath() : String {
@@ -103,6 +105,7 @@ package converter.dom {
 			result.push(dependedLibs.join('\n'));
 			result.push("\tFlash player:");
 			result.push(flashPlayerVersion);
+			//result.push(_moduleRoot.xml.groupId);
 			return result.join("\n");
 		}
 
@@ -191,6 +194,14 @@ package converter.dom {
 				strings.push(String(item));
 			}
 			return strings;
+		}
+
+		public function get groupID() : String {
+			return moduleRoot.groupID;
+		}
+
+		public function get version() : String {
+			return moduleRoot.version;
 		}
 	}
 }
