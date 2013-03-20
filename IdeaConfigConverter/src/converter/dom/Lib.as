@@ -65,10 +65,14 @@ package converter.dom {
 		}
 
 		private static function getFiles(url : String, name : String) : Vector.<Lib> {
-			var libFile : File = new File(url);
+			var libFile : File;
 			var libs : Vector.<Lib> = new Vector.<Lib>();
-			if (!libFile.exists) {
-				log(Lib, "cannot find lib: " + name);
+			try {
+				libFile = new File(url);
+			} catch (e : Error) {
+			}
+			if (!libFile || !libFile.exists) {
+				log(Lib, "cannot find lib: " + name + ", url = " + url);
 				return libs;
 			}
 			var files : Array = libFile.isDirectory ? libFile.getDirectoryListing() : [libFile];
