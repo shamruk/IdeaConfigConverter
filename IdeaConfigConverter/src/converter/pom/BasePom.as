@@ -19,6 +19,14 @@ package converter.pom {
 		private static const FLEX_DEPENDENCE_DATA : Class;
 		private static const FLEX_DEPENDENCE_XML : XML = XML(new FLEX_DEPENDENCE_DATA);
 
+		[Embed(source="/../resources/namespace.xml", mimeType="application/octet-stream")]
+		private static const NAMESPACE_DATA : Class;
+		private static const NAMESPACE_XML : XML = XML(new NAMESPACE_DATA);
+
+		[Embed(source="/../resources/includeSources.xml", mimeType="application/octet-stream")]
+		private static const INCLUDE_SOURCES_DATA : Class;
+		private static const INCLUDE_SOURCES_XML : XML = XML(new INCLUDE_SOURCES_DATA);
+
 		//private static const GROUP_ID : String = "icc-module-gen";
 		//private static const MODULE_VERSION : String = "current";
 
@@ -48,11 +56,12 @@ package converter.pom {
 		}
 
 		protected function getFullSDKVersion(sdkVersion : String) : String {
-			return sdkVersion == "4.5.1" ? sdkVersion + ".21328" : sdkVersion;
+			return "4.6.b.23201";
+//			return sdkVersion == "4.5.1" ? sdkVersion + ".21328" : sdkVersion;
 		}
 
 		public function getFilePath() : String {
-			return iml.directory.url + "/pom.xml";
+			return iml.pomDirectory.url + "/pom.xml";
 		}
 
 		private function addExtraSource(result : XML) : void {
@@ -71,6 +80,7 @@ package converter.pom {
 				}
 			}
 			result.*::build.*::plugins.appendChild(xml);
+
 		}
 
 		private function addExtraConfig(result : XML) : void {
@@ -83,8 +93,12 @@ package converter.pom {
 				return;
 			}
 			var xml : XML = XML(FileHelper.readFile(file));
-			for each(var xmlNode : XML in xml.children()) {
-				result.*::build.*::plugins.*::plugin.*::configuration.appendChild(xmlNode);
+			addPlugingConfiguration(xml, result);
+		}
+
+		private function addPlugingConfiguration(from : XML, to : XML) : void {
+			for each(var xmlNode : XML in from.children()) {
+				to.*::build.*::plugins.*::plugin.*::configuration.appendChild(xmlNode);
 			}
 		}
 
@@ -131,28 +145,57 @@ package converter.pom {
 		protected function replaceBasicVars(template : String) : String {
 			var fullSDKVersion : String = getFullSDKVersion(iml.sdkVersion);
 			var fileName : String = iml.outputFile.substr(0, iml.outputFile.lastIndexOf("."));
+
+			var srcPath : String = "../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(Module.DEFAULT_SOURCE_DIRECTORY));
+
 			return StringUtil.replaceByMap(template, {
-				"${flex.framework.version}":fullSDKVersion,
-				"${flash.player.version}":iml.flashPlayerVersion,
-				"${artifactId}":iml.name,
-				"${groupId}":iml.groupID,
-				"${version}":iml.version,
-				"${source.directory.main}":Module.DEFAULT_SOURCE_DIRECTORY,
-				"${repository.local.generated.url}":project.getDirectoryForLibrariesURL(iml.directory),
-				"${out.output.directory}":getTempOutput(iml),
-				"${out.directory}":iml.outputDirectory,
-				"${out.file}":fileName
+				"${flex.framework.version}": fullSDKVersion,
+				"${flash.player.version}": iml.flashPlayerVersion,
+				"${artifactId}": iml.name,
+				"${groupId}": iml.groupID,
+				"${version}": iml.version,
+				"${source.directory.main}": srcPath,
+				"${repository.local.generated.url}": project.getDirectoryForLibrariesURL(iml.pomDirectory, iml.moduleRoot.directory),
+				"${out.output.directory}": getTempOutput(iml),
+				"${out.directory}": getOutputDirectory(iml),
+				"${out.file}": fileName,
+				"${ns_uri}": iml.namespaceURI,
+				"${ns_location}": iml.namespaceLocation
 			});
 		}
 
+		private function getOutputDirectory(module : Module) : String {
+			var file : File = module.directory.resolvePath(module.outputDirectory);
+			var a : String = project.directory.getRelativePath(file);
+			var b : String = project.directory.getRelativePath(module.pomDirectory);
+			var c : String = b.replace(/[\w\d\.]+/g, "..") + "/" + a;
+			return  c;
+		}
+
 		private function getTempOutput(module : Module) : String {
-			return module.directory.getRelativePath(module.moduleRoot.directory, true) + "/out/maven-temp";
+			return module.pomDirectory.getRelativePath(project.directory, true) + "/out/maven-temp";
 		}
 
 		protected function addStuffToResultXML(result : XML) : void {
 			addDependencies(result);
+			addNamespaces(result);
+			addIncludeSources(result);
 			addExtraConfig(result);
 			addExtraSource(result);
+		}
+
+		private function addNamespaces(result : XML) : void {
+			if( iml.namespaceURI){
+				var namespaceConfiguration : String = replaceBasicVars(NAMESPACE_XML.toXMLString());
+				addPlugingConfiguration(XML(namespaceConfiguration), result);
+			}
+		}
+
+		private function addIncludeSources(result : XML) : void {
+			if( iml.namespaceURI){
+				var includeConfiguration : String = replaceBasicVars(INCLUDE_SOURCES_XML.toXMLString());
+				addPlugingConfiguration(XML(includeConfiguration), result);
+			}
 		}
 	}
 }

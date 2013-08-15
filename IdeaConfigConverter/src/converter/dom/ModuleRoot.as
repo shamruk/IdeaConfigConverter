@@ -37,5 +37,13 @@ package converter.dom {
 		public function get artifactID() : String {
 			return _xml.artifactId || "icc-root";
 		}
+
+		public function get flashPlayerVersion() : String {
+			return _xml.flashPlayerVersion;
+		}
+
+		public function get sdkVersion() : String {
+			return _xml.flexSdkVersion;
+		}
 	}
 }
