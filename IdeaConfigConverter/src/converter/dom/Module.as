@@ -1,9 +1,8 @@
 package converter.dom {
+	import converter.FileHelper;
 	import converter.StringUtil;
 
 	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 
 	public class Module {
 
@@ -41,11 +40,13 @@ package converter.dom {
 		private var _outputFile : String;
 		private var _dependedModules : Vector.<ModuleDependency>;
 		public var moduleRoot : ModuleRoot;
+		private var _configurationID : uint;
 
-		public function Module(project : Project, file : File, moduleRoot : ModuleRoot) {
+		public function Module(project : Project, file : File, moduleRoot : ModuleRoot, configurationID : uint) {
 			_project = project;
 			_file = file;
 			this.moduleRoot = moduleRoot;
+			_configurationID = configurationID;
 		}
 
 		public function get relativePath() : String {
@@ -55,6 +56,11 @@ package converter.dom {
 		public function get relativeDirectoryPath() : String {
 			return _relativeDirectoryPath ||= _project.directory.getRelativePath(_file.parent);
 		}
+
+		public function get relativePomDirecoryPath() : String {
+			return _project.directory.getRelativePath(pomDirectory);
+		}
+
 
 		public function get directory() : File {
 			return _file.parent;
@@ -68,7 +74,7 @@ package converter.dom {
 		public function getDependedModules() : Vector.<ModuleDependency> {
 			var moduleDependencies : Vector.<ModuleDependency> = new Vector.<ModuleDependency>();
 			for each(var entry : XML in configurationXML.dependencies.entries.entry.(attribute("module-name").length())) {
-				moduleDependencies.push(new ModuleDependency(entry.attribute("module-name"), entry.dependency.@linkage));
+				moduleDependencies.push(new ModuleDependency(entry.attribute("build-configuration-name"), entry.dependency.@linkage));
 			}
 			return moduleDependencies;
 		}
@@ -78,11 +84,7 @@ package converter.dom {
 		}
 
 		private function readFileContent() : XML {
-			var fileStream : FileStream = new FileStream();
-			fileStream.open(_file, FileMode.READ);
-			var data : String = fileStream.readUTFBytes(fileStream.bytesAvailable);
-			fileStream.close();
-			return XML(data);
+			return XML(FileHelper.readFile(_file));
 		}
 
 		public function get info() : String {
@@ -109,8 +111,9 @@ package converter.dom {
 			return result.join("\n");
 		}
 
+
 		public function get name() : String {
-			return _name ||= _file.name.substring(0, _file.name.indexOf(".iml"));
+			return _name ||= configurationXML.attribute("name");
 		}
 
 		public function get dependedLibs() : Vector.<Lib> {
@@ -133,7 +136,11 @@ package converter.dom {
 		}
 
 		public function get configurationXML() : XML {
-			return _configurationXML ||= content.component.configurations.configuration[0];
+			return _configurationXML ||= getConfigurationsXML(content)[_configurationID];
+		}
+
+		public static function getConfigurationsXML(xml : XML) : XMLList {
+			return xml.component.configurations.configuration;
 		}
 
 		public function get dependenciesXML() : XML {
@@ -149,11 +156,13 @@ package converter.dom {
 		}
 
 		public function get flashPlayerVersion() : String {
-			return _flashPlayerVersion ||= dependenciesXML.attribute("target-player");
+			return moduleRoot.flashPlayerVersion;
+//			return _flashPlayerVersion ||= dependenciesXML.attribute("target-player");
 		}
 
 		public function get sdkVersion() : String {
-			return _sdkVersion ||= dependenciesXML.sdk.@name;
+			return moduleRoot.sdkVersion;
+//			return _sdkVersion ||= dependenciesXML.sdk.@name;
 		}
 
 		public function get moduleType() : String {
@@ -202,6 +211,42 @@ package converter.dom {
 
 		public function get version() : String {
 			return moduleRoot.version;
+		}
+
+		public function get pomDirectory() : File {
+			return moduleRoot.directory.resolvePath("poms/" + name);
+		}
+
+		public function get namespaceURI() : String {
+			for (var namespaceURI : String in namespaces) {
+				return namespaceURI;
+			}
+			return null;
+		}
+
+		private function get namespaces() : Object {
+			var namespaces : Object = {};
+			var entries : XMLList = configurationXML["compiler-options"].map.entry.(@key == "compiler.namespaces.namespace");
+			for each(var ns : XML in entries) {
+				var nsData : String = ns.@value;
+				if (nsData && nsData.length > 0) {
+					var splitted : Array = nsData.split("\t");
+					namespaces[splitted[0]] = splitted[1];
+				}
+			}
+			return namespaces;
+		}
+
+		public function get namespaceLocation() : String {
+			for each(var namespaceLocation : String in namespaces) {
+				namespaceLocation = namespaceLocation.replace("$MODULE_DIR$/", "");
+				return pomDirectory.getRelativePath(directory.resolvePath(namespaceLocation), true);
+			}
+			return null;
+		}
+
+		public function get extraSources() : Array {
+			return null;
 		}
 	}
 }

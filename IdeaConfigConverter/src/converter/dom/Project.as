@@ -33,7 +33,11 @@ package converter.dom {
 				var moduleURL : String = StringUtil.replace(modulePath, "$PROJECT_DIR$", directory.url);
 				var file : File = new File(moduleURL);
 				var moduleRoot : ModuleRoot = _moduleRoots.findRoot(file.parent);
-				_modules.push(new Module(this, file, moduleRoot));
+				var configurations : XMLList = Module.getConfigurationsXML(XML(FileHelper.readFile(file)));
+				for( var configurationID : uint = 0; configurationID < configurations.length(); configurationID++ ){
+					var module : Module = new Module(this, file, moduleRoot, configurationID);
+					_modules.push(module);
+				}
 			}
 		}
 
@@ -45,7 +49,7 @@ package converter.dom {
 			var files : Vector.<File> = FileHelper.findFiles(directory, /(.*)\.iml$/i);
 			for each(var file : File in files) {
 				var moduleRoot : ModuleRoot = _moduleRoots.findRoot(file.parent);
-				modules.push(new Module(this, file, moduleRoot));
+				modules.push(new Module(this, file, moduleRoot, 0));
 			}
 		}
 
@@ -67,8 +71,8 @@ package converter.dom {
 			});
 		}
 
-		public function getDirectoryForLibrariesURL(file : File = null) : String {
-			return (file ? file.getRelativePath(directory, true) : directory.url) + "/MavenExternalLibs";
+		public function getDirectoryForLibrariesURL(file : File = null, repoRoot:File = null) : String {
+			return (file ? file.getRelativePath(repoRoot || directory, true) : directory.url) + "/MavenExternalLibs";
 		}
 
 		public function findModuleByName(moduleID : String) : Module {
@@ -78,6 +82,10 @@ package converter.dom {
 				}
 			}
 			return null;
+		}
+
+		public function get pomDirectory() : File{
+			return _directory.resolvePath("poms");
 		}
 	}
 }
