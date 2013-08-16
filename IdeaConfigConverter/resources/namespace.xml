@@ -1,0 +1,11 @@
+<data>
+    <namespaces>
+        <namespace>
+            <uri>${ns_uri}</uri>
+            <manifest>${ns_location}</manifest>
+        </namespace>
+    </namespaces>
+    <includeNamespaces>
+        <namespace>${ns_uri}</namespace>
+    </includeNamespaces>
+</data>

@@ -1,0 +1,5 @@
+<data>
+    <includeSources>
+        <sources>${source.directory.main}</sources>
+    </includeSources>
+</data>
