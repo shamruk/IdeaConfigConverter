@@ -5,27 +5,26 @@ package converter.pom {
 
 	public class AppPom extends BasePom implements IPom {
 
-		[Embed(source="/../resources/app.pom", mimeType="application/octet-stream")]
+		[Embed(source="/../gradle/app.gradle", mimeType="application/octet-stream")]
 		private static const POM_DATA : Class;
-		private static const POM_XML : XML = XML(new POM_DATA);
+		private static const POM : String = String(new POM_DATA);
 
 		public function AppPom(project : Project, iml : Module) {
 			super(project, iml);
 		}
 
-		override public function getXML() : XML {
-			var template : String = POM_XML.toXMLString();
+		override public function getData() : String {
+			var template : String = POM;
 			template = replaceBasicVars(template);
 			template = addMainClass(template);
-			var result : XML = XML(template);
-			addStuffToResultXML(result);
-			return result;
+			template = addStuffToResultXML(template);
+			return template;
 		}
 
 		private function addMainClass(template : String) : String {
 			var splitted : Array = iml.mainClass.split(".");
 			var name : String = splitted.pop();
-			template = StringUtil.replaceByMap(template, {"${source.file.directory}":splitted.join("/"), "${source.file.name}":name});
+			template = StringUtil.replaceByMap(template, {"${source.file.directory}": splitted.join("/"), "${source.file.name}": name});
 			return template;
 		}
 	}

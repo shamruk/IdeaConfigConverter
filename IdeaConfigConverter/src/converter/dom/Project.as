@@ -34,7 +34,7 @@ package converter.dom {
 				var file : File = new File(moduleURL);
 				var moduleRoot : ModuleRoot = _moduleRoots.findRoot(file.parent);
 				var configurations : XMLList = Module.getConfigurationsXML(XML(FileHelper.readFile(file)));
-				for( var configurationID : uint = 0; configurationID < configurations.length(); configurationID++ ){
+				for (var configurationID : uint = 0; configurationID < configurations.length(); configurationID++) {
 					var module : Module = new Module(this, file, moduleRoot, configurationID);
 					_modules.push(module);
 				}
@@ -71,7 +71,7 @@ package converter.dom {
 			});
 		}
 
-		public function getDirectoryForLibrariesURL(file : File = null, repoRoot:File = null) : String {
+		public function getDirectoryForLibrariesURL(file : File = null, repoRoot : File = null) : String {
 			return (file ? file.getRelativePath(repoRoot || directory, true) : directory.url) + "/MavenExternalLibs";
 		}
 
@@ -84,8 +84,8 @@ package converter.dom {
 			return null;
 		}
 
-		public function get pomDirectory() : File{
-			return _directory.resolvePath("poms");
+		public function get pomDirectory() : File {
+			return _directory.resolvePath("gradle");
 		}
 	}
 }

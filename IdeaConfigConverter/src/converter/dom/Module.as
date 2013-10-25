@@ -214,7 +214,7 @@ package converter.dom {
 		}
 
 		public function get pomDirectory() : File {
-			return moduleRoot.directory.resolvePath("poms/" + name);
+			return moduleRoot.directory.resolvePath(_project.pomDirectory.name + "/" + name);
 		}
 
 		public function get namespaceURI() : String {

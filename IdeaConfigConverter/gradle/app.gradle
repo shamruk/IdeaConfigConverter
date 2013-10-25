@@ -1,0 +1,57 @@
+type = 'swf'
+
+// todo:
+frameworkLinkage = 'merged'
+
+//configurations {
+//	all*.exclude group: 'com.adobe.flex.framework'
+//}
+
+dependencies {
+//	merged project(':util')
+//	merged project(':domain')
+
+//	theme files("${flexHome}/frameworks/themes/Wireframe/wireframe.swc")
+
+//	merged group:'org.graniteds', name:'granite-swc', version:graniteds_version, ext:'swc'
+//	internal group:'org.graniteds', name:'granite-essentials-swc', version:graniteds_version, ext:'swc'
+}
+
+srcDirs = [
+		'${source.directory.main}'
+]
+
+mainClass = '${source.file.name}.mxml'
+
+additionalCompilerOptions = [
+]
+
+//<groupId>${groupId}</groupId>
+//	<artifactId>${artifactId}</artifactId>
+//<packaging>swf</packaging>
+//	<version>${version}</version>
+//
+//		<outputDirectory>${out.output.directory}</outputDirectory>
+//<directory>${out.directory}</directory>
+//							<file>${source.file.name}.as</file>
+//<startDir>${project.basedir}/${source.directory.main}/${source.file.directory}</startDir>
+//							<file>${source.file.name}.mxml</file>
+//<startDir>${project.basedir}/${source.directory.main}/${source.file.directory}</startDir>
+//
+//
+//
+//					<finalName>${out.file}</finalName>
+//
+//
+//<debug>${debug}</debug>
+//					<optimize>${optimize}</optimize>
+//<sourceFile>${source.file}</sourceFile>
+//
+//
+//						<version>${flex.framework.version}</version>
+//
+//<version>${flex.framework.version}</version>
+//
+//			<version>${flex.framework.version}</version>
+//<classifier>${flash.player.version}</classifier>
+//			<url>${repository.local.generated.url}</url>

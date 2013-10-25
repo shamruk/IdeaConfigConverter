@@ -1,0 +1,60 @@
+//allprojects {
+//	group = '${groupId}'
+//	version = '${version}'
+//	//${artifactId}
+//}
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath group: 'org.gradlefx', name: 'gradlefx', version: '0.7'
+	}
+}
+
+subprojects {
+
+	apply plugin: 'gradlefx'
+
+	version = '${version}'
+
+	repositories {
+		mavenCentral()
+		mavenLocal()
+		mavenRepo name: 'yoolab-releases', url: "http://projects.yoolab.org/maven/content/repositories/releases"
+		mavenRepo name: 'yoolab-snapshots', url: "http://projects.yoolab.org/maven/content/repositories/snapshots"
+		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+			name = 'Apache'
+			addArtifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
+		}
+//		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+//			name = 'Adobe Air SDK'
+//			//win// addArtifactPattern 'http://download.macromedia.com/air/win/download/[revision]/[module].[ext]'
+//			addArtifactPattern 'http://download.macromedia.com/air/mac/download/[revision]/[module].[ext]'
+//		}
+	}
+
+	dependencies {
+		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.10.0', ext: 'zip'
+//		//win// airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'zip'
+//		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'tbz2'
+	}
+
+//	flexHome = System.getenv('CUSTOM_FLEX_HOME')
+	publishDir = 'publishDirectory'
+
+//	output = name + '-' + version
+
+	additionalCompilerOptions = [
+			'-debug=false',
+			'-optimize=true'
+	]
+
+	jvmArguments = [
+			'-Xmx1024m',
+			'-Xms512m'
+	]
+}
+
+

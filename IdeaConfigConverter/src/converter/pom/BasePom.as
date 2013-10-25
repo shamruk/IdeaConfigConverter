@@ -44,10 +44,10 @@ package converter.pom {
 		}
 
 		public function get data() : String {
-			return _data ||= getXML().toXMLString();
+			return _data ||= getData();
 		}
 
-		public function getXML() : XML {
+		public function getData() : String {
 			throw new IllegalOperationError();
 		}
 
@@ -61,7 +61,7 @@ package converter.pom {
 		}
 
 		public function getFilePath() : String {
-			return iml.pomDirectory.url + "/pom.xml";
+			return iml.pomDirectory.url + "/build.gradle";
 		}
 
 		private function addExtraSource(result : XML) : void {
@@ -83,17 +83,22 @@ package converter.pom {
 
 		}
 
-		private function addExtraConfig(result : XML) : void {
-			addExtraConfigFrom(project.directory.resolvePath("extraPomConfig.xml"), result);
-			addExtraConfigFrom(iml.directory.resolvePath("extraPomConfig.xml"), result);
+		private function addExtraConfig(result : String) : String {
+			result = addExtraConfigFrom(project.directory.resolvePath("extraPomConfig.xml"), result);
+			result = addExtraConfigFrom(iml.directory.resolvePath("extraPomConfig.xml"), result);
+			return result;
 		}
 
-		private function addExtraConfigFrom(file : File, result : XML) : void {
+		protected function addExtraConfigFrom(file : File, result : String) : String {
 			if (!file.exists) {
-				return;
+				return result;
 			}
 			var xml : XML = XML(FileHelper.readFile(file));
-			addPlugingConfiguration(xml, result);
+			for each(var option : XML in xml.additionalCompilerOptions.option) {
+				result = result.replace("additionalCompilerOptions = [", "additionalCompilerOptions = [\n\t'" + option.text() + "',");
+			}
+			//addPlugingConfiguration(xml, result);
+			return result;
 		}
 
 		private function addPlugingConfiguration(from : XML, to : XML) : void {
@@ -104,42 +109,31 @@ package converter.pom {
 
 		private static const DEPENDENCY_TYPE_TO_SCOPE : Object = {};
 		{
-//			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_MERGED] = "merged";
-//			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_INCLUDE] = "internal";
+			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_MERGED] = "merged";
+			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_INCLUDE] = "internal";
 			DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_EXTERNAL] = "external";
 		}
 
-		private function addDependencies(result : XML) : void {
+		private function addDependencies(result : String) : String {
+			var dependacies : Vector.<String> = new Vector.<String>();
 			for each(var moduleDependency : ModuleDependency in iml.dependedModules) {
-				if (moduleDependency.type == ModuleDependency.TYPE_LOADED) {
-					continue;
+				if (moduleDependency.type != ModuleDependency.TYPE_LOADED) {
+					var scope : String = DEPENDENCY_TYPE_TO_SCOPE[moduleDependency.type];
+					var module : Module = project.findModuleByName(moduleDependency.moduleID);
+//						<groupId>{module.groupID}</groupId>
+//						<artifactId>{moduleDependency.moduleID}</artifactId>
+					dependacies.push(scope + " project(':" + module.pomDirectory.name + "')");
 				}
-				var scope : String = DEPENDENCY_TYPE_TO_SCOPE[moduleDependency.type];
-				var module : Module = project.findModuleByName(moduleDependency.moduleID);
-				var dependencyXML : XML = <dependency>
-					<groupId>{module.groupID}</groupId>
-					<artifactId>{moduleDependency.moduleID}</artifactId>
-					<version>{module.version}</version>
-					<type>swc</type>
-				</dependency>;
-				if (scope) {
-					dependencyXML.appendChild(<scope>{scope}</scope>)
-				}
-				result.*::dependencies.dependency += dependencyXML;
 			}
 			for each(var decadencyLib : Lib in iml.dependedLibs) {
-				var dependencyLibXML : XML = <dependency>
-					<groupId>{decadencyLib.groupID}</groupId>
-					<artifactId>{decadencyLib.artifactID}</artifactId>
-					<version>{LibCreator.VERSION}</version>
-					<type>swc</type>
-				</dependency>;
-				result.*::dependencies.dependency += dependencyLibXML;
+//					<groupId>{decadencyLib.groupID}</groupId>
+//					<artifactId>{decadencyLib.artifactID}</artifactId>
+				var dependencyType : String = DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_MERGED]//todo : decadencyLib.type];
+				dependacies.push(dependencyType + " files('" + iml.pomDirectory.getRelativePath(decadencyLib.file, true) + "')");
 			}
-			if (iml.type == Module.TYPE_FLEX) {
-				var dep : String = replaceBasicVars(FLEX_DEPENDENCE_XML.toXMLString());
-				result.*::dependencies.dependency += XML(dep).children();
-			}
+			result = result.replace("${dependencies.gradle}", dependacies.join("\n\t"));
+			result = result.replace("${frameworkLinkage.disabler}", iml.type == Module.TYPE_FLEX ? "" : "//");
+			return result;
 		}
 
 		protected function replaceBasicVars(template : String) : String {
@@ -176,23 +170,24 @@ package converter.pom {
 			return module.pomDirectory.getRelativePath(project.directory, true) + "/out/maven-temp";
 		}
 
-		protected function addStuffToResultXML(result : XML) : void {
-			addDependencies(result);
-			addNamespaces(result);
-			addIncludeSources(result);
-			addExtraConfig(result);
-			addExtraSource(result);
+		protected function addStuffToResultXML(result : String) : String {
+			result = addDependencies(result);
+//	todo:		result=addNamespaces(result);
+//	todo:		result=addIncludeSources(result);
+			result = addExtraConfig(result);
+//	todo:		result=addExtraSource(result);
+			return result;
 		}
 
 		private function addNamespaces(result : XML) : void {
-			if( iml.namespaceURI){
+			if (iml.namespaceURI) {
 				var namespaceConfiguration : String = replaceBasicVars(NAMESPACE_XML.toXMLString());
 				addPlugingConfiguration(XML(namespaceConfiguration), result);
 			}
 		}
 
 		private function addIncludeSources(result : XML) : void {
-			if( iml.namespaceURI){
+			if (iml.namespaceURI) {
 				var includeConfiguration : String = replaceBasicVars(INCLUDE_SOURCES_XML.toXMLString());
 				addPlugingConfiguration(XML(includeConfiguration), result);
 			}

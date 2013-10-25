@@ -8,24 +8,23 @@ package converter.pom {
 
 	public class LibPom extends BasePom implements IPom {
 
-		[Embed(source="/../resources/lib.pom", mimeType="application/octet-stream")]
+		[Embed(source="/../gradle/lib.gradle", mimeType="application/octet-stream")]
 		private static const POM_LIB_DATA : Class;
-		private static const POM_LIB_XML : XML = XML(new POM_LIB_DATA);
+		private static const POM_LIB : String = String(new POM_LIB_DATA);
 
 		public function LibPom(project : Project, iml : Module) {
 			super(project, iml);
 		}
 
-		override public function getXML() : XML {
-			var template : String = POM_LIB_XML.toXMLString();
+		override public function getData() : String {
+			var template : String = POM_LIB;
 			template = replaceBasicVars(template);
-			var result : XML = XML(template);
-			addStuffToResultXML(result);
-			addIncludeAsToIgnore(result);
-			return result;
+			template = addStuffToResultXML(template);
+			template = addIncludeAsToIgnore(template);
+			return template;
 		}
 
-		private function addIncludeAsToIgnore(result : XML) : void {
+		private function addIncludeAsToIgnore(result : String) : String {
 			var sourceDirectory : File = iml.directory.resolvePath(Module.DEFAULT_SOURCE_DIRECTORY);
 			var files : Vector.<File> = FileHelper.findFiles(sourceDirectory, /(.*)\.as$/i);
 			//var nonValidAS : Vector.<String> = new Vector.<String>();
@@ -35,10 +34,11 @@ package converter.pom {
 					var path : String = sourceDirectory.getRelativePath(file);
 					var name : String = StringUtil.replace(path, "/", ".").substr(0, -3);
 					//nonValidAS.push(path);
-					result.*::build.*::plugins.*::plugin.*::configuration.*::includeClasses.*::scan.*::excludes.aaa += (<exclude>{name}</exclude>);
+					// todo: result.*::build.*::plugins.*::plugin.*::configuration.*::includeClasses.*::scan.*::excludes.aaa += (<exclude>{name}</exclude>);
 					log(this, "skipping: " + name);
 				}
 			}
+			return result;
 		}
 	}
 }

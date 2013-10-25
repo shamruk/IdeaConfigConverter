@@ -56,7 +56,7 @@ package converter.pom {
 				var libPomString : String = POM_LIB_XML.toXMLString();
 				libPomString = addGroupAndArtifactID(libPomString, lib);
 				libPomString = StringUtil.replace(libPomString, "${description}", manualInstall);
-				var pomFile : File = libFilesDirectory.resolvePath(filesName + ".pom");
+				var pomFile : File = libFilesDirectory.resolvePath(filesName + ".gradle");
 				FileHelper.writeFile(pomFile, libPomString);
 
 				var swc : File = libFilesDirectory.resolvePath(filesName + ".swc");
@@ -71,7 +71,7 @@ package converter.pom {
 		}
 
 		private static function addGroupAndArtifactID(libPomString : String, lib : Lib) : String {
-			return StringUtil.replaceByMap(libPomString, {"${groupId}":lib.groupID, "${artifactId}":lib.artifactID, "${version}":VERSION});
+			return StringUtil.replaceByMap(libPomString, {"${groupId}": lib.groupID, "${artifactId}": lib.artifactID, "${version}": VERSION});
 		}
 	}
 }

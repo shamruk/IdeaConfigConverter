@@ -9,7 +9,7 @@ package converter.pom {
 	public class PomConverter {
 
 		public function convertAndSave(project : Project) : void {
-			LibCreator.createLibrary(project);
+			//LibCreator.createLibrary(project);
 			saveProjectPoms(project);
 		}
 
@@ -26,7 +26,7 @@ package converter.pom {
 					}
 				}
 			}
-			savePoms([new RootPom(project, new <Dictionary>[swcs, swfs])]);
+			savePoms([new RootPom(project, new <Dictionary>[swcs, swfs]), new ModuleListPom(project, new <Dictionary>[swcs, swfs])]);
 			savePoms(swcs);
 			savePoms(swfs);
 		}

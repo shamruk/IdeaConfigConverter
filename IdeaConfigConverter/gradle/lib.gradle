@@ -1,0 +1,40 @@
+type = 'swc'
+
+$ { frameworkLinkage.disabler } frameworkLinkage = 'none'
+
+srcDirs = ['${source.directory.main}']
+
+FileTree includTree = fileTree(
+		dir: '${source.directory.main}',
+		includes: ['**/*.as', '**.*mxml'],
+		exclude: { details -> !details.file.isDirectory() && !details.file.text.contains('package') }
+)
+List list = []
+includTree.collect {
+	relativePath(it).substring('${source.directory.main}/'.length()).replaceAll('.as', '').replaceAll('.mxml', '').split('/').join('.')
+}.sort().each { list.add(it) }
+
+list.each { println it }
+//.each {File file -> println file }
+includeClasses = list
+
+dependencies {
+	$ { dependencies.gradle }
+}
+
+additionalCompilerOptions = [
+]
+
+//<groupId>${groupId}</groupId>
+//	<artifactId>${artifactId}</artifactId>
+//	<version>${version}</version>
+//
+//		<outputDirectory>${out.output.directory}</outputDirectory>
+//<directory>${out.directory}</directory>
+//					<debug>${debug}</debug>
+//<optimize>${optimize}</optimize>
+//
+//<version>${flex.framework.version}</version>
+//			<classifier>${flash.player.version}</classifier>
+//
+//<url>${repository.local.generated.url}</url>
