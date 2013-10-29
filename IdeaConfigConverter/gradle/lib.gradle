@@ -1,6 +1,6 @@
 type = 'swc'
 
-$ { frameworkLinkage.disabler } frameworkLinkage = 'none'
+${frameworkLinkage.disabler}frameworkLinkage = 'none'
 
 srcDirs = ['${source.directory.main}']
 
@@ -19,11 +19,17 @@ list.each { println it }
 //includeClasses = list
 
 dependencies {
-	$ { dependencies.gradle }
+	${dependencies.gradle}
 }
 
 additionalCompilerOptions = [
 ]
+
+${frameworkLinkage.air.enabler}afterEvaluate {
+${frameworkLinkage.air.enabler}	dependencies {
+${frameworkLinkage.air.enabler}		external files("${flexHome}/frameworks/libs/air/airglobal.swc")
+${frameworkLinkage.air.enabler}	}
+${frameworkLinkage.air.enabler}}
 
 //<groupId>${groupId}</groupId>
 //	<artifactId>${artifactId}</artifactId>

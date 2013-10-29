@@ -24,7 +24,7 @@ package converter.dom {
 		private var _info : String;
 		private var _type : String;
 		private var _configurationXML : XML;
-		private var _dependedLibs : Vector.<Lib>;
+		private var _dependedLibs : Vector.<LibDependency>;
 		private var _outputType : String;
 		private var _name : String;
 		private var _flashPlayerVersion : String;
@@ -41,6 +41,7 @@ package converter.dom {
 		private var _dependedModules : Vector.<ModuleDependency>;
 		public var moduleRoot : ModuleRoot;
 		private var _configurationID : uint;
+		private var _directory : File;
 
 		public function Module(project : Project, file : File, moduleRoot : ModuleRoot, configurationID : uint) {
 			_project = project;
@@ -61,9 +62,15 @@ package converter.dom {
 			return _project.directory.getRelativePath(pomDirectory);
 		}
 
-
 		public function get directory() : File {
-			return _file.parent;
+			return _directory ||= getDirectory();
+		}
+
+		private function getDirectory() : File {
+			var url :String = content.component.content.@url;
+			url = url.replace("file://$MODULE_DIR$", "");
+			return url ? _file.parent.resolvePath(url.substr(1)) : _file.parent;
+
 		}
 
 		public function get dependedModules() : Vector.<ModuleDependency> {
@@ -116,19 +123,35 @@ package converter.dom {
 			return _name ||= configurationXML.attribute("name");
 		}
 
-		public function get dependedLibs() : Vector.<Lib> {
+		public function get dependedLibs() : Vector.<LibDependency> {
 			return _dependedLibs ||= getDependedLibs();
 		}
 
-		private function getDependedLibs() : Vector.<Lib> {
-			var libs : Vector.<Lib> = new Vector.<Lib>();
-			for each(var extLibXML : XML in content.component.orderEntry.(@type == "library")) {
-				libs = libs.concat(_project.getLibByName(extLibXML.@name));
+		private function getDependedLibs() : Vector.<LibDependency> {
+//			var libs : Vector.<Lib> = new Vector.<Lib>();
+//			for each(var extLibXML : XML in content.component.orderEntry.(@type == "library")) {
+//				libs = libs.concat(_project.getLibByName(extLibXML.@name));
+//			}
+//			for each(var intLibXML : XML in content.component.orderEntry.(@type == "module-library")) {
+//				libs = libs.concat(Lib.resolveFileFromInternalDependably(intLibXML.library.CLASSES.root.@url, directory, intLibXML));
+//			}
+//			return libs;
+
+			var dependencies : Vector.<LibDependency> = new Vector.<LibDependency>();
+			for each(var lib:XML in configurationXML.dependencies.entries.entry.(attribute("library-id").length())){
+				var inLib : XML = content.component.orderEntry.library.(properties.@id == lib.attribute("library-id"))[0];
+				addLibDependency(lib.dependency.@linkage, dependencies, (Lib.resolveFileFromInternalDependably(inLib.CLASSES.root.@url, directory, inLib)));
 			}
-			for each(var intLibXML : XML in content.component.orderEntry.(@type == "module-library")) {
-				libs = libs.concat(Lib.resolveFileFromInternalDependably(intLibXML.library.CLASSES.root.@url, directory, intLibXML));
+			for each(var topLib:XML in configurationXML.dependencies.entries.entry.(attribute("library-name").length())){
+				addLibDependency(topLib.dependency.@linkage, dependencies, _project.getLibByName(topLib.attribute("library-name")));
 			}
-			return libs;
+			return  dependencies;
+		}
+
+		private function addLibDependency(linkage : String, dependencies : Vector.<LibDependency>, libs : Vector.<Lib>) : void {
+			for each(var lib:Lib in libs){
+				dependencies.push(new LibDependency(lib, linkage));
+			}
 		}
 
 		public function get type() : String {
@@ -247,6 +270,11 @@ package converter.dom {
 
 		public function get extraSources() : Array {
 			return null;
+		}
+
+		public function get isAIR() : Boolean {
+			var platform : String = _configurationXML.attribute("target-platform");
+			return ["Desktop", "Mobile"].indexOf(platform) >= 0;
 		}
 	}
 }

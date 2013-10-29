@@ -1,7 +1,7 @@
 package converter.pom {
 	import converter.FileHelper;
 	import converter.StringUtil;
-	import converter.dom.Lib;
+	import converter.dom.LibDependency;
 	import converter.dom.Module;
 	import converter.dom.ModuleDependency;
 	import converter.dom.Project;
@@ -125,14 +125,15 @@ package converter.pom {
 					dependacies.push(scope + " project(':" + module.pomDirectory.name + "')");
 				}
 			}
-			for each(var decadencyLib : Lib in iml.dependedLibs) {
+			for each(var decadencyLib : LibDependency in iml.dependedLibs) {
 //					<groupId>{decadencyLib.groupID}</groupId>
 //					<artifactId>{decadencyLib.artifactID}</artifactId>
-				var dependencyType : String = DEPENDENCY_TYPE_TO_SCOPE[ModuleDependency.TYPE_MERGED]//todo : decadencyLib.type];
-				dependacies.push(dependencyType + " files('" + iml.pomDirectory.getRelativePath(decadencyLib.file, true) + "')");
+				var dependencyType : String = DEPENDENCY_TYPE_TO_SCOPE[decadencyLib.linkage];
+				dependacies.push(dependencyType + " files('" + iml.pomDirectory.getRelativePath(decadencyLib.lib.file, true) + "')");
 			}
 			result = result.replace("${dependencies.gradle}", dependacies.join("\n\t"));
 			result = result.replace("${frameworkLinkage.disabler}", iml.type == Module.TYPE_FLEX ? "//" : "");
+			result = StringUtil.replace(result, "${frameworkLinkage.air.enabler}", !iml.isAIR ? "//" : "");
 			return result;
 		}
 

@@ -53,7 +53,7 @@ package converter.dom {
 		public static function resolveFileFromInternalDependably(url : String, directory : File, intLibXML : XML) : Vector.<Lib> {
 			url = cleanPath(url);
 			url = StringUtil.replace(url, "$MODULE_DIR$", directory.url);
-			return getFiles(url, intLibXML.library.@name);
+			return getFiles(url, intLibXML.@name);
 		}
 
 		public static function fromProjectLibraryFile(project : Project, file : File) : Vector.<Lib> {

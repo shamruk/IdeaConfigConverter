@@ -28,17 +28,17 @@ subprojects {
 			name = 'Apache'
 			addArtifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
 		}
-//		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-//			name = 'Adobe Air SDK'
-//			//win// addArtifactPattern 'http://download.macromedia.com/air/win/download/[revision]/[module].[ext]'
-//			addArtifactPattern 'http://download.macromedia.com/air/mac/download/[revision]/[module].[ext]'
-//		}
+		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+			name = 'Adobe Air SDK'
+			//win// addArtifactPattern 'http://download.macromedia.com/air/win/download/[revision]/[module].[ext]'
+			addArtifactPattern 'http://download.macromedia.com/air/mac/download/[revision]/[module].[ext]'
+		}
 	}
 
 	dependencies {
-		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.10.0', ext: 'zip'
+		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: 'zip'
 //		//win// airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'zip'
-//		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'tbz2'
+		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'tbz2'
 	}
 
 //	flexHome = System.getenv('CUSTOM_FLEX_HOME')

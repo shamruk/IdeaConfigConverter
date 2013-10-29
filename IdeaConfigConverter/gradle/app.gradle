@@ -26,6 +26,12 @@ mainClass = '${source.file.name}.mxml'
 additionalCompilerOptions = [
 ]
 
+${frameworkLinkage.air.enabler}afterEvaluate {
+${frameworkLinkage.air.enabler}	dependencies {
+${frameworkLinkage.air.enabler}		external files("${flexHome}/frameworks/libs/air/airglobal.swc")
+${frameworkLinkage.air.enabler}	}
+${frameworkLinkage.air.enabler}}
+
 //<groupId>${groupId}</groupId>
 //	<artifactId>${artifactId}</artifactId>
 //<packaging>swf</packaging>
