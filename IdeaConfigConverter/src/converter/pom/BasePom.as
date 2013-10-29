@@ -132,7 +132,7 @@ package converter.pom {
 				dependacies.push(dependencyType + " files('" + iml.pomDirectory.getRelativePath(decadencyLib.file, true) + "')");
 			}
 			result = result.replace("${dependencies.gradle}", dependacies.join("\n\t"));
-			result = result.replace("${frameworkLinkage.disabler}", iml.type == Module.TYPE_FLEX ? "" : "//");
+			result = result.replace("${frameworkLinkage.disabler}", iml.type == Module.TYPE_FLEX ? "//" : "");
 			return result;
 		}
 

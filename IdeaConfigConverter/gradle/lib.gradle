@@ -16,7 +16,7 @@ includTree.collect {
 
 list.each { println it }
 //.each {File file -> println file }
-includeClasses = list
+//includeClasses = list
 
 dependencies {
 	$ { dependencies.gradle }
