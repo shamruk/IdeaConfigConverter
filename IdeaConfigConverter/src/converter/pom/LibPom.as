@@ -25,6 +25,7 @@ package converter.pom {
 		}
 
 		private function addIncludeAsToIgnore(result : String) : String {
+			var hasSkips:Boolean=false;
 			var sourceDirectory : File = iml.directory.resolvePath(Module.DEFAULT_SOURCE_DIRECTORY);
 			var files : Vector.<File> = FileHelper.findFiles(sourceDirectory, /(.*)\.as$/i);
 			//var nonValidAS : Vector.<String> = new Vector.<String>();
@@ -36,8 +37,10 @@ package converter.pom {
 					//nonValidAS.push(path);
 					// todo: result.*::build.*::plugins.*::plugin.*::configuration.*::includeClasses.*::scan.*::excludes.aaa += (<exclude>{name}</exclude>);
 					log(this, "skipping: " + name);
+					hasSkips=true;
 				}
 			}
+			result=result.replace("${source.directory.hasSkips.enabler}", hasSkips?"":"//");
 			return result;
 		}
 	}

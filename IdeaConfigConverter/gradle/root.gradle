@@ -35,6 +35,7 @@ subprojects {
 		}
 	}
 
+	playerVersion = "11.9"
 	dependencies {
 		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: 'zip'
 //		//win// airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'zip'
