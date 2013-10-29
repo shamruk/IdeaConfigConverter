@@ -1,27 +1,20 @@
 type = 'swf'
 
-// todo:
-frameworkLinkage = 'merged'
+${frameworkLinkage.disabler}frameworkLinkage = 'merged'
 
 //configurations {
 //	all*.exclude group: 'com.adobe.flex.framework'
 //}
 
 dependencies {
-//	merged project(':util')
-//	merged project(':domain')
-
-//	theme files("${flexHome}/frameworks/themes/Wireframe/wireframe.swc")
-
-//	merged group:'org.graniteds', name:'granite-swc', version:graniteds_version, ext:'swc'
-//	internal group:'org.graniteds', name:'granite-essentials-swc', version:graniteds_version, ext:'swc'
+	${dependencies.gradle}
 }
 
 srcDirs = [
 		'${source.directory.main}'
 ]
 
-mainClass = '${source.file.name}.mxml'
+mainClass = '${source.file.directory}/${source.file.name}.as'
 
 additionalCompilerOptions = [
 ]

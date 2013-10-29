@@ -24,7 +24,8 @@ package converter.pom {
 		private function addMainClass(template : String) : String {
 			var splitted : Array = iml.mainClass.split(".");
 			var name : String = splitted.pop();
-			template = StringUtil.replaceByMap(template, {"${source.file.directory}": splitted.join("/"), "${source.file.name}": name});
+			var main : String = splitted.join("/");
+			template = StringUtil.replaceByMap(template, {"${source.file.directory}": main, "${source.file.name}": name});
 			return template;
 		}
 	}
