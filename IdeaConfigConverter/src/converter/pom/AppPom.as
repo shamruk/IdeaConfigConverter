@@ -18,6 +18,9 @@ package converter.pom {
 			template = replaceBasicVars(template);
 			template = addMainClass(template);
 			template = addStuffToResultXML(template);
+			template = template.replace("${source.certificate}", iml.pomDirectory.getRelativePath(iml.certeficate, true));
+			template = template.replace("${source.provision}", iml.pomDirectory.getRelativePath(iml.provision, true));
+			template = template.replace("${source.descriptor}", iml.pomDirectory.getRelativePath(iml.descriptor, true));
 			return template;
 		}
 

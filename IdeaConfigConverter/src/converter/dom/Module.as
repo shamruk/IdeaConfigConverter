@@ -276,5 +276,20 @@ package converter.dom {
 			var platform : String = _configurationXML.attribute("target-platform");
 			return ["Desktop", "Mobile"].indexOf(platform) >= 0;
 		}
+
+		public function get certeficate() : File {
+			var url : String = String(XMLList(configurationXML["packaging-ios"].AirSigningOptions).attribute("keystore-path")).replace("$MODULE_DIR$/", "");
+			return  directory.resolvePath(url);
+		}
+
+		public function get provision() : File {
+			var url : String = String(XMLList(configurationXML["packaging-ios"].AirSigningOptions).attribute("provisioning-profile-path")).replace("$MODULE_DIR$/", "");
+			return  directory.resolvePath(url);
+		}
+
+		public function get descriptor() : File {
+			var url : String = String(XMLList(configurationXML["packaging-ios"]).attribute("custom-descriptor-path")).replace("$MODULE_DIR$/", "");
+			return  directory.resolvePath(url);
+		}
 	}
 }

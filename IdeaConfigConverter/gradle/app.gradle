@@ -24,6 +24,18 @@ ${frameworkLinkage.air.enabler}	dependencies {
 ${frameworkLinkage.air.enabler}		external files("${flexHome}/frameworks/libs/air/airglobal.swc")
 ${frameworkLinkage.air.enabler}	}
 ${frameworkLinkage.air.enabler}}
+${frameworkLinkage.air.enabler}air {
+${frameworkLinkage.air.enabler}	storepass 'Belka2010'
+${frameworkLinkage.air.enabler}	keystore '${source.certificate}'
+${frameworkLinkage.air.enabler}	applicationDescriptor '${source.descriptor}'
+${frameworkLinkage.air.enabler}	//includeFileTrees = [fileTree(dir: 'src/main/actionscript/', include: 'assets/appIcon.png')]
+${frameworkLinkage.air.enabler}}
+${frameworkLinkage.air.enabler}airMobile {
+${frameworkLinkage.air.enabler}platform = 'ios'
+${frameworkLinkage.air.enabler}target = 'ipa-ad-hoc'
+${frameworkLinkage.air.enabler}provisioningProfile = '${source.provision}'
+${frameworkLinkage.air.enabler}}
+
 
 //<groupId>${groupId}</groupId>
 //	<artifactId>${artifactId}</artifactId>
