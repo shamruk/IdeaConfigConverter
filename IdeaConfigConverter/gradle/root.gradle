@@ -19,32 +19,32 @@ subprojects {
 
 	version = '${version}'
 
+	def os = System.getProperty("os.name").toLowerCase()
+	def flexSDKExt = os.contains("windows") ? 'zip' : 'tar.gz'
+	def airSDKExt = os.contains("mac os") ? 'tbz2' : 'zip' // for win or wine
+	def airSDKOS = os.contains("mac os") ? 'mac' : 'win' // for win or wine
+
 	repositories {
 		mavenCentral()
 		mavenLocal()
 		mavenRepo name: 'yoolab-releases', url: "http://projects.yoolab.org/maven/content/repositories/releases"
 		mavenRepo name: 'yoolab-snapshots', url: "http://projects.yoolab.org/maven/content/repositories/snapshots"
-		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-			name = 'Apache'
+		add(new org.apache.ivy.plugins.resolver.URLResolver()) { name = 'Apache'
 			addArtifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
 		}
-		add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-			name = 'Adobe Air SDK'
-			//win// addArtifactPattern 'http://download.macromedia.com/air/win/download/[revision]/[module].[ext]'
-			addArtifactPattern 'http://download.macromedia.com/air/mac/download/[revision]/[module].[ext]'
+		add(new org.apache.ivy.plugins.resolver.URLResolver()) { name = 'Adobe Air SDK'
+			addArtifactPattern 'http://download.macromedia.com/air/'+airSDKOS+'/download/[revision]/[module].[ext]'
 		}
 	}
 
 	playerVersion = "11.9"
 	dependencies {
-//win//		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: 'zip'
-		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: 'tar.gz'
-//win//		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'zip'
-		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'tbz2'
+		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: flexSDKExt
+		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: airSDKExt
 	}
 
 //	flexHome = System.getenv('CUSTOM_FLEX_HOME')
-	publishDir = 'publishDirectory'
+//	publishDir = 'publishDirectory'
 
 	additionalCompilerOptions = [
 			'-debug=false',
@@ -56,6 +56,10 @@ subprojects {
 			'-Xmx1024m',
 			'-Xms512m'
 	]
+
+	sdkAutoInstall {
+		showPrompts = false
+	}
 }
 
 
