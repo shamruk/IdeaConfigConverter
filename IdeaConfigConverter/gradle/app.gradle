@@ -1,5 +1,7 @@
 type = 'swf'
 
+output = '${out.file}'
+
 ${frameworkLinkage.disabler}frameworkLinkage = 'merged'
 
 //configurations {
@@ -36,6 +38,12 @@ ${frameworkLinkage.air.enabler}target = 'ipa-ad-hoc'
 ${frameworkLinkage.air.enabler}provisioningProfile = '${source.provision}'
 ${frameworkLinkage.air.enabler}}
 
+${frameworkLinkage.air.enabler}task packageMobileLinux << {
+${frameworkLinkage.air.enabler}	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes
+${frameworkLinkage.air.enabler}	new File('${config.directory}/build/build.p12') << new File('${config.directory}/${source.certificate}').bytes
+${frameworkLinkage.air.enabler}	new File('${config.directory}/build/build.xml') << new File('${config.directory}/${source.descriptor}').text.replaceAll('SWF file name is set automatically at compile time', '${out.file}.swf')
+${frameworkLinkage.air.enabler}}
+${frameworkLinkage.air.enabler}packageMobileLinux.dependsOn build
 
 //<groupId>${groupId}</groupId>
 //	<artifactId>${artifactId}</artifactId>

@@ -1,5 +1,7 @@
 type = 'swc'
 
+output = '${out.file}'
+
 ${frameworkLinkage.disabler}frameworkLinkage = 'none'
 
 srcDirs = ['${source.directory.main}']
@@ -19,8 +21,6 @@ dependencies {
 additionalCompilerOptions += [
 	'-compiler.headless-server=true'
 ]
-
-//	output = name + '-' + version
 
 ${frameworkLinkage.air.enabler}afterEvaluate {
 ${frameworkLinkage.air.enabler}	dependencies {

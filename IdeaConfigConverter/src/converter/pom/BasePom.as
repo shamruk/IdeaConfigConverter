@@ -147,6 +147,7 @@ package converter.pom {
 			return StringUtil.replaceByMap(template, {
 				"${flex.framework.version}": fullSDKVersion,
 				"${flash.player.version}": iml.flashPlayerVersion,
+				"${config.directory}": iml.name,
 				"${artifactId}": iml.name,
 				"${groupId}": iml.groupID,
 				"${version}": iml.version,
