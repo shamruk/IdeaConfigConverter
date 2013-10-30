@@ -4,26 +4,23 @@ ${frameworkLinkage.disabler}frameworkLinkage = 'none'
 
 srcDirs = ['${source.directory.main}']
 
-FileTree includTree = fileTree(
-		dir: '${source.directory.main}',
-		includes: ['**/*.as', '**.*mxml'],
-		exclude: { details -> !details.file.isDirectory() && !details.file.text.contains('package') }
-)
-List list = []
-includTree.collect {
-	relativePath(it).substring('${source.directory.main}/'.length()).replaceAll('.as', '').replaceAll('.mxml', '').split('/').join('.')
-}.sort().each { list.add(it) }
-
-list.each { println it }
-//.each {File file -> println file }
+${source.directory.hasSkips.enabler}FileTree includTree = fileTree(dir: '${source.directory.main}',includes: ['**/*.as', '**.*mxml'],exclude: { details -> !details.file.isDirectory() && !details.file.text.contains('package') })
+${source.directory.hasSkips.enabler}List list = []
+${source.directory.hasSkips.enabler}includTree.collect {
+${source.directory.hasSkips.enabler}	relativePath(it).substring('${source.directory.main}/'.length()).replaceAll('.as', '').replaceAll('.mxml', '').split('/').join('.')
+${source.directory.hasSkips.enabler}}.sort().each { list.add(it) }
+${source.directory.hasSkips.enabler}list.each { println it }
 ${source.directory.hasSkips.enabler}includeClasses = list
 
 dependencies {
 	${dependencies.gradle}
 }
 
-additionalCompilerOptions = [
+additionalCompilerOptions += [
+	'-compiler.headless-server=true'
 ]
+
+//	output = name + '-' + version
 
 ${frameworkLinkage.air.enabler}afterEvaluate {
 ${frameworkLinkage.air.enabler}	dependencies {

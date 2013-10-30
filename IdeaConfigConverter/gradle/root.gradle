@@ -37,19 +37,19 @@ subprojects {
 
 	playerVersion = "11.9"
 	dependencies {
-		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: 'zip'
-//		//win// airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'zip'
+//win//		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: 'zip'
+		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: 'tar.gz'
+//win//		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'zip'
 		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: 'tbz2'
 	}
 
 //	flexHome = System.getenv('CUSTOM_FLEX_HOME')
 	publishDir = 'publishDirectory'
 
-//	output = name + '-' + version
-
 	additionalCompilerOptions = [
 			'-debug=false',
-			'-optimize=true'
+			'-optimize=true',
+			'-target-player=11.9',
 	]
 
 	jvmArguments = [

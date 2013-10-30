@@ -96,6 +96,7 @@ package converter.pom {
 			var xml : XML = XML(FileHelper.readFile(file));
 			for each(var option : XML in xml.additionalCompilerOptions.option) {
 				result = result.replace("additionalCompilerOptions = [", "additionalCompilerOptions = [\n\t'" + option.text() + "',");
+				result = result.replace("additionalCompilerOptions += [", "additionalCompilerOptions += [\n\t'" + option.text() + "',");
 			}
 			//addPlugingConfiguration(xml, result);
 			return result;

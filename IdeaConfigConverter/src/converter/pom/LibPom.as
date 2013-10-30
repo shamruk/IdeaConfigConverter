@@ -40,7 +40,7 @@ package converter.pom {
 					hasSkips=true;
 				}
 			}
-			result=result.replace("${source.directory.hasSkips.enabler}", hasSkips?"":"//");
+			result = StringUtil.replace(result, "${source.directory.hasSkips.enabler}", hasSkips?"":"//");
 			return result;
 		}
 	}
