@@ -42,7 +42,15 @@ ${frameworkLinkage.air.enabler}task packageMobileLinux << {
 ${frameworkLinkage.air.enabler}	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes
 ${frameworkLinkage.air.enabler}	new File('${config.directory}/build/build.p12') << new File('${config.directory}/${source.certificate}').bytes
 ${frameworkLinkage.air.enabler}	new File('${config.directory}/build/build.xml') << new File('${config.directory}/${source.descriptor}').text.replaceAll('SWF file name is set automatically at compile time', '${out.file}.swf')
-${frameworkLinkage.air.enabler}	commandLine 'cd ${config.directory}/build && wine java -jar ${airHome}/lib/adt.jar -package -target ipa-ad-hoc -provisioning-profile build.provision -storetype pkcs12 -keystore build.p12 -storepass Belka2010 ${out.file}.ipa build.xml ${out.file}.swf'
+${frameworkLinkage.air.enabler}	def packer = new File('${config.directory}/build/build.sh')
+${frameworkLinkage.air.enabler}	packer.delete()
+${frameworkLinkage.air.enabler}	packer << '#!/bin/sh\n'
+${frameworkLinkage.air.enabler}	packer << 'cd build\n'
+${frameworkLinkage.air.enabler}	packer << 'wine java -jar '+flexHome+'/lib/adt.jar -package -target ipa-ad-hoc -provisioning-profile build.provision -storetype pkcs12 -keystore build.p12 -storepass Belka2010 ${out.file}.ipa build.xml ${out.file}.swf'
+${frameworkLinkage.air.enabler}	packer.setExecutable(true)
+${frameworkLinkage.air.enabler}	exec {
+${frameworkLinkage.air.enabler}		executable 'build/build.sh'
+${frameworkLinkage.air.enabler}	}
 ${frameworkLinkage.air.enabler}}
 ${frameworkLinkage.air.enabler}packageMobileLinux.dependsOn build
 
