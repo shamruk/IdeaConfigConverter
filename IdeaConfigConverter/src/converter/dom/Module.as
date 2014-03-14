@@ -41,6 +41,7 @@ package converter.dom {
 		private var _dependedModules : Vector.<ModuleDependency>;
 		public var moduleRoot : ModuleRoot;
 		private var _configurationID : uint;
+		private var _artifactID : String;
 
 		public function Module(project : Project, file : File, moduleRoot : ModuleRoot, configurationID : uint) {
 			_project = project;
@@ -114,6 +115,10 @@ package converter.dom {
 
 		public function get name() : String {
 			return _name ||= configurationXML.attribute("name");
+		}
+
+		public function get artifactID() : String {
+			return _artifactID ||= StringUtil.replaceFromMany(name, new <String>[".", "_", " ", "/", ":"], "-").toLowerCase();
 		}
 
 		public function get dependedLibs() : Vector.<Lib> {
