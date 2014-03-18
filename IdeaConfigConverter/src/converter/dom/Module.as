@@ -73,9 +73,11 @@ package converter.dom {
 			if(urls.length() == 1){
 				url = urls;
 			}else {
+				var minLength:uint=uint.MAX_VALUE;
 				for each(var possibleURL:String in urls){
-					if(!url || possibleURL.indexOf("src") >= 0){
+					if(!url || possibleURL.length < minLength){
 						url = possibleURL;
+						minLength = possibleURL.length;
 					}
 				}
 			}
