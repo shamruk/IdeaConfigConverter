@@ -42,6 +42,7 @@ package converter.dom {
 		public var moduleRoot : ModuleRoot;
 		private var _configurationID : uint;
 		private var _directory : File;
+		private var _srcDirs : Vector.<String>;
 
 		public function Module(project : Project, file : File, moduleRoot : ModuleRoot, configurationID : uint) {
 			_project = project;
@@ -67,7 +68,17 @@ package converter.dom {
 		}
 
 		private function getDirectory() : File {
-			var url :String = content.component.content.@url;
+			var urls : XMLList = content.component.content.@url;
+			var url:String;
+			if(urls.length() == 1){
+				url = urls;
+			}else {
+				for each(var possibleURL:String in urls){
+					if(!url || possibleURL.indexOf("src") >= 0){
+						url = possibleURL;
+					}
+				}
+			}
 			url = url.replace("file://$MODULE_DIR$", "");
 			return url ? _file.parent.resolvePath(url.substr(1)) : _file.parent;
 
@@ -291,6 +302,21 @@ package converter.dom {
 		public function get descriptor() : File {
 			var url : String = String(XMLList(configurationXML["packaging-ios"]).attribute("custom-descriptor-path")).replace("$MODULE_DIR$/", "");
 			return  directory.resolvePath(url);
+		}
+
+		public function get srcDirs() : Vector.<String> {
+			return _srcDirs || getSrcDirs();
+		}
+
+		private function getSrcDirs() : Vector.<String> {
+			var strings : Vector.<String> = new Vector.<String>();
+			if(content.component.(@name == "NewModuleRootManager").content.sourceFolder.@url.length()==2){
+				var t=1
+			}
+			for each(var url:String in  content.component.(@name == "NewModuleRootManager").content.sourceFolder.@url){
+				strings.push(url.replace("file://$MODULE_DIR$/", ""));
+			}
+			return  strings;
 		}
 	}
 }

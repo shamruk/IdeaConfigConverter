@@ -144,6 +144,12 @@ package converter.pom {
 
 			var srcPath : String = "../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(Module.DEFAULT_SOURCE_DIRECTORY));
 
+			var srcPathsArray : Array = [];
+			for each(var srcDir:String in iml.srcDirs){
+				srcPathsArray.push("../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(srcDir)))
+			}
+			var srcPaths : String = srcPathsArray.join("','");
+
 			return StringUtil.replaceByMap(template, {
 				"${flex.framework.version}": fullSDKVersion,
 				"${flash.player.version}": iml.flashPlayerVersion,
@@ -152,6 +158,7 @@ package converter.pom {
 				"${groupId}": iml.groupID,
 				"${version}": iml.version,
 				"${source.directory.main}": srcPath,
+				"${source.directories}": srcPaths,
 				"${repository.local.generated.url}": project.getDirectoryForLibrariesURL(iml.pomDirectory, iml.moduleRoot.directory),
 				"${out.output.directory}": getTempOutput(iml),
 				"${out.directory}": getOutputDirectory(iml),

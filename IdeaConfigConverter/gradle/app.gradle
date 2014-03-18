@@ -12,9 +12,7 @@ dependencies {
 	/*dependencies.gradle*/
 }
 
-srcDirs = [
-		'${source.directory.main}'
-]
+srcDirs = [ '${source.directories}' ]
 
 mainClass = '${source.file.directory}${source.file.name}.as'
 

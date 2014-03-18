@@ -4,7 +4,7 @@ output = '${out.file}'
 
 /*frameworkLinkage.disabler*/frameworkLinkage = 'none'
 
-srcDirs = ['${source.directory.main}']
+srcDirs = [ '${source.directories}' ]
 
 /*source.directory.hasSkips.enabler*/FileTree includTree = fileTree(dir: '${source.directory.main}',includes: ['**/*.as', '**/*.mxml'],exclude: { details -> !details.file.isDirectory() && !details.file.text.contains('package') && details.file.name.endsWith('.as') })
 /*source.directory.hasSkips.enabler*/List list = []
