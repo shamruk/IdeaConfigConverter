@@ -45,5 +45,25 @@ package converter.dom {
 		public function get sdkVersion() : String {
 			return _xml.flexSdkVersion;
 		}
+
+		public function get gradleFXVersion() : String {
+			return _xml.gradleFxVersion || "0.8.2";
+		}
+
+		public function get flexSDKVersion() : String {
+			return _xml.flexSdkVersion || "4.12.0";
+		}
+
+		public function get airSDKVersion() : String {
+			return _xml.airSdkVersion || "4.0";
+		}
+
+		public function get playerVersion() : String {
+			return _xml.flashPlayerVersion || "12.0";
+		}
+
+		public function get skipModules() : Array {
+			return (_xml.skipModules || "").split(",");
+		}
 	}
 }

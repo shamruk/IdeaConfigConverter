@@ -263,7 +263,8 @@ package converter.dom {
 		public function get namespaceLocation() : String {
 			for each(var namespaceLocation : String in namespaces) {
 				namespaceLocation = namespaceLocation.replace("$MODULE_DIR$/", "");
-				return pomDirectory.getRelativePath(directory.resolvePath(namespaceLocation), true);
+				return _project.pomDirectory.getRelativePath(directory.resolvePath(namespaceLocation), true);
+//				return pomDirectory.getRelativePath(directory.resolvePath(namespaceLocation), true);
 			}
 			return null;
 		}

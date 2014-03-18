@@ -2,42 +2,33 @@ type = 'swc'
 
 output = '${out.file}'
 
-${frameworkLinkage.disabler}frameworkLinkage = 'none'
+/*frameworkLinkage.disabler*/frameworkLinkage = 'none'
 
 srcDirs = ['${source.directory.main}']
 
-${source.directory.hasSkips.enabler}FileTree includTree = fileTree(dir: '${source.directory.main}',includes: ['**/*.as', '**.*mxml'],exclude: { details -> !details.file.isDirectory() && !details.file.text.contains('package') })
-${source.directory.hasSkips.enabler}List list = []
-${source.directory.hasSkips.enabler}includTree.collect {
-${source.directory.hasSkips.enabler}	relativePath(it).substring('${source.directory.main}/'.length()).replaceAll('.as', '').replaceAll('.mxml', '').split('/').join('.')
-${source.directory.hasSkips.enabler}}.sort().each { list.add(it) }
-${source.directory.hasSkips.enabler}list.each { println it }
-${source.directory.hasSkips.enabler}includeClasses = list
+/*source.directory.hasSkips.enabler*/FileTree includTree = fileTree(dir: '${source.directory.main}',includes: ['**/*.as', '**/*.mxml'],exclude: { details -> !details.file.isDirectory() && !details.file.text.contains('package') && details.file.name.endsWith('.as') })
+/*source.directory.hasSkips.enabler*/List list = []
+/*source.directory.hasSkips.enabler*/includTree.collect {
+/*source.directory.hasSkips.enabler*/	relativePath(it).substring('${source.directory.main}/'.length()).replaceAll('\\.as', '').replaceAll('\\.mxml', '').split('/').join('.')
+/*source.directory.hasSkips.enabler*/}.sort().each { list.add(it) }
+/*source.directory.hasSkips.enabler*/list.each { println it }
+/*source.directory.hasSkips.enabler*/includeClasses = list
 
 dependencies {
-	${dependencies.gradle}
+	/*dependencies.gradle*/
 }
 
 additionalCompilerOptions += [
-	'-compiler.headless-server=true'
+	'-compiler.headless-server=true',
+	/*namespace_manifest*/
+	/*namespace_include*/
 ]
 
-${frameworkLinkage.air.enabler}afterEvaluate {
-${frameworkLinkage.air.enabler}	dependencies {
-${frameworkLinkage.air.enabler}		external files("${flexHome}/frameworks/libs/air/airglobal.swc")
-${frameworkLinkage.air.enabler}	}
-${frameworkLinkage.air.enabler}}
+/*frameworkLinkage.air.enabler*/afterEvaluate {
+/*frameworkLinkage.air.enabler*/	dependencies {
+/*frameworkLinkage.air.enabler*/		external files("${flexHome}/frameworks/libs/air/airglobal.swc")
+/*frameworkLinkage.air.enabler*/	}
+/*frameworkLinkage.air.enabler*/}
 
-//<groupId>${groupId}</groupId>
-//	<artifactId>${artifactId}</artifactId>
-//	<version>${version}</version>
-//
-//		<outputDirectory>${out.output.directory}</outputDirectory>
-//<directory>${out.directory}</directory>
 //					<debug>${debug}</debug>
 //<optimize>${optimize}</optimize>
-//
-//<version>${flex.framework.version}</version>
-//			<classifier>${flash.player.version}</classifier>
-//
-//<url>${repository.local.generated.url}</url>

@@ -84,8 +84,8 @@ package converter.pom {
 		}
 
 		private function addExtraConfig(result : String) : String {
-			result = addExtraConfigFrom(project.directory.resolvePath("extraPomConfig.xml"), result);
-			result = addExtraConfigFrom(iml.directory.resolvePath("extraPomConfig.xml"), result);
+			result = addExtraConfigFrom(project.directory.resolvePath("extraGradleConfig.xml"), result);
+			result = addExtraConfigFrom(iml.directory.resolvePath("extraGradleConfig.xml"), result);
 			return result;
 		}
 
@@ -132,9 +132,9 @@ package converter.pom {
 				var dependencyType : String = DEPENDENCY_TYPE_TO_SCOPE[decadencyLib.linkage];
 				dependacies.push(dependencyType + " files('" + iml.pomDirectory.getRelativePath(decadencyLib.lib.file, true) + "')");
 			}
-			result = result.replace("${dependencies.gradle}", dependacies.join("\n\t"));
-			result = result.replace("${frameworkLinkage.disabler}", iml.type == Module.TYPE_FLEX ? "//" : "");
-			result = StringUtil.replace(result, "${frameworkLinkage.air.enabler}", !iml.isAIR ? "//" : "");
+			result = result.replace("/*dependencies.gradle*/", dependacies.join("\n\t"));
+			result = result.replace("/*frameworkLinkage.disabler*/", iml.type == Module.TYPE_FLEX ? "//" : "");
+			result = StringUtil.replace(result, "/*frameworkLinkage.air.enabler*/", !iml.isAIR ? "//" : "");
 			return result;
 		}
 
@@ -175,19 +175,30 @@ package converter.pom {
 
 		protected function addStuffToResultXML(result : String) : String {
 			result = addDependencies(result);
-//	todo:		result=addNamespaces(result);
+			result = addNamespaces(result);
 //	todo:		result=addIncludeSources(result);
 			result = addExtraConfig(result);
 //	todo:		result=addExtraSource(result);
 			return result;
 		}
 
-		private function addNamespaces(result : XML) : void {
+		private function addNamespaces(result : String) : String {
 			if (iml.namespaceURI) {
-				var namespaceConfiguration : String = replaceBasicVars(NAMESPACE_XML.toXMLString());
-				addPlugingConfiguration(XML(namespaceConfiguration), result);
+				//var namespaceConfiguration : String = replaceBasicVars("'-namespace+=${ns_uri},${ns_location} -include-namespaces+=${ns_uri}'");
+				var namespaceConfiguration : String = replaceBasicVars("'-namespace+=${ns_uri},'+new File('${ns_location}').absolutePath,");
+				result = result.replace("/*namespace_manifest*/",  namespaceConfiguration);
+				var namespaceInclude : String = replaceBasicVars("'-include-namespaces+=${ns_uri}',");
+				result = result.replace("/*namespace_include*/",  namespaceInclude);
 			}
+			return result;
 		}
+
+		protected function get includeFileList():Boolean{
+			return iml.namespaceURI;
+		}
+
+		// <namespace uri="http://ns.adobe.com/mxml/2009" manifest="${flexHome}/frameworks/mxml-2009-manifest.xml" />
+		//library://ns.adobe.com/flex/spark ${flexHome}/frameworks/spark-manifest.xml library://ns.adobe.com/flex/mx ${flexHome}/frameworks/mx-manifest.xml
 
 		private function addIncludeSources(result : XML) : void {
 			if (iml.namespaceURI) {

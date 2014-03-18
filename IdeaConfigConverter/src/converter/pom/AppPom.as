@@ -28,7 +28,10 @@ package converter.pom {
 			var splitted : Array = iml.mainClass.split(".");
 			var name : String = splitted.pop();
 			var main : String = splitted.join("/");
-			template = StringUtil.replaceByMap(template, {"${source.file.directory}": main, "${source.file.name}": name});
+			if(main){
+				main += "/";
+			}
+			template = StringUtil.replaceByMap(template, {"${source.file.directory}": main , "${source.file.name}": name});
 			return template;
 		}
 	}

@@ -12,7 +12,7 @@ package converter.dom {
 		}
 
 		private function loadProjectRoots(directory : File) : void {
-			var files : Vector.<File> = FileHelper.findFiles(directory, "pomProject.xml");
+			var files : Vector.<File> = FileHelper.findFiles(directory, "gradleProject.xml");
 			var projectMainRoot : File = directory;
 			roots = new Vector.<ModuleRoot>();
 			for each(var file : File in files) {

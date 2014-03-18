@@ -9,7 +9,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath group: 'org.gradlefx', name: 'gradlefx', version: '0.7'
+		classpath group: 'org.gradlefx', name: 'gradlefx', version: '${gradlefx.version}'
 	}
 }
 
@@ -37,19 +37,18 @@ subprojects {
 		}
 	}
 
-	playerVersion = "11.9"
+	playerVersion = "${player.version}"
 	dependencies {
-		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.11.0', ext: flexSDKExt
-		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '3.9', ext: airSDKExt
+		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '${flex.sdk.version}', ext: flexSDKExt
+		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '${air.sdk.version}', ext: airSDKExt
 	}
 
-//	flexHome = System.getenv('CUSTOM_FLEX_HOME')
 //	publishDir = 'publishDirectory'
 
 	additionalCompilerOptions = [
 			'-debug=false',
 			'-optimize=true',
-			'-target-player=11.9',
+			'-target-player=${player.version}',
 	]
 
 	jvmArguments = [

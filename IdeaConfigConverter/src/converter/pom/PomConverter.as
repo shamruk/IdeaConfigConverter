@@ -14,10 +14,11 @@ package converter.pom {
 		}
 
 		private function saveProjectPoms(project : Project) : void {
+			var skipModules:Array = project.moduleRoots.findRoot(project.directory).skipModules;
 			var swcs : Dictionary = new Dictionary();
 			var swfs : Dictionary = new Dictionary();
 			for each(var module : Module in project.modules) {
-				if (isSupported(module)) {
+				if (isSupported(module) && skipModules.indexOf(module.name) < 0) {
 					if (module.outputType == Module.OUTPUT_TYPE_LIBRARY) {
 						swcs[module] = new LibPom(project, module);
 					} else {

@@ -24,7 +24,11 @@ package converter.pom {
 			template = StringUtil.replaceByMap(template, {
 				"${artifactId}": moduleRoot.artifactID,
 				"${groupId}": moduleRoot.groupID,
-				"${version}": moduleRoot.version
+				"${version}": moduleRoot.version,
+				"${gradlefx.version}": moduleRoot.gradleFXVersion,
+				"${flex.sdk.version}": moduleRoot.flexSDKVersion,
+				"${air.sdk.version}": moduleRoot.airSDKVersion,
+				"${player.version}": moduleRoot.playerVersion
 			});
 //			template=template.replace("${flex.framework.version}", getFullSDKVersion(iml.sdkVersion));
 //			template=template.replace("${flash.player.version}", iml.flashPlayerVersion);
