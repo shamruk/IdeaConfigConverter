@@ -21,8 +21,10 @@ subprojects {
 
 	def os = System.getProperty("os.name").toLowerCase()
 	def flexSDKExt = os.contains("windows") ? 'zip' : 'tar.gz'
-	def airSDKExt = os.contains("mac os") ? 'tbz2' : 'zip' // for win or wine
-	def airSDKOS = os.contains("mac os") ? 'mac' : 'win' // for win or wine
+	def airSDKExt = os.contains("windows") ? 'zip' : 'tbz2'
+	def airSDKOS = os.contains("windows") ? 'win' : 'mac'
+// to use wine on linux:	def airSDKExt = os.contains("mac os") ? 'tbz2' : 'zip'
+// to use wine on linux:	def airSDKOS = os.contains("mac os") ? 'mac' : 'win'
 
 	repositories {
 		mavenCentral()
