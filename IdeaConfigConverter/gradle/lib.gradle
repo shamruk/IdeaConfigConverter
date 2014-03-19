@@ -2,11 +2,11 @@ type = 'swc'
 
 output = '${out.file}'
 
-/*frameworkLinkage.disabler*/frameworkLinkage = 'none'
+frameworkLinkage = '${frameworkLinkage}'
 
 srcDirs = [ '${source.directories}' ]
 
-/*source.directory.hasSkips.enabler*/FileTree includTree = fileTree(dir: '${source.directory.main}',includes: ['**/*.as', '**/*.mxml'],exclude: { details -> !details.file.isDirectory() && !details.file.text.contains('package') && details.file.name.endsWith('.as') })
+/*source.directory.hasSkips.enabler*/FileTree includTree = fileTree(dir: '${source.directory.main}',includes: ['**/*.as', '**/*.mxml'],exclude: { details -> !details.file.isDirectory() && details.file.name.endsWith('.as') && !details.file.text.contains('package') })
 /*source.directory.hasSkips.enabler*/List list = []
 /*source.directory.hasSkips.enabler*/includTree.collect {
 /*source.directory.hasSkips.enabler*/	relativePath(it).substring('${source.directory.main}/'.length()).replaceAll('\\.as', '').replaceAll('\\.mxml', '').split('/').join('.')

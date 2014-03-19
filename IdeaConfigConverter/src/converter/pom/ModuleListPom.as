@@ -13,13 +13,14 @@ package converter.pom {
 		}
 
 		override public function getData() : String {
-			var moduleNames : Vector.<String> = new Vector.<String>();
+			var moduleNames : Array = [];
 			for each(var poms : * in _pomPacks) {
 				for each(var pom : IPom in poms) {
 					//result.*::modules.module += <module>{pom.iml.relativePomDirecoryPath}</module>;
 					moduleNames.push("'" + pom.iml.pomDirectory.name + "'");
 				}
 			}
+			moduleNames.sort();
 			return "include " + moduleNames.join(", ");
 		}
 

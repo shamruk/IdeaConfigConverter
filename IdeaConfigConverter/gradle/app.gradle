@@ -2,7 +2,7 @@ type = 'swf'
 
 output = '${out.file}'
 
-/*frameworkLinkage.disabler*/frameworkLinkage = 'merged'
+frameworkLinkage = '${frameworkLinkage}'
 
 //configurations {
 //	all*.exclude group: 'com.adobe.flex.framework'

@@ -133,7 +133,11 @@ package converter.pom {
 				dependacies.push(dependencyType + " files('" + iml.pomDirectory.getRelativePath(decadencyLib.lib.file, true) + "')");
 			}
 			result = result.replace("/*dependencies.gradle*/", dependacies.join("\n\t"));
-			result = result.replace("/*frameworkLinkage.disabler*/", iml.type == Module.TYPE_FLEX ? "//" : "");
+
+			// todo: think
+			result = result.replace("${frameworkLinkage}", "merged"); // or none
+			//result = result.replace("/*frameworkLinkage.disabler*/", iml.type == Module.TYPE_FLEX ? "//" : "");
+
 			result = StringUtil.replace(result, "/*frameworkLinkage.air.enabler*/", !iml.isAIR ? "//" : "");
 			return result;
 		}
@@ -145,7 +149,7 @@ package converter.pom {
 			var srcPath : String = "../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(Module.DEFAULT_SOURCE_DIRECTORY));
 
 			var srcPathsArray : Array = [];
-			for each(var srcDir:String in iml.srcDirs){
+			for each(var srcDir:String in iml.sourceDirectoryURLs){
 				srcPathsArray.push("../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(srcDir)))
 			}
 			var srcPaths : String = srcPathsArray.join("','");
@@ -183,9 +187,7 @@ package converter.pom {
 		protected function addStuffToResultXML(result : String) : String {
 			result = addDependencies(result);
 			result = addNamespaces(result);
-//	todo:		result=addIncludeSources(result);
 			result = addExtraConfig(result);
-//	todo:		result=addExtraSource(result);
 			return result;
 		}
 
@@ -201,7 +203,9 @@ package converter.pom {
 		}
 
 		protected function get includeFileList():Boolean{
-			return iml.namespaceURI;
+			return true;
+			// todo: think
+			// return iml.namespaceURI;
 		}
 
 		// <namespace uri="http://ns.adobe.com/mxml/2009" manifest="${flexHome}/frameworks/mxml-2009-manifest.xml" />

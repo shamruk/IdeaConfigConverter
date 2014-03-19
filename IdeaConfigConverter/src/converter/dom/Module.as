@@ -227,8 +227,8 @@ package converter.dom {
 
 		private function getSourceDirectoryURLs() : Vector.<String> {
 			var sources : Vector.<String> = new Vector.<String>();
-			for each(var source : String in content.component.content.sourceFolder.@url) {
-				sources.push(StringUtil.replace(source, "file://$MODULE_DIR$/", ""));
+			for each(var url:String in  content.component.(@name == "NewModuleRootManager").content.sourceFolder.@url){
+				sources.push(url.replace("file://$MODULE_DIR$/", ""));
 			}
 			return sources;
 		}
@@ -304,21 +304,6 @@ package converter.dom {
 		public function get descriptor() : File {
 			var url : String = String(XMLList(configurationXML["packaging-ios"]).attribute("custom-descriptor-path")).replace("$MODULE_DIR$/", "");
 			return  directory.resolvePath(url);
-		}
-
-		public function get srcDirs() : Vector.<String> {
-			return _srcDirs || getSrcDirs();
-		}
-
-		private function getSrcDirs() : Vector.<String> {
-			var strings : Vector.<String> = new Vector.<String>();
-			if(content.component.(@name == "NewModuleRootManager").content.sourceFolder.@url.length()==2){
-				var t=1
-			}
-			for each(var url:String in  content.component.(@name == "NewModuleRootManager").content.sourceFolder.@url){
-				strings.push(url.replace("file://$MODULE_DIR$/", ""));
-			}
-			return  strings;
 		}
 	}
 }
