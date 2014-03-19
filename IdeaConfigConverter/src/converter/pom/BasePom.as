@@ -194,6 +194,7 @@ package converter.pom {
 		private function addNamespaces(result : String) : String {
 			if (iml.namespaceURI) {
 				//var namespaceConfiguration : String = replaceBasicVars("'-namespace+=${ns_uri},${ns_location} -include-namespaces+=${ns_uri}'");
+				// todo: try "'-namespace+=${ns_uri},${projectDir.path}/${ns_location}',"
 				var namespaceConfiguration : String = replaceBasicVars("'-namespace+=${ns_uri},'+new File('${ns_location}').absolutePath,");
 				result = result.replace("/*namespace_manifest*/",  namespaceConfiguration);
 				var namespaceInclude : String = replaceBasicVars("'-include-namespaces+=${ns_uri}',");
@@ -204,7 +205,6 @@ package converter.pom {
 
 		protected function get includeFileList():Boolean{
 			return true;
-			// todo: think
 			// return iml.namespaceURI;
 		}
 
