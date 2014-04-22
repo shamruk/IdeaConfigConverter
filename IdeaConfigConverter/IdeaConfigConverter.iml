@@ -7,7 +7,7 @@
           <sdk name="apache-flex" />
         </dependencies>
         <compiler-options />
-        <packaging-air-desktop package-file-name="IdeaConfigConverter" />
+        <packaging-air-desktop use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/air-app.xml" package-file-name="IdeaConfigConverter" />
         <packaging-android />
         <packaging-ios />
       </configuration>

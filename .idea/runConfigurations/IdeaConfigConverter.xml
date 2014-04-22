@@ -15,9 +15,8 @@
     <option name="launchUrl" value="false" />
     <option name="launcherParameters">
       <LauncherParameters>
-        <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+        <option name="browserFamily" value="FIREFOX" />
         <option name="launcherType" value="OSDefault" />
-        <option name="newPlayerInstance" value="false" />
         <option name="playerPath" value="/Applications/Flash Player Debugger.app" />
       </LauncherParameters>
     </option>
