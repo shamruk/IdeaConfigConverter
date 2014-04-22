@@ -7,6 +7,9 @@
 buildscript {
 	repositories {
 		mavenCentral()
+		maven {
+			url "https://oss.sonatype.org/content/repositories/snapshots"
+		}
 	}
 	dependencies {
 		classpath group: 'org.gradlefx', name: 'gradlefx', version: '${gradlefx.version}'
