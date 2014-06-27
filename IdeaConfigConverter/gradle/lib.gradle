@@ -6,14 +6,6 @@ frameworkLinkage = '${frameworkLinkage}'
 
 srcDirs = [ '${source.directories}' ]
 
-/*source.directory.hasSkips.enabler*/FileTree includTree = fileTree(dir: '${source.directory.main}',includes: ['**/*.as', '**/*.mxml'],exclude: { details -> !details.file.isDirectory() && details.file.name.endsWith('.as') && !details.file.text.contains('package') })
-/*source.directory.hasSkips.enabler*/List list = []
-/*source.directory.hasSkips.enabler*/includTree.collect {
-/*source.directory.hasSkips.enabler*/	relativePath(it).substring('${source.directory.main}/'.length()).replaceAll('\\.as', '').replaceAll('\\.mxml', '').split('/').join('.')
-/*source.directory.hasSkips.enabler*/}.sort().each { list.add(it) }
-/*source.directory.hasSkips.enabler*/list.each { println it }
-/*source.directory.hasSkips.enabler*/includeClasses = list
-
 dependencies {
 	/*dependencies.gradle*/
 }
