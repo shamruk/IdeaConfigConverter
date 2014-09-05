@@ -1,0 +1,10 @@
+<project>
+	<groupId>foo.client</groupId>
+	<artifactId>Foo.Root</artifactId>
+	<version>current</version>
+	<gradleFxVersion>0.8.3</gradleFxVersion>
+	<flexSdkVersion>4.12.0</flexSdkVersion>
+	<airSdkVersion>4.0</airSdkVersion>
+	<flashPlayerVersion>12.0</flashPlayerVersion>
+	<skipModules></skipModules>
+</project>

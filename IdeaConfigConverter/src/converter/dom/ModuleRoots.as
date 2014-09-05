@@ -11,8 +11,16 @@ package converter.dom {
 			loadProjectRoots(directory);
 		}
 
+		private static const GRADLE_PROJECT : String = "gradleProject.xml";
+		[Embed(source="/../gradle/gradleProject.xml", mimeType="application/octet-stream")]
+		private static const POM_DATA : Class;
+		private static const POM : XML = XML(new POM_DATA);
+
 		private function loadProjectRoots(directory : File) : void {
-			var files : Vector.<File> = FileHelper.findFiles(directory, "gradleProject.xml");
+			if(!directory.resolvePath(GRADLE_PROJECT).exists){
+				FileHelper.writeFile(directory.resolvePath(GRADLE_PROJECT), POM.toXMLString());
+			}
+			var files : Vector.<File> = FileHelper.findFiles(directory, GRADLE_PROJECT);
 			var projectMainRoot : File = directory;
 			roots = new Vector.<ModuleRoot>();
 			for each(var file : File in files) {
