@@ -5,65 +5,63 @@
 //}
 
 buildscript {
-	repositories {
-		mavenCentral()
-		maven {
-			url "https://oss.sonatype.org/content/repositories/snapshots"
-		}
-	}
-	dependencies {
-		classpath group: 'org.gradlefx', name: 'gradlefx', version: '${gradlefx.version}'
-	}
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+    }
+    dependencies {
+        classpath group: 'org.gradlefx', name: 'gradlefx', version: '${gradlefx.version}'
+    }
 }
 
 subprojects {
 
-	apply plugin: 'gradlefx'
+    apply plugin: 'gradlefx'
 
-	version = '${version}'
+    version = '${version}'
 
-	def os = System.getProperty("os.name").toLowerCase()
-	def flexSDKExt = os.contains("windows") ? 'zip' : 'tar.gz'
-	def airSDKExt = os.contains("windows") ? 'zip' : 'tbz2'
-	def airSDKOS = os.contains("windows") ? 'win' : 'mac'
+    def os = System.getProperty("os.name").toLowerCase()
+    def flexSDKExt = os.contains("windows") ? 'zip' : 'tar.gz'
+    def airSDKExt = os.contains("windows") ? 'zip' : 'tbz2'
+    def airSDKOS = os.contains("windows") ? 'win' : 'mac'
 // to use wine on linux:	def airSDKExt = os.contains("mac os") ? 'tbz2' : 'zip'
 // to use wine on linux:	def airSDKOS = os.contains("mac os") ? 'mac' : 'win'
 
-	repositories {
-		mavenCentral()
-		mavenLocal()
-		mavenRepo name: 'yoolab-releases', url: "http://projects.yoolab.org/maven/content/repositories/releases"
-		mavenRepo name: 'yoolab-snapshots', url: "http://projects.yoolab.org/maven/content/repositories/snapshots"
-		add(new org.apache.ivy.plugins.resolver.URLResolver()) { name = 'Apache'
-			addArtifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
-		}
-		add(new org.apache.ivy.plugins.resolver.URLResolver()) { name = 'Adobe Air SDK'
-			addArtifactPattern 'http://download.macromedia.com/air/'+airSDKOS+'/download/[revision]/[module].[ext]'
-		}
-	}
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+            name = 'Apache'
+            addArtifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
+        }
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+            name = 'Adobe Air SDK'
+            addArtifactPattern 'http://download.macromedia.com/air/' + airSDKOS + '/download/[revision]/[module].[ext]'
+        }
+    }
 
-	playerVersion = "${player.version}"
-	dependencies {
-		flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '${flex.sdk.version}', ext: flexSDKExt
-		airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '${air.sdk.version}', ext: airSDKExt
-	}
+    playerVersion = "${player.version}"
+    dependencies {
+        flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '${flex.sdk.version}', ext: flexSDKExt
+        airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '${air.sdk.version}', ext: airSDKExt
+    }
 
 //	publishDir = 'publishDirectory'
 
-	additionalCompilerOptions = [
-			'-debug=false',
-			'-optimize=true',
-			'-target-player=${player.version}',
-	]
+    additionalCompilerOptions = [
+            '-debug=false',
+            '-optimize=true',
+            '-target-player=${player.version}',
+    ]
 
-	jvmArguments = [
-			'-Xmx1024m',
-			'-Xms512m'
-	]
+    jvmArguments = [
+            '-Xmx1024m',
+            '-Xms512m'
+    ]
 
-	sdkAutoInstall {
-		showPrompts = false
-	}
+    sdkAutoInstall {
+        showPrompts = false
+    }
 }
-
-
