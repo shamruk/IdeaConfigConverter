@@ -3,6 +3,8 @@ package converter.pom {
 	import converter.dom.Module;
 	import converter.dom.Project;
 
+	import flash.filesystem.File;
+
 	public class AppPom extends BasePom implements IPom {
 
 		[Embed(source="/../gradle/app.gradle", mimeType="application/octet-stream")]
@@ -31,6 +33,8 @@ package converter.pom {
 			if(main){
 				main += "/";
 			}
+			var possibleMXML : File = iml.directory.resolvePath(iml.sourceDirectoryURLs[0]).resolvePath(main).resolvePath(name + ".mxml");
+			name += possibleMXML.exists ? ".mxml" : ".as";
 			template = StringUtil.replaceByMap(template, {"${source.file.directory}": main , "${source.file.name}": name});
 			return template;
 		}

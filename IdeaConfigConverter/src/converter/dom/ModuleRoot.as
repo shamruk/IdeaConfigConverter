@@ -62,6 +62,10 @@ package converter.dom {
 			return _xml.flashPlayerVersion || "12.0";
 		}
 
+		public function get playerSWFVersion() : String {
+			return _xml.flashSWFVersion || "14";
+		}
+
 		public function get skipModules() : Array {
 			return (_xml.skipModules || "").split(",");
 		}

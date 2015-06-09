@@ -30,17 +30,15 @@ subprojects {
 // to use wine on linux:	def airSDKOS = os.contains("mac os") ? 'mac' : 'win'
 
     repositories {
-        mavenCentral()
-        mavenLocal()
-        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-            name = 'Apache'
-            addArtifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
-        }
-        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-            name = 'Adobe Air SDK'
-            addArtifactPattern 'http://download.macromedia.com/air/' + airSDKOS + '/download/[revision]/[module].[ext]'
-        }
-    }
+		ivy {
+			name 'Apache'
+			artifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
+		}
+		ivy {
+			name 'Adobe Air SDK'
+			artifactPattern 'http://download.macromedia.com/air/' + airSDKOS + '/download/[revision]/[module].[ext]'
+		}
+	}
 
     playerVersion = "${player.version}"
     dependencies {
@@ -54,7 +52,10 @@ subprojects {
             '-debug=false',
             '-optimize=true',
             '-target-player=${player.version}',
-    ]
+			'-compiler.headless-server=true',
+			'-compiler.fonts.managers=flash.fonts.JREFontManager,flash.fonts.BatikFontManager,flash.fonts.AFEFontManager,flash.fonts.CFFFontManager',
+			'-swf-version=${player.swfversion}',
+	]
 
     jvmArguments = [
             '-Xmx1024m',

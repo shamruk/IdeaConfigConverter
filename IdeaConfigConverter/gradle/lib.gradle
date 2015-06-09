@@ -11,8 +11,6 @@ dependencies {
 }
 
 additionalCompilerOptions += [
-	'-compiler.headless-server=true',
-	'-compiler.fonts.managers=flash.fonts.JREFontManager,flash.fonts.BatikFontManager,flash.fonts.AFEFontManager,flash.fonts.CFFFontManager',
 	/*namespace_manifest*/
 	/*namespace_include*/
 ]

@@ -28,7 +28,8 @@ package converter.pom {
 				"${gradlefx.version}": moduleRoot.gradleFXVersion,
 				"${flex.sdk.version}": moduleRoot.flexSDKVersion,
 				"${air.sdk.version}": moduleRoot.airSDKVersion,
-				"${player.version}": moduleRoot.playerVersion
+				"${player.version}": moduleRoot.playerVersion,
+				"${player.swfversion}": moduleRoot.playerSWFVersion
 			});
 //			template=template.replace("${flex.framework.version}", getFullSDKVersion(iml.sdkVersion));
 //			template=template.replace("${flash.player.version}", iml.flashPlayerVersion);

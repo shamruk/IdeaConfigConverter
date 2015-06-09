@@ -149,8 +149,10 @@ package converter.pom {
 			var srcPath : String = "../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(Module.DEFAULT_SOURCE_DIRECTORY));
 
 			var srcPathsArray : Array = [];
-			for each(var srcDir:String in iml.sourceDirectoryURLs){
-				srcPathsArray.push("../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(srcDir)))
+			for each(var srcDir : String in iml.sourceDirectoryURLs) {
+				if (srcDir.indexOf("include") != 0) {
+					srcPathsArray.push("../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(srcDir)))
+				}
 			}
 			var srcPaths : String = srcPathsArray.join("','");
 
@@ -177,7 +179,7 @@ package converter.pom {
 			var a : String = project.directory.getRelativePath(file);
 			var b : String = project.directory.getRelativePath(module.pomDirectory);
 			var c : String = b.replace(/[\w\d\.]+/g, "..") + "/" + a;
-			return  c;
+			return c;
 		}
 
 		private function getTempOutput(module : Module) : String {
@@ -196,14 +198,14 @@ package converter.pom {
 				//var namespaceConfiguration : String = replaceBasicVars("'-namespace+=${ns_uri},${ns_location} -include-namespaces+=${ns_uri}'");
 				// todo: try "'-namespace+=${ns_uri},${projectDir.path}/${ns_location}',"
 				var namespaceConfiguration : String = replaceBasicVars("'-namespace+=${ns_uri},'+new File('${ns_location}').absolutePath,");
-				result = result.replace("/*namespace_manifest*/",  namespaceConfiguration);
+				result = result.replace("/*namespace_manifest*/", namespaceConfiguration);
 				var namespaceInclude : String = replaceBasicVars("'-include-namespaces+=${ns_uri}',");
-				result = result.replace("/*namespace_include*/",  namespaceInclude);
+				result = result.replace("/*namespace_include*/", namespaceInclude);
 			}
 			return result;
 		}
 
-		protected function get includeFileList():Boolean{
+		protected function get includeFileList() : Boolean {
 			return true;
 			// return iml.namespaceURI;
 		}
