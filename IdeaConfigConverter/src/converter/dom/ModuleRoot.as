@@ -73,5 +73,9 @@ package converter.dom {
 		public function get platform() : String {
 			return _xml.platform || "ios";
 		}
+
+		public function get storepass() : String {
+			return _xml.storepass || "";
+		}
 	}
 }

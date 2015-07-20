@@ -26,19 +26,33 @@ package converter.pom {
 			template = StringUtil.replace(template, "${source.provision}", iml.pomDirectory.getRelativePath(iml.provision, true));
 			template = StringUtil.replace(template, "${source.keystoreType}", iml.getKeystoreType(platform));
 			template = StringUtil.replace(template, "${source.descriptor}", iml.pomDirectory.getRelativePath(iml.getDescriptor(platform), true));
+			template = StringUtil.replace(template, "${storepass}", project.projectModuleRoot.storepass);
+			template = StringUtil.replace(template, "${mobile.resources}", formatMobileResources(iml.getMobileResources(platform)));
 			return template;
+		}
+
+		private function formatMobileResources(mobileResources : Object) : String {
+			var result : Array = [];
+			for (var res : String in mobileResources) {
+				result.push("'-C', '" + mobileResources[res] + "', '" + res + "'");
+			}
+			result.sort();
+			return result.join(",\n");
 		}
 
 		private function addMainClass(template : String) : String {
 			var splitted : Array = iml.mainClass.split(".");
 			var name : String = splitted.pop();
 			var main : String = splitted.join("/");
-			if(main){
+			if (main) {
 				main += "/";
 			}
 			var possibleMXML : File = iml.directory.resolvePath(iml.sourceDirectoryURLs[0]).resolvePath(main).resolvePath(name + ".mxml");
 			name += possibleMXML.exists ? ".mxml" : ".as";
-			template = StringUtil.replaceByMap(template, {"${source.file.directory}": main , "${source.file.name}": name});
+			template = StringUtil.replaceByMap(template, {
+				"${source.file.directory}": main,
+				"${source.file.name}": name
+			});
 			return template;
 		}
 	}

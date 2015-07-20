@@ -292,22 +292,61 @@ package converter.dom {
 		}
 
 		public function getCerteficate(platform : String) : File {
-			var url : String = String(XMLList(configurationXML["packaging-" + platform].AirSigningOptions).attribute("keystore-path")).replace("$MODULE_DIR$/", "");
+			var url : String = String(getMobileSigningOptions(platform).attribute("keystore-path")).replace("$MODULE_DIR$/", "");
 			return directory.resolvePath(url);
 		}
 
 		public function get provision() : File {
-			var url : String = String(XMLList(configurationXML["packaging-ios"].AirSigningOptions).attribute("provisioning-profile-path")).replace("$MODULE_DIR$/", "");
+			var url : String = String(getMobileSigningOptions("ios").attribute("provisioning-profile-path")).replace("$MODULE_DIR$/", "");
 			return directory.resolvePath(url);
 		}
 
 		public function getKeystoreType(platform : String) : String {
-			return String(XMLList(configurationXML["packaging-" + platform].AirSigningOptions).attribute("keystore-type"));
+			return String(getMobileSigningOptions(platform).attribute("keystore-type"));
+		}
+
+		private function getMobileSigningOptions(platform : String) : XMLList {
+			return XMLList(getMobileConfig(platform).AirSigningOptions);
 		}
 
 		public function getDescriptor(platform : String) : File {
-			var url : String = String(XMLList(configurationXML["packaging-" + platform]).attribute("custom-descriptor-path")).replace("$MODULE_DIR$/", "");
+			var url : String = String(getMobileConfig(platform).attribute("custom-descriptor-path")).replace("$MODULE_DIR$/", "");
 			return directory.resolvePath(url);
+		}
+
+		private function getMobileConfig(platform : String) : XML {
+			return XMLList(configurationXML["packaging-" + platform])[0];
+		}
+
+		public function getMobileResources(platform : String) : Object {
+			var files : XMLList = getMobileConfig(platform)["files-to-package"].FilePathAndPathInPackage;
+			var map : Object = {};
+			for each(var xml : XML in files) {
+				var base : String = String(xml.attribute("file-path"));
+				// todo: resolve relative path instead
+				base = base.replace("$MODULE_DIR$/", "../");
+				var exp : String = xml.attribute("path-in-package");
+				base = cutBase(base, exp);
+				map[exp] = base;
+			}
+			return map;
+		}
+
+		private static function cutBase(base : String, exp : String) : String {
+			var index : int = base.lastIndexOf(exp);
+			if (index >= 0 && index + exp.length == base.length) {
+				base = base.substring(0, index)
+			} else {
+				index = exp.lastIndexOf("/");
+				if (index >= 0) {
+					exp = exp.substring(0, index);
+				}
+				index = base.lastIndexOf(exp);
+				if (index >= 0 && index + exp.length == base.length) {
+					base = base.substring(0, index)
+				}
+			}
+			return base;
 		}
 	}
 }
