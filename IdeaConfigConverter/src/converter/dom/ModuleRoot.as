@@ -69,5 +69,9 @@ package converter.dom {
 		public function get skipModules() : Array {
 			return (_xml.skipModules || "").split(",");
 		}
+
+		public function get platform() : String {
+			return _xml.platform || "ios";
+		}
 	}
 }

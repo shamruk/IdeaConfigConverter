@@ -87,5 +87,9 @@ package converter.dom {
 		public function get pomDirectory() : File {
 			return _directory.resolvePath("gradle");
 		}
+
+		public function get projectModuleRoot() : ModuleRoot {
+			return moduleRoots.findRoot(directory);
+		}
 	}
 }

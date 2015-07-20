@@ -69,13 +69,13 @@ package converter.dom {
 
 		private function getDirectory() : File {
 			var urls : XMLList = content.component.content.@url;
-			var url:String;
-			if(urls.length() == 1){
+			var url : String;
+			if (urls.length() == 1) {
 				url = urls;
-			}else {
-				var minLength:uint=uint.MAX_VALUE;
-				for each(var possibleURL:String in urls){
-					if(!url || possibleURL.length < minLength){
+			} else {
+				var minLength : uint = uint.MAX_VALUE;
+				for each(var possibleURL : String in urls) {
+					if (!url || possibleURL.length < minLength) {
 						url = possibleURL;
 						minLength = possibleURL.length;
 					}
@@ -151,18 +151,18 @@ package converter.dom {
 //			return libs;
 
 			var dependencies : Vector.<LibDependency> = new Vector.<LibDependency>();
-			for each(var lib:XML in configurationXML.dependencies.entries.entry.(attribute("library-id").length())){
+			for each(var lib : XML in configurationXML.dependencies.entries.entry.(attribute("library-id").length())) {
 				var inLib : XML = content.component.orderEntry.library.(properties.@id == lib.attribute("library-id"))[0];
 				addLibDependency(lib.dependency.@linkage, dependencies, (Lib.resolveFileFromInternalDependably(inLib.CLASSES.root.@url, directory, inLib)));
 			}
-			for each(var topLib:XML in configurationXML.dependencies.entries.entry.(attribute("library-name").length())){
+			for each(var topLib : XML in configurationXML.dependencies.entries.entry.(attribute("library-name").length())) {
 				addLibDependency(topLib.dependency.@linkage, dependencies, _project.getLibByName(topLib.attribute("library-name")));
 			}
-			return  dependencies;
+			return dependencies;
 		}
 
 		private function addLibDependency(linkage : String, dependencies : Vector.<LibDependency>, libs : Vector.<Lib>) : void {
-			for each(var lib:Lib in libs){
+			for each(var lib : Lib in libs) {
 				dependencies.push(new LibDependency(lib, linkage));
 			}
 		}
@@ -227,7 +227,7 @@ package converter.dom {
 
 		private function getSourceDirectoryURLs() : Vector.<String> {
 			var sources : Vector.<String> = new Vector.<String>();
-			for each(var url:String in  content.component.(@name == "NewModuleRootManager").content.sourceFolder.@url){
+			for each(var url : String in  content.component.(@name == "NewModuleRootManager").content.sourceFolder.@url) {
 				sources.push(url.replace("file://$MODULE_DIR$/", ""));
 			}
 			return sources;
@@ -291,19 +291,23 @@ package converter.dom {
 			return ["Desktop", "Mobile"].indexOf(platform) >= 0;
 		}
 
-		public function get certeficate() : File {
-			var url : String = String(XMLList(configurationXML["packaging-ios"].AirSigningOptions).attribute("keystore-path")).replace("$MODULE_DIR$/", "");
-			return  directory.resolvePath(url);
+		public function getCerteficate(platform : String) : File {
+			var url : String = String(XMLList(configurationXML["packaging-" + platform].AirSigningOptions).attribute("keystore-path")).replace("$MODULE_DIR$/", "");
+			return directory.resolvePath(url);
 		}
 
 		public function get provision() : File {
 			var url : String = String(XMLList(configurationXML["packaging-ios"].AirSigningOptions).attribute("provisioning-profile-path")).replace("$MODULE_DIR$/", "");
-			return  directory.resolvePath(url);
+			return directory.resolvePath(url);
 		}
 
-		public function get descriptor() : File {
-			var url : String = String(XMLList(configurationXML["packaging-ios"]).attribute("custom-descriptor-path")).replace("$MODULE_DIR$/", "");
-			return  directory.resolvePath(url);
+		public function getKeystoreType(platform : String) : String {
+			return String(XMLList(configurationXML["packaging-" + platform].AirSigningOptions).attribute("keystore-type"));
+		}
+
+		public function getDescriptor(platform : String) : File {
+			var url : String = String(XMLList(configurationXML["packaging-" + platform]).attribute("custom-descriptor-path")).replace("$MODULE_DIR$/", "");
+			return directory.resolvePath(url);
 		}
 	}
 }

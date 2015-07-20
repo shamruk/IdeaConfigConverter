@@ -16,13 +16,16 @@ package converter.pom {
 		}
 
 		override public function getData() : String {
+			var platform : String = project.projectModuleRoot.platform;
 			var template : String = POM;
 			template = replaceBasicVars(template);
 			template = addMainClass(template);
 			template = addStuffToResultXML(template);
-			template = StringUtil.replace(template, "${source.certificate}", iml.pomDirectory.getRelativePath(iml.certeficate, true));
+			template = StringUtil.replace(template, "${type}", iml.targetPlatform == Module.TARGET_PLATFORM_MOBILE ? "mobile" : "swf");
+			template = StringUtil.replace(template, "${source.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate(platform), true));
 			template = StringUtil.replace(template, "${source.provision}", iml.pomDirectory.getRelativePath(iml.provision, true));
-			template = StringUtil.replace(template, "${source.descriptor}", iml.pomDirectory.getRelativePath(iml.descriptor, true));
+			template = StringUtil.replace(template, "${source.keystoreType}", iml.getKeystoreType(platform));
+			template = StringUtil.replace(template, "${source.descriptor}", iml.pomDirectory.getRelativePath(iml.getDescriptor(platform), true));
 			return template;
 		}
 

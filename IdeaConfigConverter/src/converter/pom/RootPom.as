@@ -19,7 +19,7 @@ package converter.pom {
 		}
 
 		override public function getData() : String {
-			var moduleRoot : ModuleRoot = project.moduleRoots.findRoot(project.directory);
+			var moduleRoot : ModuleRoot = project.projectModuleRoot;
 			var template : String = POM_LIB;
 			template = StringUtil.replaceByMap(template, {
 				"${artifactId}": moduleRoot.artifactID,

@@ -1,4 +1,4 @@
-type = 'swf'
+type = '${type}'
 
 output = '${out.file}'
 
@@ -14,12 +14,9 @@ dependencies {
 
 srcDirs = [ '${source.directories}' ]
 
-mainClass = '${source.file.directory}${source.file.name}.as'
+mainClass = '${source.file.directory}${source.file.name}'
 
 additionalCompilerOptions += [
-		'-compiler.headless-server=true',
-		'-compiler.fonts.managers=flash.fonts.JREFontManager,flash.fonts.BatikFontManager,flash.fonts.AFEFontManager,flash.fonts.CFFFontManager',
-		'-swf-version=18',
 		/*namespace_manifest*/
 		/*namespace_include*/
 ]
@@ -30,32 +27,35 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/	}
 /*frameworkLinkage.air.enabler*/}
 /*frameworkLinkage.air.enabler*/air {
-/*frameworkLinkage.air.enabler*/	storepass 'Belka2010'
+/*frameworkLinkage.air.enabler*/ storepass ''
 /*frameworkLinkage.air.enabler*/	keystore '${source.certificate}'
 /*frameworkLinkage.air.enabler*/	applicationDescriptor '${source.descriptor}'
 /*frameworkLinkage.air.enabler*/	//includeFileTrees = [fileTree(dir: 'src/main/actionscript/', include: 'assets/appIcon.png')]
 /*frameworkLinkage.air.enabler*/}
+/*frameworkLinkage.air.enabler*///airMobile {
+/*frameworkLinkage.air.enabler*///platform = 'ios'
+/*frameworkLinkage.air.enabler*///target = 'ipa-ad-hoc'
+/*frameworkLinkage.air.enabler*///provisioningProfile = '${source.provision}'
+/*frameworkLinkage.air.enabler*///}
 /*frameworkLinkage.air.enabler*/airMobile {
-/*frameworkLinkage.air.enabler*/platform = 'ios'
-/*frameworkLinkage.air.enabler*/target = 'ipa-ad-hoc'
-/*frameworkLinkage.air.enabler*/provisioningProfile = '${source.provision}'
+/*frameworkLinkage.air.enabler*/ target = 'apk-captive-runtime'
 /*frameworkLinkage.air.enabler*/}
 
-/*frameworkLinkage.air.enabler*/task packageMobileLinux << {
-/*frameworkLinkage.air.enabler*/	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes
-/*frameworkLinkage.air.enabler*/	new File('${config.directory}/build/build.p12') << new File('${config.directory}/${source.certificate}').bytes
-/*frameworkLinkage.air.enabler*/	new File('${config.directory}/build/build.xml') << new File('${config.directory}/${source.descriptor}').text.replaceAll('SWF file name is set automatically at compile time', '${out.file}.swf')
-/*frameworkLinkage.air.enabler*/	def packer = new File('${config.directory}/build/build.sh')
-/*frameworkLinkage.air.enabler*/	packer.delete()
-/*frameworkLinkage.air.enabler*/	packer << '#!/bin/sh\n'
-/*frameworkLinkage.air.enabler*/	packer << 'cd build\n'
-/*frameworkLinkage.air.enabler*/	packer << 'wine java -jar '+flexHome+'/lib/adt.jar -package -target ipa-ad-hoc -provisioning-profile build.provision -storetype pkcs12 -keystore build.p12 -storepass Belka2010 ${out.file}.ipa build.xml ${out.file}.swf'
-/*frameworkLinkage.air.enabler*/	packer.setExecutable(true)
-/*frameworkLinkage.air.enabler*/	exec {
-/*frameworkLinkage.air.enabler*/		executable 'build/build.sh'
-/*frameworkLinkage.air.enabler*/	}
-/*frameworkLinkage.air.enabler*/}
-/*frameworkLinkage.air.enabler*/packageMobileLinux.dependsOn build
+/*frameworkLinkage.air.enabler*///task packageMobileLinux << {
+/*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes
+/*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.p12') << new File('${config.directory}/${source.certificate}').bytes
+/*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.xml') << new File('${config.directory}/${source.descriptor}').text.replaceAll('SWF file name is set automatically at compile time', '${out.file}.swf')
+/*frameworkLinkage.air.enabler*///	def packer = new File('${config.directory}/build/build.sh')
+/*frameworkLinkage.air.enabler*///	packer.delete()
+/*frameworkLinkage.air.enabler*///	packer << '#!/bin/sh\n'
+/*frameworkLinkage.air.enabler*///	packer << 'cd build\n'
+/*frameworkLinkage.air.enabler*///	packer << 'wine java -jar '+flexHome+'/lib/adt.jar -package -target ipa-ad-hoc -provisioning-profile build.provision -storetype pkcs12 -keystore build.p12 -storepass Belka2010 ${out.file}.ipa build.xml ${out.file}.swf'
+/*frameworkLinkage.air.enabler*///	packer.setExecutable(true)
+/*frameworkLinkage.air.enabler*///	exec {
+/*frameworkLinkage.air.enabler*///		executable 'build/build.sh'
+/*frameworkLinkage.air.enabler*///	}
+/*frameworkLinkage.air.enabler*///}
+/*frameworkLinkage.air.enabler*///packageMobileLinux.dependsOn build
 
 
 //<debug>${debug}</debug>
