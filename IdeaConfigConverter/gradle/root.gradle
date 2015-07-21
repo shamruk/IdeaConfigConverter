@@ -48,16 +48,21 @@ subprojects {
 
 //	publishDir = 'publishDirectory'
 
-    additionalCompilerOptions = [
+	additionalCompilerOptions += [
             '-debug=false',
             '-optimize=true',
             '-target-player=${player.version}',
 			'-compiler.headless-server=true',
 			'-compiler.fonts.managers=flash.fonts.JREFontManager,flash.fonts.BatikFontManager,flash.fonts.AFEFontManager,flash.fonts.CFFFontManager',
 			'-swf-version=${player.swfversion}',
+			'-keep-as3-metadata+=DefaultProperty'
 	]
 
-    jvmArguments = [
+	switch ("$platform") {
+	//${platform_options}
+	}
+
+	jvmArguments = [
             '-Xmx1024m',
             '-Xms512m'
     ]

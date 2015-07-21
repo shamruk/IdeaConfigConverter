@@ -70,12 +70,12 @@ package converter.dom {
 			return (_xml.skipModules || "").split(",");
 		}
 
-		public function get platform() : String {
-			return _xml.platform || "ios";
-		}
-
 		public function get storepass() : String {
 			return _xml.storepass || "";
+		}
+
+		public function get platforms() : XMLList {
+			return _xml.platforms.length() ? _xml.platforms.children() : null;
 		}
 	}
 }

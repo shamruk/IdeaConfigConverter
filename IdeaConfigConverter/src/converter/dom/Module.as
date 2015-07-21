@@ -315,7 +315,7 @@ package converter.dom {
 		}
 
 		private function getMobileConfig(platform : String) : XML {
-			return XMLList(configurationXML["packaging-" + platform])[0];
+			return XMLList(configurationXML["packaging-" + platform])[0] || new XML;
 		}
 
 		public function getMobileResources(platform : String) : Object {

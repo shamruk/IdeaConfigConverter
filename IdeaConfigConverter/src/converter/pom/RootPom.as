@@ -31,6 +31,9 @@ package converter.pom {
 				"${player.version}": moduleRoot.playerVersion,
 				"${player.swfversion}": moduleRoot.playerSWFVersion
 			});
+			if (moduleRoot.platforms) {
+				template = StringUtil.replace(template, "//${platform_options}", generateByPlatforms(moduleRoot.platforms));
+			}
 //			template=template.replace("${flex.framework.version}", getFullSDKVersion(iml.sdkVersion));
 //			template=template.replace("${flash.player.version}", iml.flashPlayerVersion);
 //			template=template.replace("${artifactId}", iml.name);
@@ -41,6 +44,20 @@ package converter.pom {
 //			}
 			//template = addExtraConfigFrom(project.directory.resolvePath("extraPomConfig.xml"), template);
 			return template;
+		}
+
+		private function generateByPlatforms(platforms : XMLList) : String {
+			var result : Array = [];
+			for each(var xml : XML in platforms) {
+				if (xml.compileOptions.length()) {
+					result.push('case "' + xml.name() + '":');
+					result.push("additionalCompilerOptions += [");
+					result.push("'" + String(xml.compileOptions.text()).split(" ").join("',\n'") + "'");
+					result.push("]");
+					result.push("break;");
+				}
+			}
+			return result.join("\n");
 		}
 
 		override public function getFilePath() : String {
