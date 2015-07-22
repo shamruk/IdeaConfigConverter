@@ -74,8 +74,8 @@ package converter.dom {
 			return _xml.storepass || "";
 		}
 
-		public function get platforms() : XMLList {
-			return _xml.platforms.length() ? _xml.platforms.children() : null;
+		public function get platforms() : XML {
+			return _xml.platforms.length() ? _xml.platforms[0] : null;
 		}
 	}
 }

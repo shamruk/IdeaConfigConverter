@@ -32,7 +32,7 @@ package converter.pom {
 				"${player.swfversion}": moduleRoot.playerSWFVersion
 			});
 			if (moduleRoot.platforms) {
-				template = StringUtil.replace(template, "//${platform_options}", generateByPlatforms(moduleRoot.platforms));
+				template = StringUtil.replace(template, "//${platform_options}", generateByPlatforms(moduleRoot.platforms.children()));
 			}
 //			template=template.replace("${flex.framework.version}", getFullSDKVersion(iml.sdkVersion));
 //			template=template.replace("${flash.player.version}", iml.flashPlayerVersion);
