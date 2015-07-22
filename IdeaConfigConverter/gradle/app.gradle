@@ -34,15 +34,13 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/            //target = 'ipa-ad-hoc'
 /*frameworkLinkage.air.enabler*/ target = 'ipa-app-store'
 /*frameworkLinkage.air.enabler*/ provisioningProfile = '${source.provision}'
-/*frameworkLinkage.air.enabler*/
-		}
+/*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/ case "an":
 /*frameworkLinkage.air.enabler*/ case "am":
 /*frameworkLinkage.air.enabler*/ airMobile {
 /*frameworkLinkage.air.enabler*/ target = 'apk-captive-runtime'
-/*frameworkLinkage.air.enabler*/
-		}
+/*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/}
 /*frameworkLinkage.air.enabler*/    // https://github.com/GradleFx/GradleFx/issues/191
@@ -56,10 +54,9 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ keystore '${source.io.certificate}'
 /*frameworkLinkage.air.enabler*/ applicationDescriptor '${source.io.descriptor}'
 /*frameworkLinkage.air.enabler*/ fileOptions = [
-/*frameworkLinkage.air.enabler*/ $ { source.io.resources }
+/*frameworkLinkage.air.enabler*/ ${source.io.resources}
 /*frameworkLinkage.air.enabler*/]
-/*frameworkLinkage.air.enabler*/
-		}
+/*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/ case "an":
 /*frameworkLinkage.air.enabler*/ air {
@@ -67,10 +64,9 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ keystore '${source.an.certificate}'
 /*frameworkLinkage.air.enabler*/ applicationDescriptor '${source.an.descriptor}'
 /*frameworkLinkage.air.enabler*/ fileOptions = [
-/*frameworkLinkage.air.enabler*/ $ { source.an.resources }
+/*frameworkLinkage.air.enabler*/ ${source.an.resources}
 /*frameworkLinkage.air.enabler*/]
-/*frameworkLinkage.air.enabler*/
-		}
+/*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/ case "am":
 /*frameworkLinkage.air.enabler*/ air {
@@ -78,13 +74,11 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ keystore '${source.am.certificate}'
 /*frameworkLinkage.air.enabler*/ applicationDescriptor '${source.am.descriptor}'
 /*frameworkLinkage.air.enabler*/ fileOptions = [
-/*frameworkLinkage.air.enabler*/ $ { source.am.resources }
+/*frameworkLinkage.air.enabler*/ ${source.am.resources}
 /*frameworkLinkage.air.enabler*/]
-/*frameworkLinkage.air.enabler*/
-		}
+/*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*/ break;
-/*frameworkLinkage.air.enabler*/
-}
+/*frameworkLinkage.air.enabler*/}
 /*frameworkLinkage.air.enabler*///task packageMobileLinux << {
 /*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes
 /*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.p12') << new File('${config.directory}/${source.certificate}').bytes
