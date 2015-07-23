@@ -52,33 +52,42 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ air {
 /*frameworkLinkage.air.enabler*/ storepass '${storepass}'
 /*frameworkLinkage.air.enabler*/ keystore '${source.io.certificate}'
-/*frameworkLinkage.air.enabler*/ applicationDescriptor '${source.io.descriptor}'
+/*frameworkLinkage.air.enabler*/ applicationDescriptor 'build/build.xml'
 /*frameworkLinkage.air.enabler*/ fileOptions = [
 /*frameworkLinkage.air.enabler*/ ${source.io.resources}
-/*frameworkLinkage.air.enabler*/]
+/*frameworkLinkage.air.enabler*/ ]
 /*frameworkLinkage.air.enabler*/ }
+/*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate = '${source.io.descriptor}'
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/ case "an":
 /*frameworkLinkage.air.enabler*/ air {
 /*frameworkLinkage.air.enabler*/ storepass '${storepass}'
 /*frameworkLinkage.air.enabler*/ keystore '${source.an.certificate}'
-/*frameworkLinkage.air.enabler*/ applicationDescriptor '${source.an.descriptor}'
+/*frameworkLinkage.air.enabler*/ applicationDescriptor 'build/build.xml'
 /*frameworkLinkage.air.enabler*/ fileOptions = [
 /*frameworkLinkage.air.enabler*/ ${source.an.resources}
-/*frameworkLinkage.air.enabler*/]
+/*frameworkLinkage.air.enabler*/ ]
 /*frameworkLinkage.air.enabler*/ }
+/*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate = '${source.an.descriptor}'
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/ case "am":
 /*frameworkLinkage.air.enabler*/ air {
 /*frameworkLinkage.air.enabler*/ storepass '${storepass}'
 /*frameworkLinkage.air.enabler*/ keystore '${source.am.certificate}'
-/*frameworkLinkage.air.enabler*/ applicationDescriptor '${source.am.descriptor}'
+/*frameworkLinkage.air.enabler*/ applicationDescriptor 'build/build.xml'
 /*frameworkLinkage.air.enabler*/ fileOptions = [
 /*frameworkLinkage.air.enabler*/ ${source.am.resources}
-/*frameworkLinkage.air.enabler*/]
+/*frameworkLinkage.air.enabler*/ ]
 /*frameworkLinkage.air.enabler*/ }
+/*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate = '${source.am.descriptor}'
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/}
+/*frameworkLinkage.air.enabler*/ copy {
+/*frameworkLinkage.air.enabler*/	from applicationDescriptorTemplate
+/*frameworkLinkage.air.enabler*/	into 'build'
+/*frameworkLinkage.air.enabler*/	rename { String fileName -> fileName.replace(fileName, 'build.xml') }
+/*frameworkLinkage.air.enabler*/	filter { String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf') }
+/*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*///task packageMobileLinux << {
 /*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes
 /*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.p12') << new File('${config.directory}/${source.certificate}').bytes
