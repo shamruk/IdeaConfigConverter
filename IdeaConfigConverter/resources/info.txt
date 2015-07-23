@@ -1,19 +1,30 @@
 FAQ
 
-1) You can add extra pom configuration by adding extraPomConfig.xml file to the module directory or to the root directory (to be the default one)
+1) You can add extra pom configuration by adding gradleProject.xml file to the module directory or to the root directory (to be the default one)
 Example:
-<configuration>
-	<keepAs3Metadatas>
-		<name>Inject</name>
-	</keepAs3Metadatas>
-	<fonts>
-	  <advancedAntiAliasing>true</advancedAntiAliasing>
-	  <managers>
-		<manager>flash.fonts.AFEFontManager</manager>
-	  </managers>
-	</fonts>
-</configuration>
+<project>
+	<groupId>mcm</groupId>
+	<artifactId>mcm.root</artifactId>
+	<version>current</version>
+	<gradleFxVersion>1.3.0</gradleFxVersion>
+	<flexSdkVersion>4.14.1</flexSdkVersion>
+	<airSdkVersion>18.0</airSdkVersion>
+	<flashPlayerVersion>18.0</flashPlayerVersion>
+	<flashSWFVersion>29</flashSWFVersion>
+	<skipModules>ViewSystem.DO</skipModules>
+	<storepass>****</storepass>
+	<platforms>
+		<io>
+			<compileOptions>-define+=CONFIG::iOS,true -define+=CONFIG::GooglePlay,false -define+=CONFIG::Amazon,false</compileOptions>
+		</io>
+		<an>
+			<compileOptions>-define+=CONFIG::iOS,false -define+=CONFIG::GooglePlay,true -define+=CONFIG::Amazon,false</compileOptions>
+		</an>
+		<am>
+			<replace from="${source.am.descriptor}" to="../../App/Amazon.xml"/>
+			<compileOptions>-define+=CONFIG::iOS,false -define+=CONFIG::GooglePlay,false -define+=CONFIG::Amazon,true</compileOptions>
+		</am>
+	</platforms>
+</project>
 
-2) If ext-swc lib dependency does not work: install it manually using generated sh/bat file
-
-3) If "Java heap space" -- export MAVEN_OPTS=-Xmx1024M
+2) If "Java heap space" -- export MAVEN_OPTS=-Xmx1024M
