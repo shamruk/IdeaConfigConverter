@@ -47,6 +47,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/    // http://stackoverflow.com/questions/2846828/converting-jks-to-p12
 /*frameworkLinkage.air.enabler*/    // includeFileTrees = [fileTree(dir: 'src/main/actionscript/', include: 'assets/appIcon.png')]
 /*frameworkLinkage.air.enabler*/    // packageCommand = "-storetype pkcs12 -keystore cert.p12 myApp.air #{applicationDescriptor} #{outputSwf} #{includeFileTrees}"
+/*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate
 /*frameworkLinkage.air.enabler*/ switch ("$platform") {
 /*frameworkLinkage.air.enabler*/ case "io":
 /*frameworkLinkage.air.enabler*/ air {
@@ -57,7 +58,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ ${source.io.resources}
 /*frameworkLinkage.air.enabler*/ ]
 /*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate = '${source.io.descriptor}'
+/*frameworkLinkage.air.enabler*/ applicationDescriptorTemplate = '${source.io.descriptor}'
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/ case "an":
 /*frameworkLinkage.air.enabler*/ air {
@@ -68,7 +69,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ ${source.an.resources}
 /*frameworkLinkage.air.enabler*/ ]
 /*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate = '${source.an.descriptor}'
+/*frameworkLinkage.air.enabler*/ applicationDescriptorTemplate = '${source.an.descriptor}'
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/ case "am":
 /*frameworkLinkage.air.enabler*/ air {
@@ -79,7 +80,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ ${source.am.resources}
 /*frameworkLinkage.air.enabler*/ ]
 /*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate = '${source.am.descriptor}'
+/*frameworkLinkage.air.enabler*/ applicationDescriptorTemplate = '${source.am.descriptor}'
 /*frameworkLinkage.air.enabler*/ break;
 /*frameworkLinkage.air.enabler*/}
 /*frameworkLinkage.air.enabler*/ copy {
