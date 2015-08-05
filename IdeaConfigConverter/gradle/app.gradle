@@ -87,7 +87,9 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/	from applicationDescriptorTemplate
 /*frameworkLinkage.air.enabler*/	into 'build'
 /*frameworkLinkage.air.enabler*/	rename { String fileName -> fileName.replace(fileName, 'build.xml') }
-/*frameworkLinkage.air.enabler*/	filter { String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf') }
+/*frameworkLinkage.air.enabler*/	filter {
+/*frameworkLinkage.air.enabler*/		String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf').replaceAll('<!--<key>get-task-allow</key><false/>-->', '<key>get-task-allow</key><false/>').replaceAll('<!--<key>beta-reports-active</key><true/>-->', '<key>beta-reports-active</key><true/>')
+/*frameworkLinkage.air.enabler*/	}
 /*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*///task packageMobileLinux << {
 /*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes
