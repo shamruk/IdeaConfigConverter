@@ -25,8 +25,8 @@ package converter.pom {
 			template = replace(template, "${source.io.debug.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("ios"), true));
 			template = replace(template, "${source.an.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("android"), true));
 			template = replace(template, "${source.am.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("android"), true));
-			template = replace(template, "${source.provision}", iml.pomDirectory.getRelativePath(iml.provision, true));
-			template = replace(template, "${source.debug.provision}", iml.pomDirectory.getRelativePath(iml.provision, true));
+			template = replace(template, "${source.io.provision}", iml.pomDirectory.getRelativePath(iml.provision, true));
+			template = replace(template, "${source.io.debug.provision}", iml.pomDirectory.getRelativePath(iml.provision, true));
 			template = replace(template, "${source.io.keystoreType}", iml.getKeystoreType("ios"));
 			template = replace(template, "${source.an.keystoreType}", iml.getKeystoreType("android"));
 			template = replace(template, "${source.am.keystoreType}", iml.getKeystoreType("android"));
