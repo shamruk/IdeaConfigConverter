@@ -348,5 +348,9 @@ package converter.dom {
 			}
 			return base;
 		}
+
+		public function get file() : File {
+			return _file;
+		}
 	}
 }

@@ -151,7 +151,7 @@ package converter.pom {
 			var srcPathsArray : Array = [];
 			for each(var srcDir : String in iml.sourceDirectoryURLs) {
 				if (srcDir.indexOf("include") != 0) {
-					srcPathsArray.push("../../" + iml.moduleRoot.directory.getRelativePath(iml.directory.resolvePath(srcDir)))
+					srcPathsArray.push("../../" + iml.moduleRoot.directory.getRelativePath(iml.file.parent.resolvePath(srcDir), true))
 				}
 			}
 			var srcPaths : String = srcPathsArray.join("','");
