@@ -28,20 +28,27 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/}
 /*frameworkLinkage.air.enabler*/ switch ("$platform") {
 /*frameworkLinkage.air.enabler*/ case "io":
-/*frameworkLinkage.air.enabler*/ airMobile {
-/*frameworkLinkage.air.enabler*/ platform = 'ios'
-/*frameworkLinkage.air.enabler*/            //target = 'ipa-test-interpreter'
+/*frameworkLinkage.air.enabler*/ 	if("$debug" == "true") {
+/*frameworkLinkage.air.enabler*/ 		airMobile {
+/*frameworkLinkage.air.enabler*/ 			platform = 'ios'
 /*frameworkLinkage.air.enabler*/            //target = 'ipa-ad-hoc'
-/*frameworkLinkage.air.enabler*/ target = 'ipa-app-store'
-/*frameworkLinkage.air.enabler*/ provisioningProfile = '${source.provision}'
-/*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ break;
+/*frameworkLinkage.air.enabler*/ 			target = 'ipa-app-store'
+/*frameworkLinkage.air.enabler*/ 			provisioningProfile = '${source.debug.provision}'
+/*frameworkLinkage.air.enabler*/ 		}
+/*frameworkLinkage.air.enabler*/ 	} else {
+/*frameworkLinkage.air.enabler*/ 		airMobile {
+/*frameworkLinkage.air.enabler*/ 			platform = 'ios'
+/*frameworkLinkage.air.enabler*/ 			target = 'ipa-app-store'
+/*frameworkLinkage.air.enabler*/ 			provisioningProfile = '${source.provision}'
+/*frameworkLinkage.air.enabler*/ 		}
+/*frameworkLinkage.air.enabler*/ 	}
+/*frameworkLinkage.air.enabler*/ 	break;
 /*frameworkLinkage.air.enabler*/ case "an":
 /*frameworkLinkage.air.enabler*/ case "am":
-/*frameworkLinkage.air.enabler*/ airMobile {
-/*frameworkLinkage.air.enabler*/ target = 'apk-captive-runtime'
-/*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ break;
+/*frameworkLinkage.air.enabler*/ 	airMobile {
+/*frameworkLinkage.air.enabler*/ 		target = 'apk-captive-runtime'
+/*frameworkLinkage.air.enabler*/ 	}
+/*frameworkLinkage.air.enabler*/ 	break;
 /*frameworkLinkage.air.enabler*/}
 /*frameworkLinkage.air.enabler*/    // https://github.com/GradleFx/GradleFx/issues/191
 /*frameworkLinkage.air.enabler*/    // http://stackoverflow.com/questions/2846828/converting-jks-to-p12
@@ -50,46 +57,62 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ def applicationDescriptorTemplate
 /*frameworkLinkage.air.enabler*/ switch ("$platform") {
 /*frameworkLinkage.air.enabler*/ case "io":
-/*frameworkLinkage.air.enabler*/ air {
-/*frameworkLinkage.air.enabler*/ storepass '${storepass}'
-/*frameworkLinkage.air.enabler*/ keystore '${source.io.certificate}'
-/*frameworkLinkage.air.enabler*/ applicationDescriptor 'build/build.xml'
-/*frameworkLinkage.air.enabler*/ fileOptions = [
-/*frameworkLinkage.air.enabler*/ ${source.io.resources}
-/*frameworkLinkage.air.enabler*/ ]
-/*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ applicationDescriptorTemplate = '${source.io.descriptor}'
-/*frameworkLinkage.air.enabler*/ break;
+/*frameworkLinkage.air.enabler*/ 	if("$debug" == "true") {
+/*frameworkLinkage.air.enabler*/ 		air {
+/*frameworkLinkage.air.enabler*/ 			storepass '${storepass}'
+/*frameworkLinkage.air.enabler*/			keystore '${source.io.debug.certificate}'
+/*frameworkLinkage.air.enabler*/ 			applicationDescriptor 'build/build.xml'
+/*frameworkLinkage.air.enabler*/ 			fileOptions = [ ${source.io.resources} ]
+/*frameworkLinkage.air.enabler*/ 		}
+/*frameworkLinkage.air.enabler*/ 	} else {
+/*frameworkLinkage.air.enabler*/ 		air {
+/*frameworkLinkage.air.enabler*/ 			storepass '${storepass}'
+/*frameworkLinkage.air.enabler*/			keystore '${source.io.certificate}'
+/*frameworkLinkage.air.enabler*/ 			applicationDescriptor 'build/build.xml'
+/*frameworkLinkage.air.enabler*/ 			fileOptions = [ ${source.io.resources} ]
+/*frameworkLinkage.air.enabler*/ 		}
+/*frameworkLinkage.air.enabler*/ 	}
+/*frameworkLinkage.air.enabler*/ 	applicationDescriptorTemplate = '${source.io.descriptor}'
+/*frameworkLinkage.air.enabler*/ 	break;
 /*frameworkLinkage.air.enabler*/ case "an":
-/*frameworkLinkage.air.enabler*/ air {
-/*frameworkLinkage.air.enabler*/ storepass '${storepass}'
-/*frameworkLinkage.air.enabler*/ keystore '${source.an.certificate}'
-/*frameworkLinkage.air.enabler*/ applicationDescriptor 'build/build.xml'
-/*frameworkLinkage.air.enabler*/ fileOptions = [
-/*frameworkLinkage.air.enabler*/ ${source.an.resources}
-/*frameworkLinkage.air.enabler*/ ]
-/*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ applicationDescriptorTemplate = '${source.an.descriptor}'
-/*frameworkLinkage.air.enabler*/ break;
+/*frameworkLinkage.air.enabler*/ 	air {
+/*frameworkLinkage.air.enabler*/ 		storepass '${storepass}'
+/*frameworkLinkage.air.enabler*/ 		keystore '${source.an.certificate}'
+/*frameworkLinkage.air.enabler*/ 		applicationDescriptor 'build/build.xml'
+/*frameworkLinkage.air.enabler*/ 		fileOptions = [ ${source.an.resources} ]
+/*frameworkLinkage.air.enabler*/ 	}
+/*frameworkLinkage.air.enabler*/ 	applicationDescriptorTemplate = '${source.an.descriptor}'
+/*frameworkLinkage.air.enabler*/ 	break;
 /*frameworkLinkage.air.enabler*/ case "am":
-/*frameworkLinkage.air.enabler*/ air {
-/*frameworkLinkage.air.enabler*/ storepass '${storepass}'
-/*frameworkLinkage.air.enabler*/ keystore '${source.am.certificate}'
-/*frameworkLinkage.air.enabler*/ applicationDescriptor 'build/build.xml'
-/*frameworkLinkage.air.enabler*/ fileOptions = [
-/*frameworkLinkage.air.enabler*/ ${source.am.resources}
-/*frameworkLinkage.air.enabler*/ ]
+/*frameworkLinkage.air.enabler*/ 	air {
+/*frameworkLinkage.air.enabler*/ 		storepass '${storepass}'
+/*frameworkLinkage.air.enabler*/ 		keystore '${source.am.certificate}'
+/*frameworkLinkage.air.enabler*/ 		applicationDescriptor 'build/build.xml'
+/*frameworkLinkage.air.enabler*/ 		fileOptions = [ ${source.am.resources} ]
+/*frameworkLinkage.air.enabler*/ 	}
+/*frameworkLinkage.air.enabler*/ 	applicationDescriptorTemplate = '${source.am.descriptor}'
+/*frameworkLinkage.air.enabler*/ 	break;
 /*frameworkLinkage.air.enabler*/ }
-/*frameworkLinkage.air.enabler*/ applicationDescriptorTemplate = '${source.am.descriptor}'
-/*frameworkLinkage.air.enabler*/ break;
-/*frameworkLinkage.air.enabler*/}
-/*frameworkLinkage.air.enabler*/ copy {
-/*frameworkLinkage.air.enabler*/	from applicationDescriptorTemplate
-/*frameworkLinkage.air.enabler*/	into 'build'
-/*frameworkLinkage.air.enabler*/	rename { String fileName -> fileName.replace(fileName, 'build.xml') }
-/*frameworkLinkage.air.enabler*/	filter {
-/*frameworkLinkage.air.enabler*/		String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf').replaceAll('<!--<key>get-task-allow</key><false/>-->', '<key>get-task-allow</key><false/>').replaceAll('<!--<key>beta-reports-active</key><true/>-->', '<key>beta-reports-active</key><true/>')
-/*frameworkLinkage.air.enabler*/	}
+/*frameworkLinkage.air.enabler*/ packageMobile.doFirst {
+/*frameworkLinkage.air.enabler*/ 	if("$debug" == "true") {
+/*frameworkLinkage.air.enabler*/ 		copy {
+/*frameworkLinkage.air.enabler*/ 			from applicationDescriptorTemplate
+/*frameworkLinkage.air.enabler*/ 			into 'build'
+/*frameworkLinkage.air.enabler*/ 			rename { String fileName -> fileName.replace(fileName, 'build.xml') }
+/*frameworkLinkage.air.enabler*/ 			filter {
+/*frameworkLinkage.air.enabler*/ 				String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf')
+/*frameworkLinkage.air.enabler*/ 			}
+/*frameworkLinkage.air.enabler*/ 		}
+/*frameworkLinkage.air.enabler*/ 	} else {
+/*frameworkLinkage.air.enabler*/ 		copy {
+/*frameworkLinkage.air.enabler*/ 			from applicationDescriptorTemplate
+/*frameworkLinkage.air.enabler*/ 			into 'build'
+/*frameworkLinkage.air.enabler*/ 			rename { String fileName -> fileName.replace(fileName, 'build.xml') }
+/*frameworkLinkage.air.enabler*/ 			filter {
+/*frameworkLinkage.air.enabler*/ 				String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf').replaceAll('<!--<key>get-task-allow</key><false/>-->', '<key>get-task-allow</key><false/>').replaceAll('<!--<key>beta-reports-active</key><true/>-->', '<key>beta-reports-active</key><true/>')
+/*frameworkLinkage.air.enabler*/ 			}
+/*frameworkLinkage.air.enabler*/ 		}
+/*frameworkLinkage.air.enabler*/ 	}
 /*frameworkLinkage.air.enabler*/ }
 /*frameworkLinkage.air.enabler*///task packageMobileLinux << {
 /*frameworkLinkage.air.enabler*///	new File('${config.directory}/build/build.provision') << new File('${config.directory}/${source.provision}').bytes

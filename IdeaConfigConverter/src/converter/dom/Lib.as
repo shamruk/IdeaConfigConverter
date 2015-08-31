@@ -77,7 +77,10 @@ package converter.dom {
 			}
 			var files : Array = libFile.isDirectory ? libFile.getDirectoryListing() : [libFile];
 			for each(var fileLib : File in files) {
-				libs.push(new Lib(name, fileLib));
+				if(!fileLib.isHidden) {
+					trace(fileLib.name, fileLib.extension)
+					libs.push(new Lib(name, fileLib));
+				}
 			}
 			return libs;
 		}
