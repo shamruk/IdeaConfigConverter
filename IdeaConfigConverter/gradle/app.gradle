@@ -31,6 +31,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ 	if("$debug" == "true") {
 /*frameworkLinkage.air.enabler*/ 		airMobile {
 /*frameworkLinkage.air.enabler*/ 			platform = 'ios'
+/*frameworkLinkage.air.enabler*/ 			outputExtension = 'ipa'
 /*frameworkLinkage.air.enabler*/            //target = 'ipa-ad-hoc'
 /*frameworkLinkage.air.enabler*/ 			target = 'ipa-app-store'
 /*frameworkLinkage.air.enabler*/ 			provisioningProfile = '${source.io.debug.provision}'
@@ -38,6 +39,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ 	} else {
 /*frameworkLinkage.air.enabler*/ 		airMobile {
 /*frameworkLinkage.air.enabler*/ 			platform = 'ios'
+/*frameworkLinkage.air.enabler*/ 			outputExtension = 'ipa'
 /*frameworkLinkage.air.enabler*/ 			target = 'ipa-app-store'
 /*frameworkLinkage.air.enabler*/ 			provisioningProfile = '${source.io.provision}'
 /*frameworkLinkage.air.enabler*/ 		}
