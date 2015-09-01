@@ -102,7 +102,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ 			into 'build'
 /*frameworkLinkage.air.enabler*/ 			rename { String fileName -> fileName.replace(fileName, 'build.xml') }
 /*frameworkLinkage.air.enabler*/ 			filter {
-/*frameworkLinkage.air.enabler*/ 				String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf')
+/*frameworkLinkage.air.enabler*/ 				String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf').replaceAll('<versionNumber>.*</versionNumber>', '<versionNumber>'+"$buildVersion"+'</versionNumber>').replaceAll('<versionLabel>.*</versionLabel>', '<versionLabel>'+"$buildVersion"+'</versionLabel>')
 /*frameworkLinkage.air.enabler*/ 			}
 /*frameworkLinkage.air.enabler*/ 		}
 /*frameworkLinkage.air.enabler*/ 	} else {
@@ -111,7 +111,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ 			into 'build'
 /*frameworkLinkage.air.enabler*/ 			rename { String fileName -> fileName.replace(fileName, 'build.xml') }
 /*frameworkLinkage.air.enabler*/ 			filter {
-/*frameworkLinkage.air.enabler*/ 				String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf').replaceAll('<!--<key>get-task-allow</key><false/>-->', '<key>get-task-allow</key><false/>').replaceAll('<!--<key>beta-reports-active</key><true/>-->', '<key>beta-reports-active</key><true/>')
+/*frameworkLinkage.air.enabler*/ 				String line -> line.replaceAll('SWF file name is set automatically at compile time', output + '.swf').replaceAll('<versionNumber>.*</versionNumber>', '<versionNumber>'+"$buildVersion"+'</versionNumber>').replaceAll('<versionLabel>.*</versionLabel>', '<versionLabel>'+"$buildVersion"+'</versionLabel>').replaceAll('<!--<key>get-task-allow</key><false/>-->', '<key>get-task-allow</key><false/>').replaceAll('<!--<key>beta-reports-active</key><true/>-->', '<key>beta-reports-active</key><true/>')
 /*frameworkLinkage.air.enabler*/ 			}
 /*frameworkLinkage.air.enabler*/ 		}
 /*frameworkLinkage.air.enabler*/ 	}
