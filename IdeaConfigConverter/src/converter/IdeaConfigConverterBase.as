@@ -4,7 +4,9 @@ package converter {
 	import converter.pom.PomConverter;
 
 	import flash.desktop.ClipboardFormats;
+	import flash.desktop.NativeApplication;
 	import flash.events.Event;
+	import flash.events.InvokeEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
 	import flash.net.SharedObject;
@@ -113,6 +115,21 @@ package converter {
 
 		public function IdeaConfigConverterBase() {
 			instance = this;
+			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke);
+		}
+
+		private function onInvoke(event : InvokeEvent) : void {
+			var args : Array = event.arguments;
+			if (args.length) {
+				var file : File = new File(args[0]);
+				if (file.exists) {
+					openProject(file);
+					convertAndSave();
+					NativeApplication.nativeApplication.exit(0);
+				} else {
+					NativeApplication.nativeApplication.exit(6);
+				}
+			}
 		}
 
 		public static function addLog(text : String) : void {
