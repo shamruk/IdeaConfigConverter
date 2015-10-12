@@ -1,9 +1,8 @@
 # IdeaConfigConverter
 
-to make this thing working, plz add file like following to the root of the project
+* to make this thing working, plz add gradleProject.xml like following to the root of the project
 
-gradleProject.xml
-
+```
 <project>
 	<groupId>someid</groupId>
 	<artifactId>com.smth</artifactId>
@@ -38,8 +37,7 @@ gradleProject.xml
 		</web>
 	</platforms>
 </project>
+```
 
-
-gradle command e.g.
-
-gradle clean packageMobile --parallel -Pplatform=an -Pdebug=false -PbuildVersion=`git describe | sed 's|[^_]*_[^_]*_||g' | sed 's|-.*||g'`.0
+* gradle command e.g.
+``` gradle clean packageMobile --parallel -Pplatform=an -Pdebug=false -PbuildVersion=`git describe | sed 's|[^_]*_[^_]*_||g' | sed 's|-.*||g'`.0 ```
