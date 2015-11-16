@@ -9,6 +9,8 @@ package converter {
 	import flash.events.InvokeEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.SharedObject;
 
 	import mx.collections.ArrayCollection;
@@ -127,6 +129,13 @@ package converter {
 					convertAndSave();
 					NativeApplication.nativeApplication.exit(0);
 				} else {
+					if (args[1]) {
+						var fileStream : FileStream = new FileStream();
+						fileStream.open(new File(args[1]), FileMode.WRITE);
+						fileStream.writeUTF("no file: " + args[0]);
+						fileStream.writeUTF("\n");
+						fileStream.close();
+					}
 					NativeApplication.nativeApplication.exit(6);
 				}
 			}
