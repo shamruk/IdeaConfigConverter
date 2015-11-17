@@ -55,7 +55,7 @@ subprojects {
 			'-compiler.headless-server=true',
 			'-compiler.fonts.managers=flash.fonts.JREFontManager,flash.fonts.BatikFontManager,flash.fonts.AFEFontManager,flash.fonts.CFFFontManager',
 			'-swf-version=${player.swfversion}',
-			'-keep-as3-metadata+=DefaultProperty'
+			'-keep-as3-metadata+=DefaultProperty,Inject,Dispatcher,EventHandler,ViewAdded,ViewRemoved,ViewNavigator,PostConstruct,PreDestroy'
 	]
 
 	switch ("$platform") {
