@@ -202,6 +202,14 @@ package converter.pom {
 				var namespaceInclude : String = replaceBasicVars("'-include-namespaces+=${ns_uri}',");
 				result = result.replace("/*namespace_include*/", namespaceInclude);
 			}
+			var defines : Array = iml.defines;
+			if (defines) {
+				var definesString : String = "";
+				for each(var define : String in defines) {
+					definesString += "'-define+=" + define + "',";
+				}
+				result = result.replace("/*compiler_define*/", definesString);
+			}
 			return result;
 		}
 

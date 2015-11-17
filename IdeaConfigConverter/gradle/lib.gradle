@@ -13,6 +13,7 @@ dependencies {
 additionalCompilerOptions += [
 	/*namespace_manifest*/
 	/*namespace_include*/
+	/*compiler_define*/
 ]
 
 /*frameworkLinkage.air.enabler*/afterEvaluate {

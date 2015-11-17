@@ -273,6 +273,15 @@ package converter.dom {
 			return namespaces;
 		}
 
+		public function get defines() : Array {
+			var entries : XMLList = configurationXML["compiler-options"].map.entry.(@key == "compiler.define");
+			if(entries.length()) {
+				var value:String = entries[0].@value;
+				return StringUtil.replace(value, "\t", ",").split("\n");
+			}
+			return null;
+		}
+
 		public function get namespaceLocation() : String {
 			for each(var namespaceLocation : String in namespaces) {
 				namespaceLocation = namespaceLocation.replace("$MODULE_DIR$/", "");
