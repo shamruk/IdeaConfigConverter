@@ -49,13 +49,13 @@ subprojects {
 //	publishDir = 'publishDirectory'
 
 	additionalCompilerOptions += [
-            '-debug=false',
-            '-optimize=true',
-            '-target-player=${player.version}',
-			'-compiler.headless-server=true',
-			'-compiler.fonts.managers=flash.fonts.JREFontManager,flash.fonts.BatikFontManager,flash.fonts.AFEFontManager,flash.fonts.CFFFontManager',
-			'-swf-version=${player.swfversion}',
-			'-keep-as3-metadata+=DefaultProperty,Inject,Dispatcher,EventHandler,ViewAdded,ViewRemoved,ViewNavigator,PostConstruct,PreDestroy'
+		"-debug=false",
+		"-optimize=true",
+		"-target-player=$playerVersion",
+		"-compiler.headless-server=true",
+		"-compiler.fonts.managers=flash.fonts.JREFontManager,flash.fonts.BatikFontManager,flash.fonts.AFEFontManager,flash.fonts.CFFFontManager',
+		"-swf-version=${player.swfversion}",
+		"-keep-as3-metadata+=DefaultProperty,Inject,Dispatcher,EventHandler,ViewAdded,ViewRemoved,ViewNavigator,PostConstruct,PreDestroy'
 	]
 
 	switch ("$platform") {
