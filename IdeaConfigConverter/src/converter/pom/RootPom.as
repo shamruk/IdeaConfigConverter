@@ -1,11 +1,12 @@
 package converter.pom {
-	import converter.StringUtil;
-	import converter.dom.ModuleRoot;
-	import converter.dom.Project;
 
-	import flash.utils.Dictionary;
+    import converter.StringUtil;
+    import converter.dom.ModuleRoot;
+    import converter.dom.Project;
 
-	public class RootPom extends BasePom implements IPom {
+    import flash.utils.Dictionary;
+
+    public class RootPom extends BasePom implements IPom {
 
 		[Embed(source="/../gradle/root.gradle", mimeType="application/octet-stream")]
 		private static const POM_LIB_DATA : Class;
@@ -34,6 +35,9 @@ package converter.pom {
 			if (moduleRoot.platforms) {
 				template = StringUtil.replace(template, "//${platform_options}", generateByPlatforms(moduleRoot.platforms.children()));
 			}
+            if (moduleRoot.repositories) {
+                template = StringUtil.replace(template, "//${repositories}", generateByRepositories(moduleRoot.repositories.children()));
+            }
 //			template=template.replace("${flex.framework.version}", getFullSDKVersion(iml.sdkVersion));
 //			template=template.replace("${flash.player.version}", iml.flashPlayerVersion);
 //			template=template.replace("${artifactId}", iml.name);
@@ -59,6 +63,18 @@ package converter.pom {
 			}
 			return result.join("\n");
 		}
+
+        private function generateByRepositories(repositories : XMLList) : String {
+            var result : Array = [];
+            for each (var repo : XML in repositories) {
+                var config : String = "\t\tivy {\n";
+                config += "\t\t\tname '" + repo.@name + "'\n";
+                config += "\t\t\tartifactPattern '" + repo.@pattern + "'\n";
+                config += "\t\t}";
+                result.push(config);
+            }
+            return result.join("\n");
+        }
 
 		override public function getFilePath() : String {
 			return project.pomDirectory.url + "/build.gradle";

@@ -1,7 +1,8 @@
 package converter.dom {
-	import flash.filesystem.File;
 
-	public class ModuleRoot {
+    import flash.filesystem.File;
+
+    public class ModuleRoot {
 
 //		private static const DEF_MAIN_ROOT_XML : XML =
 //				<project>
@@ -77,5 +78,10 @@ package converter.dom {
 		public function get platforms() : XML {
 			return _xml.platforms.length() ? _xml.platforms[0] : null;
 		}
+
+        public function get repositories() : XML {
+            return _xml.repositories.length() ? _xml.repositories[0] : null;
+        }
+
 	}
 }
