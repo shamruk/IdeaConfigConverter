@@ -43,8 +43,8 @@ subprojects {
 
     playerVersion = "${player.version}"
     dependencies {
-        flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '${flex.sdk.version}', ext: flexSDKExt
-        airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '${air.sdk.version}', ext: airSDKExt
+        flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: "${flex.sdk.version}", ext: flexSDKExt
+        airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: "${air.sdk.version}", ext: airSDKExt
     }
 
 //	publishDir = 'publishDirectory'
