@@ -1,5 +1,15 @@
 type = '${type}'
 
+
+//type = 'air'
+//
+//adl{
+//    profile = 'extendedDesktop'
+//}
+//air {
+//    applicationDescriptor 'build/build.xml'
+//}
+
 output = '${out.file}'
 
 frameworkLinkage = '${frameworkLinkage}'

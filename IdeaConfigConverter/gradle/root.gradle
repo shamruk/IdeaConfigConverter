@@ -29,6 +29,10 @@ subprojects {
 // to use wine on linux:	def airSDKExt = os.contains("mac os") ? 'tbz2' : 'zip'
 // to use wine on linux:	def airSDKOS = os.contains("mac os") ? 'mac' : 'win'
 
+    if (os.contains("mac os") && "${air.sdk.version}".split("\\.").getAt(0).toInteger() >= 24) {
+        airSDKExt = "dmg"
+    }
+
     repositories {
 		ivy {
 			name 'Apache'
