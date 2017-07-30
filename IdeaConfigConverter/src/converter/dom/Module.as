@@ -1,10 +1,10 @@
 package converter.dom {
-	import converter.FileHelper;
-	import converter.StringUtil;
+import converter.FileHelper;
+import converter.StringUtil;
 
-	import flash.filesystem.File;
+import flash.filesystem.File;
 
-	public class Module {
+public class Module {
 
 		public static const TYPE_AS : String = "AS";
 		public static const TYPE_FLEX : String = "Flex";
@@ -210,7 +210,7 @@ package converter.dom {
 		}
 
 		public function get targetPlatform() : String {
-			return _targetPlatform ||= configurationXML.attribute("target-platform") || TARGET_PLATFORM_DESKTOP;
+			return _targetPlatform ||= configurationXML.attribute("target-platform");
 		}
 
 		public function get outputDirectory() : String {

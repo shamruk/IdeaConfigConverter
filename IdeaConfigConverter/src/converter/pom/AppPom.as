@@ -1,11 +1,11 @@
 package converter.pom {
-	import converter.StringUtil;
-	import converter.dom.Module;
-	import converter.dom.Project;
+import converter.StringUtil;
+import converter.dom.Module;
+import converter.dom.Project;
 
-	import flash.filesystem.File;
+import flash.filesystem.File;
 
-	public class AppPom extends BasePom implements IPom {
+public class AppPom extends BasePom implements IPom {
 
 		[Embed(source="/../gradle/app.gradle", mimeType="application/octet-stream")]
 		private static const POM_DATA : Class;
@@ -20,7 +20,8 @@ package converter.pom {
 			template = replaceBasicVars(template);
 			template = addMainClass(template);
 			template = addStuffToResultXML(template);
-			template = replace(template, "${type}", iml.targetPlatform == Module.TARGET_PLATFORM_MOBILE ? "mobile" : "swf");
+            var type:String = iml.targetPlatform == Module.TARGET_PLATFORM_MOBILE ? "mobile" : (iml.targetPlatform == Module.TARGET_PLATFORM_DESKTOP ? "air" : "swf");
+            template = replace(template, "${type}", type);
 			template = replace(template, "${source.io.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("ios"), true));
 			template = replace(template, "${source.io.debug.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("ios"), true));
 			template = replace(template, "${source.an.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("android"), true));
@@ -37,6 +38,7 @@ package converter.pom {
 			template = replace(template, "${source.io.resources}", formatMobileResources(iml.getMobileResources("ios")));
 			template = replace(template, "${source.an.resources}", formatMobileResources(iml.getMobileResources("android")));
 			template = replace(template, "${source.am.resources}", formatMobileResources(iml.getMobileResources("android")));
+            template = replace(template, "${air.sdk.version}", iml.moduleRoot.airSDKVersion);
 			return template;
 		}
 
