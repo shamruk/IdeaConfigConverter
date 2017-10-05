@@ -1,11 +1,11 @@
 package converter.pom {
-import converter.StringUtil;
-import converter.dom.Module;
-import converter.dom.Project;
+	import converter.StringUtil;
+	import converter.dom.Module;
+	import converter.dom.Project;
 
-import flash.filesystem.File;
+	import flash.filesystem.File;
 
-public class AppPom extends BasePom implements IPom {
+	public class AppPom extends BasePom implements IPom {
 
 		[Embed(source="/../gradle/app.gradle", mimeType="application/octet-stream")]
 		private static const POM_DATA : Class;
@@ -20,8 +20,8 @@ public class AppPom extends BasePom implements IPom {
 			template = replaceBasicVars(template);
 			template = addMainClass(template);
 			template = addStuffToResultXML(template);
-            var type:String = iml.targetPlatform == Module.TARGET_PLATFORM_MOBILE ? "mobile" : (iml.targetPlatform == Module.TARGET_PLATFORM_DESKTOP ? "air" : "swf");
-            template = replace(template, "${type}", type);
+			var type : String = iml.targetPlatform == Module.TARGET_PLATFORM_MOBILE ? "mobile" : (iml.targetPlatform == Module.TARGET_PLATFORM_DESKTOP ? "air" : "swf");
+			template = replace(template, "${type}", type);
 			template = replace(template, "${source.io.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("ios"), true));
 			template = replace(template, "${source.io.debug.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("ios"), true));
 			template = replace(template, "${source.an.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("android"), true));
@@ -38,7 +38,9 @@ public class AppPom extends BasePom implements IPom {
 			template = replace(template, "${source.io.resources}", formatMobileResources(iml.getMobileResources("ios")));
 			template = replace(template, "${source.an.resources}", formatMobileResources(iml.getMobileResources("android")));
 			template = replace(template, "${source.am.resources}", formatMobileResources(iml.getMobileResources("android")));
-            template = replace(template, "${air.sdk.version}", iml.moduleRoot.airSDKVersion);
+			template = replace(template, "${air.sdk.version}", iml.moduleRoot.airSDKVersion);
+			template = replaceTemplate(template, "io", "/*platform-sdk*/");
+
 			return template;
 		}
 
@@ -51,6 +53,15 @@ public class AppPom extends BasePom implements IPom {
 				}
 			}
 			return StringUtil.replace(template, from, to);
+		}
+
+		private function replaceTemplate(config : String, platform : String, template : String) : String {
+			var replaceXML : XMLList = project.projectModuleRoot.platforms[platform].replace.(@from == template);
+			if (replaceXML.length()) {
+				return StringUtil.replace(config, template, replaceXML.@to)
+			}
+
+			return config;
 		}
 
 		private function formatMobileResources(mobileResources : Object) : String {
