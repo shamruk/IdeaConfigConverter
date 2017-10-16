@@ -46,6 +46,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/            //target = 'ipa-ad-hoc'
 /*frameworkLinkage.air.enabler*/ 			target = 'ipa-app-store'
 /*frameworkLinkage.air.enabler*/ 			provisioningProfile = '${source.io.debug.provision}'
+/*frameworkLinkage.air.enabler*/            /*platform-sdk*/
 /*frameworkLinkage.air.enabler*/ 		}
 /*frameworkLinkage.air.enabler*/ 	} else {
 /*frameworkLinkage.air.enabler*/ 		airMobile {
