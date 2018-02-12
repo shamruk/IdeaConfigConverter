@@ -1,5 +1,15 @@
 type = '${type}'
 
+
+//type = 'air'
+
+adl{
+    profile = 'extendedDesktop'
+}
+air {
+    applicationDescriptor 'build/build.xml'
+}
+
 output = '${out.file}'
 
 frameworkLinkage = '${frameworkLinkage}'
@@ -36,6 +46,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/            //target = 'ipa-ad-hoc'
 /*frameworkLinkage.air.enabler*/ 			target = 'ipa-app-store'
 /*frameworkLinkage.air.enabler*/ 			provisioningProfile = '${source.io.debug.provision}'
+/*frameworkLinkage.air.enabler*/            /*platform-sdk*/
 /*frameworkLinkage.air.enabler*/ 		}
 /*frameworkLinkage.air.enabler*/ 	} else {
 /*frameworkLinkage.air.enabler*/ 		airMobile {
@@ -43,6 +54,7 @@ additionalCompilerOptions += [
 /*frameworkLinkage.air.enabler*/ 			outputExtension = 'ipa'
 /*frameworkLinkage.air.enabler*/ 			target = 'ipa-app-store'
 /*frameworkLinkage.air.enabler*/ 			provisioningProfile = '${source.io.provision}'
+/*frameworkLinkage.air.enabler*/ 			/*platform-sdk*/
 /*frameworkLinkage.air.enabler*/ 		}
 /*frameworkLinkage.air.enabler*/ 	}
 /*frameworkLinkage.air.enabler*/ 	break;
@@ -136,3 +148,19 @@ additionalCompilerOptions += [
 
 //<debug>${debug}</debug>
 //					<optimize>${optimize}</optimize>
+
+launchAdl.doFirst {
+    copy {
+        from 'build/build.xml'
+        into 'build'
+        rename { String fileName -> fileName.replace(fileName, 'build.xml.tmp') }
+        filter {
+            String line -> line.replaceAll('xmlns="http://ns.adobe.com/air/application/.*"', "xmlns=\"http://ns.adobe.com/air/application/${air.sdk.version}\"").replaceAll('<versionNumber>.*</versionNumber>', '<versionNumber>'+"$buildVersion"+'</versionNumber>').replaceAll('<versionLabel>.*</versionLabel>', '<versionLabel>'+"$buildVersion"+'</versionLabel>')
+        }
+    }
+    copy {
+        from 'build/build.xml.tmp'
+        into 'build'
+        rename { String fileName -> fileName.replace(fileName, 'build.xml') }
+    }
+}

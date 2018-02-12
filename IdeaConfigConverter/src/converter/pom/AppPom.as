@@ -20,7 +20,8 @@ package converter.pom {
 			template = replaceBasicVars(template);
 			template = addMainClass(template);
 			template = addStuffToResultXML(template);
-			template = replace(template, "${type}", iml.targetPlatform == Module.TARGET_PLATFORM_MOBILE ? "mobile" : "swf");
+			var type : String = iml.targetPlatform == Module.TARGET_PLATFORM_MOBILE ? "mobile" : (iml.targetPlatform == Module.TARGET_PLATFORM_DESKTOP ? "air" : "swf");
+			template = replace(template, "${type}", type);
 			template = replace(template, "${source.io.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("ios"), true));
 			template = replace(template, "${source.io.debug.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("ios"), true));
 			template = replace(template, "${source.an.certificate}", iml.pomDirectory.getRelativePath(iml.getCerteficate("android"), true));
@@ -37,6 +38,9 @@ package converter.pom {
 			template = replace(template, "${source.io.resources}", formatMobileResources(iml.getMobileResources("ios")));
 			template = replace(template, "${source.an.resources}", formatMobileResources(iml.getMobileResources("android")));
 			template = replace(template, "${source.am.resources}", formatMobileResources(iml.getMobileResources("android")));
+			template = replace(template, "${air.sdk.version}", iml.moduleRoot.airSDKVersion);
+			template = replaceTemplate(template, "io", "/*platform-sdk*/");
+
 			return template;
 		}
 
@@ -49,6 +53,15 @@ package converter.pom {
 				}
 			}
 			return StringUtil.replace(template, from, to);
+		}
+
+		private function replaceTemplate(config : String, platform : String, template : String) : String {
+			var replaceXML : XMLList = project.projectModuleRoot.platforms[platform].replace.(@from == template);
+			if (replaceXML.length()) {
+				return StringUtil.replace(config, template, replaceXML.@to)
+			}
+
+			return config;
 		}
 
 		private function formatMobileResources(mobileResources : Object) : String {
