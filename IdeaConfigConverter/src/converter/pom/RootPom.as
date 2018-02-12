@@ -38,6 +38,9 @@ package converter.pom {
             if (moduleRoot.repositories) {
                 template = StringUtil.replace(template, "//${repositories}", generateByRepositories(moduleRoot.repositories.children()));
             }
+            if (moduleRoot.pluginRepositories) {
+                template = StringUtil.replace(template, "//${plugin_repositories}", generateByRepositories(moduleRoot.pluginRepositories.children()));
+            }
 //			template=template.replace("${flex.framework.version}", getFullSDKVersion(iml.sdkVersion));
 //			template=template.replace("${flash.player.version}", iml.flashPlayerVersion);
 //			template=template.replace("${artifactId}", iml.name);

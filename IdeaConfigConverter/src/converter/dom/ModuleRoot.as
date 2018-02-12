@@ -83,5 +83,9 @@ package converter.dom {
             return _xml.repositories.length() ? _xml.repositories[0] : null;
         }
 
+        public function get pluginRepositories() : XML {
+            return _xml.pluginRepositories.length() ? _xml.pluginRepositories[0] : null;
+        }
+
 	}
 }

@@ -10,6 +10,7 @@ buildscript {
         maven {
             url "https://oss.sonatype.org/content/repositories/snapshots"
         }
+//${plugin_repositories}
     }
     dependencies {
         classpath group: 'org.gradlefx', name: 'gradlefx', version: '${gradlefx.version}'
